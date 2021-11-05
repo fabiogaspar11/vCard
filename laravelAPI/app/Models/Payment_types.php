@@ -11,7 +11,7 @@ class Payment_types extends Model
 
     public $timestamps = true;
 
-
+    protected $primaryKey = 'code';
     protected $fillable = [
         'name',
         'description',
