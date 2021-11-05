@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\TransactionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\VcardController;
@@ -25,3 +26,10 @@ Route::get('vcards', [VcardController::class, 'getVcards']);
 Route::get('vcards/{vcard}', [VcardController::class, 'getVcard']);
 
 Route::post('vcards', [VcardController::class, 'store']);
+
+Route::get('transactions', [TransactionController::class, 'get']);
+
+
+Route::get('transactions/{transaction}', [TransactionController::class, 'getVcardTransactions']);
+
+

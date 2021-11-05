@@ -13,9 +13,15 @@ class VcardController extends Controller
         $allVcards = Vcard::all();
         return VcardResource::collection($allVcards);
     }
+
     public function getVcard(Vcard $vcard)
     {
         return new VcardResource($vcard);
     }
+
+    public function createTransaction(Request $request){
+
+    }
+
 
 }
