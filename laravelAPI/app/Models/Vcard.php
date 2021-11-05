@@ -11,8 +11,8 @@ class Vcard extends Model
 
 
     public $timestamps = true;
-
-
+    public $incrementing = false;
+    protected $primaryKey = 'phone_number';
     protected $fillable = [
         'name',
         'email',
@@ -39,7 +39,7 @@ class Vcard extends Model
         return $this->hasMany(Transaction::class, 'pair_vcard');
     }
 
-    public function git()
+    public function categories()
     {
         return $this->hasMany(Category::class, 'vcard');
     }
