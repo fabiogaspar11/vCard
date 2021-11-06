@@ -13,7 +13,7 @@ class VcardRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,8 +24,15 @@ class VcardRequest extends FormRequest
     public function rules()
     {
         return [
-            'phone_number' => 'required|digits:9',
-            'name' => 'required|string'
+            'phone_number'       => 'nullable|integer|digits:9|unique:vcards,phone_number',
+            'name'               => 'required|string|max:50',
+            'email'              => ['required', 'string', 'max:255'], //'regex:/^[\w\-\.]+@([\w\-]+\.)+[\w\-]{2,4}$/'],
+            'photo_url'          => 'nullable|string|max:255',
+            'password'           => 'required|string|max:255',
+            'confirmation_code'  => 'required|string|max:255',
+            'blocked'            => 'required|integer|in:0,1',
+            'balance'            => ['required', 'numeric', 'min:0.00', 'regex:/^[0-9]+((.|,)[0-9]{1,2})?$/'],
+            'max_debit'          => ['required', 'numeric', 'regex:/^[0-9]+((.|,)[0-9]{1,2})?$/']
         ];
     }
 }

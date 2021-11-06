@@ -20,8 +20,15 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 /*************************************** Vcards ***************************************/
+
 Route::get('vcards', [VcardController::class, 'getVcards']);
 
 Route::get('vcards/{vcard}', [VcardController::class, 'getVcard']);
 
 Route::post('vcards', [VcardController::class, 'store']);
+
+Route::put('vcards/{vcard}', [VcardController::class, 'update']);
+
+Route::delete('vcards/{vcard}', [VcardController::class, 'destroy']);
+
+
