@@ -11,7 +11,7 @@ class Payment_types extends Model
     use HasFactory;
     use SoftDeletes;
     public $timestamps = true;
-
+    protected $primaryKey = 'code';
 
     protected $fillable = [
         'name',

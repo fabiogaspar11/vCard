@@ -12,7 +12,8 @@ class Vcard extends Model
     use SoftDeletes;
 
     public $timestamps = true;
-
+    public $incrementing = false;
+    protected $primaryKey = 'phone_number';
 
     protected $fillable = [
         'phone_number',
@@ -41,7 +42,7 @@ class Vcard extends Model
         return $this->hasMany(Transaction::class, 'pair_vcard');
     }
 
-    public function git()
+    public function categories()
     {
         return $this->hasMany(Category::class, 'vcard');
     }
