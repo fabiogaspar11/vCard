@@ -22,17 +22,17 @@ class UserController extends Controller
 
     public function storeUser(UserRequest $request)
     {
-        //Str::random(10);
-
-        $validated_data = $request->validated();
-        //$validated_data->remember_token = ;
-        $request->password = 9874654;
-        return $request;
-
-        //User::cre
-
-        User::create($validated_data);
-        return new UserResource($request);
+        if($request->validated()){
+            $user = new User();
+            $user->name = $request->name;
+            $user->email = $request->email;
+            $user->password = bcrypt($request->password);
+            $user->remember_token ="abcd";
+        }
+        $user->save();
+        //$validated_data = $request->validated();
+        //User::create($validated_data);
+        return new UserResource($user);
     }
 
     public function updateUser(UserRequest $request, User $user)
@@ -44,6 +44,7 @@ class UserController extends Controller
     }
 
     public function destroyUser(User $user){
-        return new VcardResource($user->delete());
+        $user->delete();
+        return new UserResource($user);
     }
 }
