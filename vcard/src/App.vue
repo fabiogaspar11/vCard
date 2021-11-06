@@ -3,7 +3,7 @@
     <div class="container-fluid">
       <a
         class="navbar-brand col-md-3 col-lg-2 me-0 px-3"
-        href="#"
+
       ><img
           src="./assets/logo.png"
           alt=""
@@ -29,7 +29,7 @@
           <li class="nav-item">
             <a
               class="nav-link"
-              href="#"
+             
             ><i class="bi bi-person-check-fill"></i>
               Register
             </a>
@@ -37,7 +37,7 @@
           <li class="nav-item">
             <a
               class="nav-link"
-              href="#"
+            
             ><i class="bi bi-box-arrow-in-right"></i>
               Login
             </a>
@@ -45,7 +45,7 @@
           <li class="nav-item dropdown">
             <a
               class="nav-link dropdown-toggle"
-              href="#"
+              
               id="navbarDropdownMenuLink"
               role="button"
               data-bs-toggle="dropdown"
@@ -64,18 +64,18 @@
             >
               <li><a
                   class="dropdown-item"
-                  href="#"
+                 
                 ><i class="bi bi-person-square"></i>Profile</a></li>
               <li><a
                   class="dropdown-item"
-                  href="#"
+                
                 ><i class="bi bi-key-fill"></i>Change password</a></li>
               <li>
                 <hr class="dropdown-divider">
               </li>
               <li><a
                   class="dropdown-item"
-                  href="#"
+                 
                 ><i class="bi bi-arrow-right"></i>Logout</a></li>
             </ul>
           </li>
@@ -96,7 +96,7 @@
               <a
                 class="nav-link active"
                 aria-current="page"
-                href="#"
+               
               >
                 <i class="bi bi-house"></i>
                 Dashboard
@@ -106,7 +106,7 @@
             <li class="nav-item">
               <a
                 class="nav-link"
-                href="#"
+               
               >
                 <i class="bi bi-currency-euro"></i>
                 Transfer Money
@@ -116,7 +116,7 @@
             <li class="nav-item">
               <a
                 class="nav-link"
-                href="#"
+               
               >
                 <i class="bi bi-people"></i>
                 User Details
@@ -125,7 +125,7 @@
             <li class="nav-item">
               <a
                 class="nav-link"
-                href="#"
+                
               >
                 <i class="bi bi-bar-chart-line"></i>
                 Transactions
@@ -141,7 +141,7 @@
               <li class="nav-item">
                 <a
                   class="nav-link"
-                  href="#"
+                
                 ><i class="bi bi-person-check-fill"></i>
                   Register
                 </a>
@@ -149,7 +149,7 @@
               <li class="nav-item">
                 <a
                   class="nav-link"
-                  href="#"
+                
                 >
                   <i class="bi bi-box-arrow-in-right"></i>
                   Login
@@ -158,7 +158,7 @@
               <li class="nav-item dropdown">
                 <a
                   class="nav-link dropdown-toggle"
-                  href="#"
+                  
                   id="navbarDropdownMenuLink2"
                   role="button"
                   data-bs-toggle="dropdown"
@@ -177,18 +177,18 @@
                 >
                   <li><a
                       class="dropdown-item"
-                      href="#"
+                     
                     ><i class="bi bi-person-square"></i>Profile</a></li>
                   <li><a
                       class="dropdown-item"
-                      href="#"
+                  >
                     ><i class="bi bi-key-fill"></i>Change password</a></li>
                   <li>
                     <hr class="dropdown-divider">
                   </li>
                   <li><a
                       class="dropdown-item"
-                      href="#"
+                    
                     ><i class="bi bi-arrow-right"></i>Logout</a></li>
                 </ul>
               </li>
@@ -207,6 +207,7 @@
 
 <script>
 import Dashboard from "./components/Dashboard.vue"
+import Menu from "./components/Menu.vue"
 import Home from "./views/Home.vue"
 
 export default {
@@ -214,6 +215,7 @@ export default {
   components: {
     Dashboard,
     Home,
+    Menu
   },
   data () {
     return {
