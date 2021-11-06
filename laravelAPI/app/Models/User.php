@@ -12,7 +12,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
-    use SoftDeletes;
+
+    //Column not found: 1054 Unknown column 'users.deleted_at' in 'where clause' (SQL: select * from `users` where `id` = 1 and `users`.`deleted_at` is null limit 1)"
+    //use SoftDeletes;
     /**
      * The attributes that are mass assignable.
      *
@@ -20,7 +22,6 @@ class User extends Authenticatable
      */
 
     public $timestamps = true;
-
 
     protected $fillable = [
         'name',
