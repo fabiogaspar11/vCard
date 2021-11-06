@@ -12,7 +12,7 @@ class Payment_types extends Model
     use SoftDeletes;
     public $timestamps = true;
 
-    protected $primaryKey = 'code';
+
     protected $fillable = [
         'name',
         'description',

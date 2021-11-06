@@ -1,8 +1,8 @@
 <?php
 
+use App\Http\Controllers\TransactionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\VcardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,5 +30,10 @@ Route::post('vcards', [VcardController::class, 'store']);
 Route::put('vcards/{vcard}', [VcardController::class, 'update']);
 
 Route::delete('vcards/{vcard}', [VcardController::class, 'destroy']);
+
+Route::get('transactions', [TransactionController::class, 'get']);
+
+
+Route::get('transactions/{transaction}', [TransactionController::class, 'getVcardTransactions']);
 
 
