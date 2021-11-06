@@ -24,18 +24,17 @@ class TransactionRequest extends FormRequest
     public function rules()
     {
         return [
-            'vcard' => 'required|string|max:9|',
-            'datetime' => 'required|string',
+            'vcard' => 'required|integer|digits:9|',
+            'datetime' => 'required|date_format:Y-m-d H:i:s',
             'date' => 'required|date',
             'type' => 'required|digits:1|in:C,D|min:1|max:1',
-            'datetime' => 'required',
             'value' => ['required','max:12','min:0.01','regex:/^[0-9]+((.|,)[0-9]{1,2})?$/'],
             'old_balance' => ['required','max:12','regex:/^[0-9]+((.|,)[0-9]{1,2})?$/'],
             'new_balance' => ['required','max:12','regex:/^[0-9]+((.|,)[0-9]{1,2})?$/'],
-            'payment_type' => 'required|string|in:MBWAY,PAYPAL,IBAN,MB,VISA,max:20',
+            'payment_type' => 'required|string|max:20',
             'payment_reference' => 'required',
             'pair_transaction' => 'required|integer',
-            'pair_vcard' => 'nullable|string|max:9',
+            'pair_vcard' => 'nullable|integer|digits:9|',
             'category_id' => 'required|integer',
             'description' => 'nullable|string|max:255'
         ];

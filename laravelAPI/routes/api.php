@@ -1,8 +1,10 @@
 <?php
 
-use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\VcardController;
+use App\Http\Controllers\TransactionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,14 +22,29 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 /*************************************** Vcards ***************************************/
+
+Route::get('users',[UserController::class, 'getUsers']);
+
+Route::get('users/{user}',[UserController::class, 'getUser']);
+
+Route::post('users', [UserController::class, 'storeUser']);
+
+Route::put('users/{user}', [UserController::class, 'updateUser']);
+
+Route::delete('users/{user}', [UserController::class, 'destroyUser']);
+
+
 Route::get('vcards', [VcardController::class, 'getVcards']);
 
 Route::get('vcards/{vcard}', [VcardController::class, 'getVcard']);
 
 Route::post('vcards', [VcardController::class, 'store']);
 
-Route::get('transactions', [TransactionController::class, 'get']);
+Route::put('vcards/{vcard}', [VcardController::class, 'update']);
 
+Route::delete('vcards/{vcard}', [VcardController::class, 'destroy']);
+
+Route::get('transactions', [TransactionController::class, 'get']);
 
 Route::get('transactions/{transaction}', [TransactionController::class, 'getVcardTransactions']);
 
