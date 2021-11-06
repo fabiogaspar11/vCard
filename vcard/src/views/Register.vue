@@ -1,26 +1,32 @@
 <template>
-<form action="action_page.php" method="post">
+<form action="action_page.php" method="post" enctype="multipart/form-data">
   <div class="imgcontainer row">
       <img src="../assets/img/logo.png" />
   </div>    
 
   <div class="container">
+    
     <label for="uname"><b>Phone Number:</b></label>
     <input type="text" placeholder="Enter Username" name="uname" required>
 
     <label for="psw"><b>Name:</b></label>
-    <input type="password" placeholder="Enter name" name="psw" required>
+    <input type="text" placeholder="Enter name" name="psw" required>
 
     <label for="psw"><b>Password:</b></label>
     <input type="password" placeholder="Enter password" name="psw" required>
 
+    <div class="form-group">
+      <label for="img" class="btn btn-dark">Upload a Photo</label>
+      <input type="file" id="img" style="display:none">
+  </div>
+
     <label for="psw"><b>Email:</b></label>
-    <input type="password" placeholder="Enter email" name="psw" required>
+    <input type="text" placeholder="Enter email" name="psw" required>
     
     <label for="psw"><b>Confirmation code:</b></label>
-    <input type="password" placeholder="Enter confirmation code" name="psw" required>
+    <input type="text" placeholder="Enter confirmation code" name="psw" required>
 
-
+    
     <button type="submit">Register</button>
   </div>
   <!--do we need this ? -->
