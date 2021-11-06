@@ -3,9 +3,15 @@
     <h1 class="h2">Menu</h1>
   </div>
   <div id="page" class="row">
-    <div id="dashboard" >
-      <img class="center" src="../assets/img/vcard.png"> 
-      <h1 style="margin-bottom: 3%;">{{moneyUser}}</h1>
+    <div id="dashboard">
+      <img class="center" src="../assets/img/logo.png"> 
+    </div>
+      <div id="buttons" class="col-md-3 col-md-offset-5">
+        <div class="small-box buttonSendReceive">                  
+            <i class="bi bi-cash-coin icon"></i> 
+            <h4><i class="iconTitle"> Register </i> </h4> <br>               
+        </div>
+      <button class="button buttonRegister">Register</button>
     </div>
 </div>
 </template>
@@ -49,49 +55,23 @@ export default {
   background: #e6e6e6;
 }
 
-.icon{ 
-  color: white;
-  font-size:3rem;
+#buttons{
+   text-align: center;
+   padding-top: 3%;
 }
-
-.iconTitle{
-  color: white;
-  margin-bottom: 10%;
-}
-
-.buttonUserDetails{
-  background: #17a2b8;
-}
-.buttonUserDetails:hover{
-  background: #0e6471;
-  transition-duration: 0.5s;
-}
-
 
 .buttonSendReceive{
    background: #198754;
+  
 }
 .buttonSendReceive:hover{
   background: #105635;
   transition-duration: 0.5s;
 }
 
-
-.buttonTransactions{
-  background: #ffc107;
-}
-.buttonTransactions:hover{
-  background: #b38600;
-  transition-duration: 0.5s;
-}
-
-
-.buttonPiggyBank{
-  background: #dc3545;
-}
-.buttonPiggyBank:hover{
-  background: #981b27;
-  transition-duration: 0.5s;
+.icon{ 
+  color: white;
+  font-size:3rem;
 }
 
 .small-box {

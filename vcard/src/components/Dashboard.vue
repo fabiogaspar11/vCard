@@ -4,7 +4,7 @@
   </div>
   <div id="page" class="row">
     <div id="dashboard" >
-      <img class="center" src="../assets/img/vcard.png"> 
+      <img class="center" src="../assets/img/logo.png"> 
       <h1 style="margin-bottom: 3%;">{{moneyUser}}</h1>
     </div>
 

@@ -3,6 +3,8 @@
     <div class="container-fluid">
       <a
         class="navbar-brand col-md-3 col-lg-2 me-0 px-3"
+        href="#"
+        @click="cycleComponents"
 
       ><img
           src="./assets/logo.png"
@@ -209,20 +211,35 @@
 import Dashboard from "./components/Dashboard.vue"
 import Menu from "./components/Menu.vue"
 import Home from "./views/Home.vue"
+import Register from "./components/Register.vue"
 
 export default {
   name: 'RootComponent',
   components: {
     Dashboard,
     Home,
-    Menu
+    Menu,
+    Register
   },
   data () {
     return {
-      activeComponent: "dashboard"
+      activeComponent: "menu"
     }
   },
   methods: {
+    cycleComponents () {
+      switch (this.activeComponent) {
+        case 'menu':
+          this.activeComponent = 'register'
+          break
+        case 'register':
+          this.activeComponent = 'dashboard'
+          break
+        default:
+          this.activeComponent = 'menu'
+          break
+      }
+    }
   },
 }
 </script>
