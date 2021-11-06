@@ -3,17 +3,16 @@
     <h1 class="h2">Menu</h1>
   </div>
   <div id="page" class="row">
-    <div id="dashboard">
+    <div>
       <img class="center" src="../assets/img/logo.png"> 
     </div>
-      <div id="buttons" class="col-md-3 col-md-offset-5">
-        <div class="small-box buttonSendReceive">                  
-            <i class="bi bi-cash-coin icon"></i> 
-            <h4><i class="iconTitle"> Register </i> </h4> <br>               
-        </div>
-      <button class="button buttonRegister">Register</button>
+    <div id="buttons">
+         <button class="button buttonRegister" @click="$router.push('Login')"> Login </button>
+         <button class="button buttonRegister" @click="$router.push('Register')"> Register </button>
     </div>
-</div>
+  </div>
+
+<router-view/>
 </template>
 
 <script>
@@ -51,34 +50,10 @@ export default {
   margin: 0 auto;
 }
 
-#dashboard{
-  background: #e6e6e6;
-}
-
 #buttons{
    text-align: center;
-   padding-top: 3%;
+   display: flex;
+   justify-content:center;
 }
 
-.buttonSendReceive{
-   background: #198754;
-  
-}
-.buttonSendReceive:hover{
-  background: #105635;
-  transition-duration: 0.5s;
-}
-
-.icon{ 
-  color: white;
-  font-size:3rem;
-}
-
-.small-box {
-  border-radius: 10px;
-  cursor: pointer;
-  margin-bottom: 10%;
-  margin-top: 10%;
-  
-}
 </style>

@@ -1,31 +1,26 @@
 <template>
 <form action="action_page.php" method="post">
-  <div class="imgcontainer">
-      <img src="../assets/logo.png" />
-  </div>    
+  <div id="page" class="row">
+
+    <img class="center" src="../assets/img/logo.png"> 
+
+  </div>  
 
   <div class="container">
     <label for="uname"><b>Phone Number:</b></label>
     <input type="text" placeholder="Enter Username" name="uname" required>
 
-    <label for="psw"><b>Name:</b></label>
-    <input type="password" placeholder="Enter name" name="psw" required>
-
     <label for="psw"><b>Password:</b></label>
     <input type="password" placeholder="Enter password" name="psw" required>
 
-    <label for="psw"><b>Email:</b></label>
-    <input type="password" placeholder="Enter email" name="psw" required>
-    
-    <label for="psw"><b>Confirmation code:</b></label>
-    <input type="password" placeholder="Enter confirmation code" name="psw" required>
 
 
-    <button type="submit">Register</button>
+    <button type="submit">Login</button>
   </div>
   <!--do we need this ? -->
   <div class="container" style="background-color:#f1f1f1">
-    <button type="button" class="cancelbtn">Cancel</button>
+
+    <button class="button buttonRegister" @click="$router.push('/')"> Cancel </button>
   </div>
 </form>
 </template>
