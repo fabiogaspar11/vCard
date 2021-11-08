@@ -27,8 +27,8 @@ class VcardRequest extends FormRequest
             'phone_number'       => 'nullable|integer|digits:9|unique:vcards,phone_number',
             'name'               => 'required|string|max:50',
             'email'              => ['required', 'string', 'max:255'], //'regex:/^[\w\-\.]+@([\w\-]+\.)+[\w\-]{2,4}$/'],
-            'photo_url'          => 'nullable|image|max:8192',
-            'password'           => 'required|string|max:255', //começar validacoes aqui
+            'photo_url'          => 'nullable|image',
+            'password'           => 'required|string|max:255',
             'confirmation_code'  => 'required|integer|digits:4',
             'blocked'            => 'nullable|integer|in:0,1',
             'balance'            => ['nullable', 'numeric', 'min:0.00', 'regex:/^[0-9]+((.|,)[0-9]{1,2})?$/'],

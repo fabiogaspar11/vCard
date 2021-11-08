@@ -7,38 +7,73 @@
   <div class="container">
     
     <label for="uname"><b>Phone Number:</b></label>
-    <input type="text" placeholder="Enter Username" name="uname" required>
+    <input type="text" v-model="phoneNumber" placeholder="Enter Username" name="uname" required>
 
     <label for="psw"><b>Name:</b></label>
-    <input type="text" placeholder="Enter name" name="psw" required>
+    <input type="text" v-model="name"  placeholder="Enter name" name="psw" required>
 
     <label for="psw"><b>Password:</b></label>
-    <input type="password" placeholder="Enter password" name="psw" required>
+    <input type="password" v-model="password" placeholder="Enter password" name="psw" required>
 
     <div class="form-group">
       <label for="img" class="btn btn-dark">Upload a Photo</label>
-      <input type="file" id="img" style="display:none">
-  </div>
-
+      <input type="file" @change="changeFile($event)" id="img" style="display:none">
+      <span v-if="imageFile!=null">File '{{imageFile.name}}' uploaded</span>
+    </div>
     <label for="psw"><b>Email:</b></label>
-    <input type="text" placeholder="Enter email" name="psw" required>
+    <input type="text" v-model="email" placeholder="Enter email" name="psw" required>
     
     <label for="psw"><b>Confirmation code:</b></label>
-    <input type="text" placeholder="Enter confirmation code" name="psw" required>
+    <input type="password"  v-model="confirmationCode" placeholder="Enter confirmation code" name="psw" required>
 
     
-    <button type="submit">Register</button>
+    <button type="submit" @click.prevent="createVcard">Register</button>
   </div>
-  <!--do we need this ? -->
   <div class="container" style="background-color:#f1f1f1">
-     <button class="button buttonRegister" @click="$router.push('/')"> Cancel </button>
+     <button class="button buttonRegister" @click.prevent="$router.push('/')"> Cancel </button>
   </div>
 </form>
 </template>
 
 <script>
+import axios from 'axios'
+const urlBase = 'http://laravelapi.test/api'
 export default {
+  data () {
+        return {
+            phoneNumber: null,
+            name: null,
+            password: null,
+            confirmationCode: null,
+            imageFile : null
+        }
+    },
+  methods: {
+    changeFile (evt){
+        this.imageFile =  evt.target.files[0];
+    },
+    createVcard () {
+      var headers = {
+      'Content-Type':  "multipart/form-data"
+    }
+    let vcard = {
+      phone_number: this.phoneNumber,
+      name: this.name,
+      email: this.email,
+      photo_url: this.imageFile,
+      password: this.password,
+      confirmation_code: this.confirmationCode
+    }
+    axios.post(`${urlBase}/vcards`,vcard,headers)
+    .then(function (response) {
+      console.log(response);
+    })
+    .catch(function (error) {
+      console.log(error.response);
+    });
 
+    },
+    }
 }
 </script>
 
