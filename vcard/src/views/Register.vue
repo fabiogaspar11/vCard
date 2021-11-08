@@ -1,7 +1,7 @@
 <template>
 <form action="action_page.php" method="post" enctype="multipart/form-data">
   <div class="imgcontainer row">
-      <img src="../assets/img/logo.png" />
+      <img src="../assets/img/logo.png" style="width:30%"/>
   </div>    
 
   <div class="container">
@@ -42,7 +42,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 /* Bordered form */
 form {
   border: 3px solid #f1f1f1;
@@ -85,6 +85,8 @@ button:hover {
 .imgcontainer {
   text-align: center;
   margin: 24px 0 12px 0;
+  display: flex;
+  justify-content: center;
 }
 
 /* Avatar image */

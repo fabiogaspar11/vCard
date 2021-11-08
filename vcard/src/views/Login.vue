@@ -1,44 +1,42 @@
 <template>
-<form action="action_page.php" method="post">
-  <div id="page" class="row">
+  <form action="action_page.php" method="post">
+    <div id="page" class="row">
+      <div class="imgcontainer row">
+        <img class="center" src="../assets/img/logo.png" style="width: 30%" />
+      </div>
+    </div>
 
-    <img class="center" src="../assets/img/logo.png"> 
+    <div class="container">
+      <label for="uname"><b>Phone Number:</b></label>
+      <input type="text" placeholder="Enter Username" name="uname" required />
 
-  </div>  
+      <label for="psw"><b>Password:</b></label>
+      <input type="password" placeholder="Enter password" name="psw" required />
 
-  <div class="container">
-    <label for="uname"><b>Phone Number:</b></label>
-    <input type="text" placeholder="Enter Username" name="uname" required>
-
-    <label for="psw"><b>Password:</b></label>
-    <input type="password" placeholder="Enter password" name="psw" required>
-
-
-
-    <button type="submit">Login</button>
-  </div>
-  <!--do we need this ? -->
-  <div class="container" style="background-color:#f1f1f1">
-
-    <button class="button buttonRegister" @click="$router.push('/')"> Cancel </button>
-  </div>
-</form>
+      <button type="submit">Login</button>
+    </div>
+    <!--do we need this ? -->
+    <div class="container" style="background-color: #f1f1f1">
+      <button class="button buttonRegister" @click="$router.push('/')">
+        Cancel
+      </button>
+    </div>
+  </form>
 </template>
 
 <script>
-export default {
-
-}
+export default {};
 </script>
 
-<style>
+<style scoped>
 /* Bordered form */
 form {
   border: 3px solid #f1f1f1;
 }
 
 /* Full-width inputs */
-input[type=text], input[type=password] {
+input[type="text"],
+input[type="password"] {
   width: 100%;
   padding: 12px 20px;
   margin: 8px 0;
@@ -49,7 +47,7 @@ input[type=text], input[type=password] {
 
 /* Set a style for all buttons */
 button {
-  background-color: #04AA6D;
+  background-color: #04aa6d;
   color: white;
   padding: 14px 20px;
   margin: 8px 0;
@@ -74,6 +72,8 @@ button:hover {
 .imgcontainer {
   text-align: center;
   margin: 24px 0 12px 0;
+  display: flex;
+  justify-content: center;
 }
 
 /* Avatar image */
