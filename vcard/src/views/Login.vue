@@ -1,42 +1,80 @@
 <template>
-  <form action="action_page.php" method="post">
-    <div id="page" class="row">
-      <div class="imgcontainer row">
-        <img class="center" src="../assets/img/logo.png" style="width: 30%" />
-      </div>
-    </div>
+<form action="action_page.php" method="post">
+  <div id="page" class="row">
 
-    <div class="container">
-      <label for="uname"><b>Phone Number:</b></label>
-      <input type="text" placeholder="Enter Username" name="uname" required />
+    <img id="logo" src="../assets/img/logo.png"> 
 
-      <label for="psw"><b>Password:</b></label>
-      <input type="password" placeholder="Enter password" name="psw" required />
+  </div>  
 
-      <button type="submit">Login</button>
-    </div>
-    <!--do we need this ? -->
-    <div class="container" style="background-color: #f1f1f1">
-      <button class="button buttonRegister" @click="$router.push('/')">
-        Cancel
-      </button>
-    </div>
-  </form>
+  <div class="container">
+    <label for="uname"><b>Phone Number:</b></label>
+    <input type="text" placeholder="Enter Username" name="uname" required>
+
+    <label for="psw"><b>Password:</b></label>
+    <input type="password" placeholder="Enter password" name="psw" required>
+
+    <button type="submit" id="buttonLogin" class="button">Login</button>
+  </div>
+  <div class="container" >
+    <button id="buttonCancel" class="button" @click="$router.push('/')"> Cancel </button>
+ 
+  </div>
+</form>
 </template>
 
+
+
 <script>
-export default {};
+export default {
+
+}
 </script>
 
-<style scoped>
+
+
+<style scope>
+#logo{
+  width: auto ;
+  max-width: 100% ;
+  height: auto ;
+    margin: auto;
+}
+#page{
+  text-align: center;
+
+}
+
+#buttonCancel{
+  background-color: #ff6666;
+}
+#buttonCancel:hover{
+  transition-duration: 0.5s;
+  background-color: red;
+}
+
+#buttonLogin{
+  background-color: #04AA6D;
+}
+#buttonLogin:hover{
+  transition-duration: 0.5s;
+  background-color: #036340;
+}
+
+.container{
+  text-align: center;
+}
+
+.button{
+  border-radius: 10px;
+}
+
 /* Bordered form */
 form {
   border: 3px solid #f1f1f1;
 }
 
 /* Full-width inputs */
-input[type="text"],
-input[type="password"] {
+input[type=text], input[type=password] {
   width: 100%;
   padding: 12px 20px;
   margin: 8px 0;
@@ -47,7 +85,7 @@ input[type="password"] {
 
 /* Set a style for all buttons */
 button {
-  background-color: #04aa6d;
+  background-color: #04AA6D;
   color: white;
   padding: 14px 20px;
   margin: 8px 0;
@@ -72,8 +110,6 @@ button:hover {
 .imgcontainer {
   text-align: center;
   margin: 24px 0 12px 0;
-  display: flex;
-  justify-content: center;
 }
 
 /* Avatar image */
