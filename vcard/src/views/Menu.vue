@@ -7,8 +7,8 @@
       <img class="center" src="../assets/img/logo.png"> 
     </div>
     <div id="buttons">
-         <button class="button buttonRegister" @click="$router.push('Login')"> Login </button>
-         <button class="button buttonRegister" @click="$router.push('Register')"> Register </button>
+         <button class="button buttonRegister" @click="$router.push('login')"> Login </button>
+         <button class="button buttonRegister" @click="$router.push('register')"> Register </button>
     </div>
   </div>
 
