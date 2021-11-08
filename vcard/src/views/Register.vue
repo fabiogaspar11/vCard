@@ -20,6 +20,7 @@
       <input type="file" @change="changeFile($event)" id="img" style="display:none">
       <span v-if="imageFile!=null">File '{{imageFile.name}}' uploaded</span>
     </div>
+    <br>
     <label for="psw"><b>Email:</b></label>
     <input type="text" v-model="email" placeholder="Enter email" name="psw" required>
     
