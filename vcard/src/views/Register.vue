@@ -1,49 +1,115 @@
 <template>
 <form action="action_page.php" method="post" enctype="multipart/form-data">
-  <div class="imgcontainer row">
-      <img src="../assets/img/logo.png" style="width:30%"/>
+  <div id="page" class="row">
+      <img id="logo" src="../assets/img/logo.png"/>
   </div>    
 
   <div class="container">
     
     <label for="uname"><b>Phone Number:</b></label>
-    <input type="text" placeholder="Enter Username" name="uname" required>
+    <input type="text" v-model="phoneNumber" placeholder="Enter Username" name="uname" required>
 
     <label for="psw"><b>Name:</b></label>
-    <input type="text" placeholder="Enter name" name="psw" required>
+    <input type="text" v-model="name"  placeholder="Enter name" name="psw" required>
 
     <label for="psw"><b>Password:</b></label>
-    <input type="password" placeholder="Enter password" name="psw" required>
+    <input type="password" v-model="password" placeholder="Enter password" name="psw" required>
 
     <div class="form-group">
       <label for="img" class="btn btn-dark">Upload a Photo</label>
-      <input type="file" id="img" style="display:none">
-  </div>
-
+      <input type="file" @change="changeFile($event)" id="img" style="display:none">
+      <span v-if="imageFile!=null">File '{{imageFile.name}}' uploaded</span>
+    </div>
     <label for="psw"><b>Email:</b></label>
-    <input type="text" placeholder="Enter email" name="psw" required>
+    <input type="text" v-model="email" placeholder="Enter email" name="psw" required>
     
     <label for="psw"><b>Confirmation code:</b></label>
-    <input type="text" placeholder="Enter confirmation code" name="psw" required>
+    <input type="password"  v-model="confirmationCode" placeholder="Enter confirmation code" name="psw" required>
 
     
-    <button type="submit">Register</button>
+    <button id="buttonRegister" class="button" type="submit" @click.prevent="createVcard">Register</button>
   </div>
-  <!--do we need this ? -->
   <div class="container" style="background-color:#f1f1f1">
-     <button class="button buttonRegister" @click="$router.push('/')"> Cancel </button>
+     <button id="buttonCancel" class="button" @click="$router.push('/')"> Cancel </button>
   </div>
 </form>
 </template>
 
 <script>
+import axios from 'axios'
+const urlBase = 'http://laravelapi.test/api'
 export default {
+  data () {
+        return {
+            phoneNumber: null,
+            name: null,
+            password: null,
+            confirmationCode: null,
+            imageFile : null
+        }
+    },
+  methods: {
+    changeFile (evt){
+        this.imageFile =  evt.target.files[0];
+    },
+    createVcard () {
+      var headers = {
+      'Content-Type':  "multipart/form-data"
+    }
+    let vcard = {
+      phone_number: this.phoneNumber,
+      name: this.name,
+      email: this.email,
+      photo_url: this.imageFile,
+      password: this.password,
+      confirmation_code: this.confirmationCode
+    }
+    axios.post(`${urlBase}/vcards`,vcard,headers)
+    .then(function (response) {
+      console.log(response);
+    })
+    .catch(function (error) {
+      console.log(error.response);
+    });
 
+    },
+    }
 }
 </script>
 
 <style scoped>
 /* Bordered form */
+#logo{
+  width: auto ;
+  max-width: 100% ;
+  height: auto ;
+    margin: auto;
+}
+#page{
+  text-align: center;
+
+}
+
+#buttonCancel{
+  background-color: #ff6666;
+}
+#buttonCancel:hover{
+  transition-duration: 0.5s;
+  background-color: red;
+}
+
+#buttonRegister{
+  background-color: #04AA6D;
+}
+#buttonRegister:hover{
+  transition-duration: 0.5s;
+  background-color: #036340;
+}
+
+
+
+
+
 form {
   border: 3px solid #f1f1f1;
 }

@@ -1,9 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Register from '../views/Register.vue'
 import Login from '../views/Login.vue'
-import Dashboard from '../views/Dashboard.vue'
+import Navbar from '../components/Navbar.vue'
 import Menu from '../views/Menu.vue'
-
 const routes = [
   {
     path: '/',
@@ -29,9 +28,9 @@ const routes = [
     component: Login
   },
   {
-    path: '/dashboard',
-    name: 'Dashboard',
-    component: Dashboard
+    path: '/navbar',
+    name: 'Navbar',
+    component: Navbar
   }
 ]
 
