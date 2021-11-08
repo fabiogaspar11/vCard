@@ -21,7 +21,7 @@ class VcardController extends Controller
         return new VcardResource($vcard);
     }
 
-    public function store(VcardRequest $request)
+    public function storeVcard(VcardRequest $request)
     {
         $validated_data = $request->validated();
         $vcard = new Vcard;
@@ -43,7 +43,7 @@ class VcardController extends Controller
         return new VcardResource($vcard);
     }
 
-    public function update(VcardRequest $request, Vcard $vcard)
+    public function updateVcard(VcardRequest $request, Vcard $vcard)
     {
         $phone_number = $vcard->phone_number;
         $vcard->fill($request->validated());
@@ -52,7 +52,7 @@ class VcardController extends Controller
         return new VcardResource($request);
     }
 
-    public function destroy(Vcard $vcard){
+    public function destroyVcard(Vcard $vcard){
         $vcard->delete();
         return new VcardResource($vcard);
     }

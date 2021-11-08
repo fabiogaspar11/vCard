@@ -22,16 +22,11 @@ class UserController extends Controller
 
     public function storeUser(UserRequest $request)
     {
-        if($request->validated()){
-            $user = new User();
-            $user->name = $request->name;
-            $user->email = $request->email;
-            $user->password = bcrypt($request->password);
-            $user->remember_token ="abcd";
-        }
+        $user = new User();
+        $user->fill($request->validated());
+        $user->password = bcrypt($request->password);
+        $user->remember_token = Str::random(10);
         $user->save();
-        //$validated_data = $request->validated();
-        //User::create($validated_data);
         return new UserResource($user);
     }
 

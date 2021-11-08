@@ -19,7 +19,6 @@ class Category extends Model
         'name'
     ];
 
-
     public function vcard()
     {
         return $this->belongsTo(Vcard::class, 'vcard');
@@ -29,6 +28,4 @@ class Category extends Model
     {
         return $this->hasMany(Transaction::class, 'category_id');
     }
-
-
 }

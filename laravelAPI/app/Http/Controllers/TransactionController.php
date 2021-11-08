@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class TransactionController extends Controller
 {
-    public function get()
+    public function getTransactions()
     {
         $transactions = Transaction::all();
         return TransactionResource::collection($transactions);

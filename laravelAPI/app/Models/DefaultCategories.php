@@ -6,16 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Default_categories extends Model
+class DefaultCategories extends Model
 {
     use HasFactory;
     use SoftDeletes;
     public $timestamps = true;
-
-
-    protected $fillable = [
-        'type',
-        'name',
-    ];
-
 }

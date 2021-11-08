@@ -29,13 +29,10 @@ class Vcard extends Model
         'custom_data',
     ];
 
-
     public function transactions()
     {
         return $this->hasMany(Transaction::class,'vcard');
     }
-
-
 
     public function pair_transactions()
     {
@@ -46,9 +43,5 @@ class Vcard extends Model
     {
         return $this->hasMany(Category::class, 'vcard');
     }
-
-
-
-
 }
 

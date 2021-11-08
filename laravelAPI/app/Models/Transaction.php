@@ -10,8 +10,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Transaction extends Model
 {
     use HasFactory;
-    public $timestamps = true;
     use SoftDeletes;
+    public $timestamps = true;
 
     protected $fillable = [
         'vcard',
@@ -35,6 +35,7 @@ class Transaction extends Model
     {
         return $this->belongsTo(Vcard::class, 'vcard');
     }
+
     public function pair_vcard()
     {
         return $this->belongsTo(Vcard::class, 'pair_vcard');
@@ -48,5 +49,9 @@ class Transaction extends Model
     public function pair_transaction()
     {
         return $this->hasOne(Transaction::class);
+    }
+
+    public function paymentType(){
+        return $this->belongsTo(PaymentTypes::class, 'payment_type');
     }
 }
