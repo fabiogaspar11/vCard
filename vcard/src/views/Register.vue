@@ -1,7 +1,7 @@
 <template>
 <form action="action_page.php" method="post" enctype="multipart/form-data">
-  <div class="imgcontainer row">
-      <img src="../assets/img/logo.png" style="width:30%"/>
+  <div id="page" class="row">
+      <img id="logo" src="../assets/img/logo.png"/>
   </div>    
 
   <div class="container">
@@ -27,10 +27,10 @@
     <input type="password"  v-model="confirmationCode" placeholder="Enter confirmation code" name="psw" required>
 
     
-    <button type="submit" @click.prevent="createVcard">Register</button>
+    <button id="buttonRegister" class="button" type="submit" @click.prevent="createVcard">Register</button>
   </div>
   <div class="container" style="background-color:#f1f1f1">
-     <button class="button buttonRegister" @click.prevent="$router.push('/')"> Cancel </button>
+     <button id="buttonCancel" class="button" @click="$router.push('/')"> Cancel </button>
   </div>
 </form>
 </template>
@@ -79,6 +79,37 @@ export default {
 
 <style scoped>
 /* Bordered form */
+#logo{
+  width: auto ;
+  max-width: 100% ;
+  height: auto ;
+    margin: auto;
+}
+#page{
+  text-align: center;
+
+}
+
+#buttonCancel{
+  background-color: #ff6666;
+}
+#buttonCancel:hover{
+  transition-duration: 0.5s;
+  background-color: red;
+}
+
+#buttonRegister{
+  background-color: #04AA6D;
+}
+#buttonRegister:hover{
+  transition-duration: 0.5s;
+  background-color: #036340;
+}
+
+
+
+
+
 form {
   border: 3px solid #f1f1f1;
 }
