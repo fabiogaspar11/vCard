@@ -28,7 +28,7 @@ class VcardController extends Controller
         $validated_data = $request->validated();
         $vcard = new Vcard;
         $vcard->fill($validated_data);
-        if (is_null($vcard->phone_number)) {
+        if (!isset($vcard->phone_number)) {
             throw ValidationException::withMessages(['phone_number' => 'Phone number is mandatory']);
         }
 
