@@ -39,4 +39,13 @@ class TransactionRequest extends FormRequest
             'description' => 'nullable|string|max:255'
         ];
     }
+
+    public function messages()
+    {
+        return [
+        'vcard.required' => 'Vcard is mandatory',
+        'vcard.digits' => 'Vcard is mandatory',
+        'vcard.max' => 'Name cannot have more than 9 numbers',
+        ];
+    }
 }
