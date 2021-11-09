@@ -7,7 +7,9 @@ use Illuminate\Http\Request;
 use App\Http\Requests\VcardRequest;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Resources\VcardResource;
+use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
+use function PHPUnit\Framework\isNull;
 
 class VcardController extends Controller
 {
@@ -26,14 +28,17 @@ class VcardController extends Controller
         $validated_data = $request->validated();
         $vcard = new Vcard;
         $vcard->fill($validated_data);
-        if (!isset($vcard->phone_number)) {
+        if (is_null($vcard->phone_number)) {
             throw ValidationException::withMessages(['phone_number' => 'Phone number is mandatory']);
         }
-        //testar isto
+
+        $filename = $vcard->phone_number . "_" . Str::random(6) . '.jpg';
+
         if ($request->hasFile('photo_url')) {
-                $path = $request->photo_url->store('public/fotos');
-                $vcard->photo_url = basename($path);
+            $request->file('photo_url')->storeAs('public/fotos', $filename);
+            $vcard->photo_url = $filename;
         }
+
         $vcard->max_debit = 5000.00;
         $vcard->balance = 0.00;
         $vcard->blocked = 0;
