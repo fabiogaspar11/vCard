@@ -25,13 +25,12 @@ class VcardController extends Controller
 
     public function storeVcard(VcardRequest $request)
     {
+        if (!isset($request->phone_number)) {
+            throw ValidationException::withMessages(['phone_number' => 'Phone number is mandatory']);
+        }
         $validated_data = $request->validated();
         $vcard = new Vcard;
         $vcard->fill($validated_data);
-        if (!isset($vcard->phone_number)) {
-            throw ValidationException::withMessages(['phone_number' => 'Phone number is mandatory']);
-        }
-
         $filename = $vcard->phone_number . "_" . Str::random(6) . '.jpg';
 
         if ($request->hasFile('photo_url')) {

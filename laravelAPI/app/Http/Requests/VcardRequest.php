@@ -38,7 +38,7 @@ class VcardRequest extends FormRequest
         public function messages()
         {
             return [
-            'phone_number.unique' => 'A vcard is already associated with this phone number',
+            'phone_number.unique' => 'Phone number already exists - Duplicated vcard',
             'phone_number.integer' => 'Phone number can only have numbers',
             'phone_number.digits' => 'Phone number must have 9 digits',
             'name.required' => 'Name is mandatory',
