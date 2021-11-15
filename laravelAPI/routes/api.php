@@ -39,13 +39,19 @@ Route::delete('users/{user}', [UserController::class, 'destroyUser']);
 
 Route::get('paytypes',[PaymentTypesController::class, 'getPaymentsTypes']);
 
-Route::get('paytypes/{paytype}',[PaymentTypesController::class, 'getPaymentType']);
+Route::get('paytypes/{payment_type}',[PaymentTypesController::class, 'getPaymentType']);
 
 /*************************************** Categories ***************************************/
 
 Route::get('categories',[CategoryController::class, 'getCategories']);
 
 Route::get('categories/{category}',[CategoryController::class, 'getCategory']);
+
+/*************************************** Categories ***************************************/
+
+Route::get('defaultCategories',[CategoryController::class, 'getDefaultCategories']);
+
+Route::get('defaultCategories/{defaultCategory}',[CategoryController::class, 'getDefaultCategory']);
 
 /*************************************** Vcards ***************************************/
 

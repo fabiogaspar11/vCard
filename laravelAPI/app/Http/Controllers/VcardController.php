@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Hash;
 use App\Http\Resources\VcardResource;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
-use function PHPUnit\Framework\isNull;
 
 class VcardController extends Controller
 {
