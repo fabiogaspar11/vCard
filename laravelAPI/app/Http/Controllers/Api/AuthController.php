@@ -48,13 +48,12 @@ class AuthController extends Controller
             $token->delete();
         });*/
 
-        /*$accessToken = $request->user()->token();
+        $accessToken = $request->user()->token();
         //$token = $request->user()->tokens->find($accessToken);
         $accessToken->revoke();
-        $accessToken->delete();*/
+        $accessToken->delete();
 
-        //return response()->json('Logged out successfully', 200);
-        return $request->user()->token();
+        return response()->json('Logged out successfully', 200);
     }
 
 }

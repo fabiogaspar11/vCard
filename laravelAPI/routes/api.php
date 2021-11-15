@@ -24,12 +24,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user()->token();
 });
 
-//Route::middleware('auth:api1')->get('/vcard', [VcardController::class, 'getVcard']);
-
-Route::middleware('auth:api1')->get('/vcard', function (Request $request) {
-    return $request->user();
-});
-
 /*************************************** Users ***************************************/
 
 Route::get('users',[UserController::class, 'getUsers']);
@@ -83,8 +77,4 @@ Route::get('transactions/{transaction}', [TransactionController::class, 'getVcar
 
 Route::post('login', [AuthController::class, 'login']);
 
-//Route::middleware('auth:api')->post('/logout', [AuthController::class, 'logout']);
-//Route::middleware('auth:api')->post('/logout', [AuthController::class, 'logout']);
-
-
-Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:api', 'auth:api1');
+Route::middleware('auth:api')->post('/logout', [AuthController::class, 'logout']);
