@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class PaymentsTypesResource extends JsonResource
+class DefaultCategoryResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,12 +15,9 @@ class PaymentsTypesResource extends JsonResource
     public function toArray($request)
     {
         return [
-            "code" => $this->code,
-            "name" => $this->name,
-            "description" => $this->description,
-            "validation_rules" => $this->validation_rules,
-            "custom_options" => $this->custom_options,
-            "custom_data" => $this->custom_data
+            "id" => $this->id,
+            "type" => $this->type,
+            "name" => $this->name
         ];
     }
 }

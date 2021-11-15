@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class DefaultCategoriesRequest extends FormRequest
+class PaymentTypesRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,8 +24,8 @@ class DefaultCategoriesRequest extends FormRequest
     public function rules()
     {
         return [
-            'type' => 'required|digits:1|in:C,D|min:1|max:1',
-            'name' => 'required|max:50'
+            'name' => 'required|string|max:50',
+            'description' => 'nullable|string|max:255',
         ];
     }
 }

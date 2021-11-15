@@ -2,17 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\PaymentsTypesResource;
+use App\Http\Requests\PaymentTypesRequest;
+use App\Http\Resources\PaymentTypesResource;
 use App\Models\PaymentTypes;
 use Illuminate\Http\Request;
 
 class PaymentTypesController extends Controller
 {
     public function getPaymentsTypes(){
-        return  PaymentsTypesResource::Collection(PaymentTypes::all());
+        return  PaymentTypesResource::Collection(PaymentTypes::all());
     }
 
-    public function getPaymentType(PaymentTypes $payment_types){
-        return new PaymentsTypesResource($payment_types);
+    public function getPaymentType(PaymentTypesRequest $payment_type){
+
+        $payment_type = PaymentTypes::where('code', $payment_type->query('code'))->first();
+
+        //return new PaymentTypesResource($payment_type);
     }
 }
