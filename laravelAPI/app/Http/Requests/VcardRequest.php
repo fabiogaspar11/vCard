@@ -24,7 +24,7 @@ class VcardRequest extends FormRequest
     public function rules()
     {
         return [
-            'phone_number'       => 'nullable|integer|digits:9|unique:vcards,phone_number',
+            'phone_number'       => ['nullable','integer','digits:9','unique:vcards,phone_number','regex:/^(9[0-9])([0-9]{7})?$/'],
             'name'               => 'required|string|max:50',
             'email'              => ['required', 'string', 'max:255'], //'regex:/^[\w\-\.]+@([\w\-]+\.)+[\w\-]{2,4}$/'],
             'photo_url'          => 'nullable|image',
@@ -41,6 +41,7 @@ class VcardRequest extends FormRequest
             'phone_number.unique' => 'Phone number already exists - Duplicated vcard',
             'phone_number.integer' => 'Phone number can only have numbers',
             'phone_number.digits' => 'Phone number must have 9 digits',
+            'phone_number.regex' => 'Phone number must start with number 9',
             'name.required' => 'Name is mandatory',
             'name.max' => 'Name cannot have more than 50 characters',
             'email.required' => 'Email is mandatory',
