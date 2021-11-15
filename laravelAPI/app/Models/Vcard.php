@@ -2,12 +2,15 @@
 
 namespace App\Models;
 
+use Laravel\Passport\HasApiTokens;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Vcard extends Model
 {
+    use HasApiTokens, Notifiable;
     use HasFactory;
     use SoftDeletes;
 
@@ -42,6 +45,26 @@ class Vcard extends Model
     public function categories()
     {
         return $this->hasMany(Category::class, 'vcard');
+    }
+
+    public function findForPassport($username)
+    {
+        return $this->where('phone_number', $username)->first();
+    }
+
+    public function getAuthPassword()
+    {
+        return $this->password;
+    }
+
+    public function getAuthIdentifier()
+    {
+        return $this->id;
+    }
+
+    public function getAuthIdentifierName()
+    {
+        return $this->name;
     }
 }
 

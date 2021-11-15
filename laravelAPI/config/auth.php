@@ -40,6 +40,14 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        'api' => [
+            'driver' => 'passport',
+            'provider' => 'users',
+        ],
+        'api1' => [
+            'driver' => 'passport',
+            'provider' => 'vcards',
+        ],
     ],
 
     /*
@@ -63,6 +71,10 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
+        ],
+        'vcards' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Vcard::class,
         ],
 
         // 'users' => [

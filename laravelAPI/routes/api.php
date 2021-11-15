@@ -7,6 +7,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\VcardController;
 use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\Api\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,7 +20,13 @@ use App\Http\Controllers\TransactionController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+Route::middleware('auth:api')->get('/user', function (Request $request) {
+    return $request->user()->token();
+});
+
+//Route::middleware('auth:api1')->get('/vcard', [VcardController::class, 'getVcard']);
+
+Route::middleware('auth:api1')->get('/vcard', function (Request $request) {
     return $request->user();
 });
 
@@ -66,3 +73,12 @@ Route::get('transactions', [TransactionController::class, 'getTransactions']);
 Route::get('transactions/{transaction}', [TransactionController::class, 'getVcardTransactions']);
 
 
+/*************************************** Login ***************************************/
+
+Route::post('login', [AuthController::class, 'login']);
+
+//Route::middleware('auth:api')->post('/logout', [AuthController::class, 'logout']);
+//Route::middleware('auth:api')->post('/logout', [AuthController::class, 'logout']);
+
+
+Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:api', 'auth:api1');
