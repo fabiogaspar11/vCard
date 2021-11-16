@@ -49,9 +49,9 @@ class VcardRequest extends FormRequest
             'photo_url.image' => 'The file is not a image',
             'password.required' => 'Password is mandatory',
             'password.max' => 'Password cannot have more than 255 characters',
-            'confirmation_code.required' => 'Confirmation code is mandatory',
-            'confirmation_code.integer' => 'Confirmation code can only have numbers',
-            'confirmation_code.digits' => 'Confirmation code must have 4 digits',
+            'confirmation_code.required' => 'PIN is mandatory',
+            'confirmation_code.integer' => 'PIN can only have numbers',
+            'confirmation_code.digits' => 'PIN must have 4 digits',
         ];
     }
 }
