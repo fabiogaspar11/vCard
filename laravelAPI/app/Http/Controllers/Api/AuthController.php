@@ -8,8 +8,8 @@ use Illuminate\Http\Request;
 class AuthController extends Controller
 {
     //const PASSPORT_SERVER_URL = "http://laravelapi.test";
-    //const CLIENT_ID = 2;
-    //const CLIENT_SECRET = 'fjjQYHslnhnRu6Xi17ZzdOPyWfyrwq6rPb4mVsog';
+    const CLIENT_ID = 3;
+    const CLIENT_SECRET = 'ITFk6fkKqPtXJ4pfPBP2zgRV8YFN1wWYspLq9yoC';
 
 
     public function login(Request $request){
@@ -17,8 +17,8 @@ class AuthController extends Controller
             $bodyHttpRequest = [
                 'form_params' => [
                     'grant_type' => 'password',
-                    'client_id' => '94e00292-11a4-4113-93b9-9b62ebf7d0f7',
-                    'client_secret' => 'YTWKq1HPvMfyGmEbwfq1y5R5QzFUtTN9sKUOjEwl',
+                    'client_id' => '3',
+                    'client_secret' => 'ITFk6fkKqPtXJ4pfPBP2zgRV8YFN1wWYspLq9yoC',
                     'username' => $request->username,
                     'password' => $request->password,
                     'scope' => ''

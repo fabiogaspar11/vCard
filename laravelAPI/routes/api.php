@@ -8,6 +8,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\VcardController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\DefaultCategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -48,11 +49,23 @@ Route::get('categories',[CategoryController::class, 'getCategories']);
 
 Route::get('categories/{category}',[CategoryController::class, 'getCategory']);
 
+Route::post('categories', [CategoryController::class, 'storeCategory']);
+
+Route::put('categories/{category}', [CategoryController::class, 'updateCategory']);
+
+Route::delete('categories/{category}', [CategoryController::class, 'destroyCategory']);
+
 /*************************************** Categories ***************************************/
 
-Route::get('defaultCategories',[CategoryController::class, 'getDefaultCategories']);
+Route::get('defaultCategories',[DefaultCategoryController::class, 'getDefaultCategories']);
 
-Route::get('defaultCategories/{defaultCategory}',[CategoryController::class, 'getDefaultCategory']);
+Route::get('defaultCategories/{defaultCategory}',[DefaultCategoryController::class, 'getDefaultCategory']);
+
+Route::post('defaultCategories', [DefaultCategoryController::class, 'storeDefaultCategory']);
+
+Route::put('defaultCategories/{defaultCategory}', [DefaultCategoryController::class, 'updateDefaultCategory']);
+
+Route::delete('defaultCategories/{defaultCategory}', [DefaultCategoryController::class, 'destroyDefaultCategory']);
 
 /*************************************** Vcards ***************************************/
 

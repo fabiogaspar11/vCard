@@ -24,8 +24,18 @@ class DefaultCategoryRequest extends FormRequest
     public function rules()
     {
         return [
-            'type' => 'required|digits:1|in:C,D|min:1|max:1',
-            'name' => 'required|max:50'
+            'type' => 'required|string|in:C,D',
+            'name' => 'required|string|max:50'
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'name.required' => 'Name is mandatory',
+            'name.max' => 'Name cannot have more than 50 characters',
+            'type.required' => 'Type is mandatory',
+            'type.in' => 'Type must be "C" or "D"'
         ];
     }
 }
