@@ -75,8 +75,6 @@ Route::middleware(['auth:api'])->group(function (){
 
     Route::get('vcards/{vcard}', [VcardController::class, 'getVcard']);
 
-    Route::post('vcards', [VcardController::class, 'storeVcard']);
-
     Route::put('vcards/{vcard}', [VcardController::class, 'updateVcard']);
 
     Route::delete('vcards/{vcard}', [VcardController::class, 'destroyVcard']);
@@ -92,3 +90,5 @@ Route::middleware(['auth:api'])->group(function (){
 /*************************************** Login ***************************************/
 
 Route::post('/login', [AuthController::class, 'login']);
+
+Route::post('vcards', [VcardController::class, 'storeVcard']);
