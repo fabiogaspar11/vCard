@@ -27,7 +27,7 @@ class TransactionRequest extends FormRequest
             'vcard' => ['required','integer','exists:vcards,phone_number','digits:9','regex:/^(9[0-9])([0-9]{7})?$/'],
             'datetime' => 'required|date_format:Y-m-d H:i:s',
             'date' => 'required|date',
-            'type' => 'required|digits:1|in:C,D|min:1|max:1',
+            'type' => 'required|digits:1|in:C,D',
             'value' => ['required','max:12','min:0.01','regex:/^[0-9]+((.|,)[0-9]{1,2})?$/'],
             'old_balance' => ['required','max:12','regex:/^[0-9]+((.|,)[0-9]{1,2})?$/'],
             'new_balance' => ['required','max:12','regex:/^[0-9]+((.|,)[0-9]{1,2})?$/'],

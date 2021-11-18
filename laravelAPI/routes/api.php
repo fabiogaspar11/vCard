@@ -25,69 +25,70 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-/*************************************** Users ***************************************/
+Route::middleware(['auth:api'])->group(function (){
 
-Route::get('users',[UserController::class, 'getUsers']);
+    /*************************************** Users ***************************************/
 
-Route::get('users/{user}',[UserController::class, 'getUser']);
+    Route::get('users',[UserController::class, 'getUsers']);
 
-Route::post('users', [UserController::class, 'storeUser']);
+    Route::get('users/{user}',[UserController::class, 'getUser']);
 
-Route::put('users/{user}', [UserController::class, 'updateUser']);
+    Route::post('users', [UserController::class, 'storeUser']);
 
-Route::delete('users/{user}', [UserController::class, 'destroyUser']);
+    Route::put('users/{user}', [UserController::class, 'updateUser']);
 
-/*************************************** PaymentTypes ***************************************/
+    Route::delete('users/{user}', [UserController::class, 'destroyUser']);
 
-Route::get('paytypes',[PaymentTypesController::class, 'getPaymentsTypes']);
+    /*************************************** PaymentTypes ***************************************/
 
-Route::get('paytypes/{payment_type}',[PaymentTypesController::class, 'getPaymentType']);
+    Route::get('paytypes',[PaymentTypesController::class, 'getPaymentsTypes']);
 
-/*************************************** Categories ***************************************/
+    Route::get('paytypes/{payment_type}',[PaymentTypesController::class, 'getPaymentType']);
 
-Route::get('categories',[CategoryController::class, 'getCategories']);
+    /*************************************** Categories ***************************************/
 
-Route::get('categories/{category}',[CategoryController::class, 'getCategory']);
+    Route::get('categories',[CategoryController::class, 'getCategories']);
 
-Route::post('categories', [CategoryController::class, 'storeCategory']);
+    Route::get('categories/{category}',[CategoryController::class, 'getCategory']);
 
-Route::put('categories/{category}', [CategoryController::class, 'updateCategory']);
+    Route::post('categories', [CategoryController::class, 'storeCategory']);
 
-Route::delete('categories/{category}', [CategoryController::class, 'destroyCategory']);
+    Route::put('categories/{category}', [CategoryController::class, 'updateCategory']);
 
-/*************************************** Categories ***************************************/
+    Route::delete('categories/{category}', [CategoryController::class, 'destroyCategory']);
 
-Route::get('defaultCategories',[DefaultCategoryController::class, 'getDefaultCategories']);
+    /*************************************** Categories ***************************************/
 
-Route::get('defaultCategories/{defaultCategory}',[DefaultCategoryController::class, 'getDefaultCategory']);
+    Route::get('defaultCategories',[DefaultCategoryController::class, 'getDefaultCategories']);
 
-Route::post('defaultCategories', [DefaultCategoryController::class, 'storeDefaultCategory']);
+    Route::get('defaultCategories/{defaultCategory}',[DefaultCategoryController::class, 'getDefaultCategory']);
 
-Route::put('defaultCategories/{defaultCategory}', [DefaultCategoryController::class, 'updateDefaultCategory']);
+    Route::post('defaultCategories', [DefaultCategoryController::class, 'storeDefaultCategory']);
 
-Route::delete('defaultCategories/{defaultCategory}', [DefaultCategoryController::class, 'destroyDefaultCategory']);
+    Route::put('defaultCategories/{defaultCategory}', [DefaultCategoryController::class, 'updateDefaultCategory']);
 
-/*************************************** Vcards ***************************************/
+    Route::delete('defaultCategories/{defaultCategory}', [DefaultCategoryController::class, 'destroyDefaultCategory']);
 
-Route::get('vcards', [VcardController::class, 'getVcards']);
+    /*************************************** Vcards ***************************************/
 
-Route::get('vcards/{vcard}', [VcardController::class, 'getVcard']);
+    Route::get('vcards', [VcardController::class, 'getVcards']);
 
-Route::post('vcards', [VcardController::class, 'storeVcard']);
+    Route::get('vcards/{vcard}', [VcardController::class, 'getVcard']);
 
-Route::put('vcards/{vcard}', [VcardController::class, 'updateVcard']);
+    Route::post('vcards', [VcardController::class, 'storeVcard']);
 
-Route::delete('vcards/{vcard}', [VcardController::class, 'destroyVcard']);
+    Route::put('vcards/{vcard}', [VcardController::class, 'updateVcard']);
 
-/*************************************** Transactions ***************************************/
+    Route::delete('vcards/{vcard}', [VcardController::class, 'destroyVcard']);
 
-Route::get('transactions', [TransactionController::class, 'getTransactions']);
+    /*************************************** Transactions ***************************************/
 
-Route::get('transactions/{transaction}', [TransactionController::class, 'getVcardTransactions']);
+    Route::get('transactions', [TransactionController::class, 'getTransactions']);
 
+    Route::get('transactions/{transaction}', [TransactionController::class, 'getVcardTransactions']);
 
+    Route::post('/logout', [AuthController::class, 'logout']);
+});
 /*************************************** Login ***************************************/
 
-Route::post('login', [AuthController::class, 'login']);
-
-Route::middleware('auth:api')->post('/logout', [AuthController::class, 'logout']);
+Route::post('/login', [AuthController::class, 'login']);

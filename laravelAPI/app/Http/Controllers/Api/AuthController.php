@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 
 class AuthController extends Controller
 {
@@ -29,7 +30,6 @@ class AuthController extends Controller
             $http = new \GuzzleHttp\Client;
             $response = $http->post($url, $bodyHttpRequest);
             return json_decode((string) $response->getBody(), true);
-
         }catch(\GuzzleHttp\Exception\BadResponseException $e){
             if ($e->getCode() === 400){
                 return response()->json(
