@@ -32,13 +32,21 @@ class AuthController extends Controller
             return json_decode((string) $response->getBody(), true);
         }catch(\GuzzleHttp\Exception\BadResponseException $e){
             if ($e->getCode() === 400){
+                if( $request->username == null){
+                    return response()->json(
+                        ['phoneNumber' => 'Phone number is mandatory'], $e->getCode());
+                }
+                if( $request->password == null){
+                    return response()->json(
+                        ['password' => 'Password is mandatory'], $e->getCode());
+                }
                 return response()->json(
-                    ['msg' => 'Invalid Request. Please enter a username or password'], $e->getCode());
+                    ['login' => 'The credentials are invalid'], $e->getCode());
             }else if ($e->getCode() === 401){
                 return response()->json(
-                    ['msg' => 'User credentials are invalid'], $e->getCode());
+                    ['login' => 'The credentials are invalid'], $e->getCode());
             }
-            return response()->json(['msg' => 'Something went wrong with the server'], $e->getCode());
+            return response()->json(['login' => 'Something went wrong with the server'], $e->getCode());
         }
     }
 
