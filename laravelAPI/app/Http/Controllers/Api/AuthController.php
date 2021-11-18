@@ -8,18 +8,13 @@ use App\Http\Controllers\Controller;
 
 class AuthController extends Controller
 {
-    //const PASSPORT_SERVER_URL = "http://laravelapi.test";
-    const CLIENT_ID = 3;
-    const CLIENT_SECRET = 'ITFk6fkKqPtXJ4pfPBP2zgRV8YFN1wWYspLq9yoC';
-
-
     public function login(Request $request){
         try{
             $bodyHttpRequest = [
                 'form_params' => [
                     'grant_type' => 'password',
                     'client_id' => '3',
-                    'client_secret' => 'ITFk6fkKqPtXJ4pfPBP2zgRV8YFN1wWYspLq9yoC',
+                    'client_secret' => env('CLIENT_SECRET'),
                     'username' => $request->username,
                     'password' => $request->password,
                     'scope' => ''
