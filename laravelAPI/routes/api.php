@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\PaymentTypesController;
+use App\Http\Controllers\PaymentTypeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\VcardController;
@@ -41,9 +41,9 @@ Route::middleware(['auth:api'])->group(function (){
 
     /*************************************** PaymentTypes ***************************************/
 
-    Route::get('paytypes',[PaymentTypesController::class, 'getPaymentsTypes']);
+    Route::get('paytypes',[PaymentTypeController::class, 'getPaymentsTypes']);
 
-    Route::get('paytypes/{payment_type}',[PaymentTypesController::class, 'getPaymentType']);
+    Route::get('paytypes/{payment_type}',[PaymentTypeController::class, 'getPaymentType']);
 
     /*************************************** Categories ***************************************/
 
@@ -79,16 +79,27 @@ Route::middleware(['auth:api'])->group(function (){
 
     Route::delete('vcards/{vcard}', [VcardController::class, 'destroyVcard']);
 
+    Route::get('vcards/{vcard}/transactions/lastTransaction', [VcardController::class, 'getVcardLastTransaction']);
+
     /*************************************** Transactions ***************************************/
+
+    Route::post('transactions', [TransactionController::class, 'storeTransaction']);
 
     Route::get('transactions', [TransactionController::class, 'getTransactions']);
 
     Route::get('transactions/{transaction}', [TransactionController::class, 'getVcardTransactions']);
 
+    /*************************************** Logout ***************************************/
+
     Route::post('/logout', [AuthController::class, 'logout']);
 });
+
 /*************************************** Login ***************************************/
 
 Route::post('/login', [AuthController::class, 'login']);
 
+/*************************************** Create vcard ***************************************/
+
 Route::post('vcards', [VcardController::class, 'storeVcard']);
+
+

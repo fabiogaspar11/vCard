@@ -34,17 +34,17 @@ class Vcard extends Model
 
     public function transactions()
     {
-        return $this->hasMany(Transaction::class,'vcard');
+        return $this->hasMany(Transaction::class,'vcard','phone_number');
     }
 
     public function pair_transactions()
     {
-        return $this->hasMany(Transaction::class, 'pair_vcard');
+        return $this->hasMany(Transaction::class, 'pair_vcard', 'phone_number');
     }
 
     public function categories()
     {
-        return $this->hasMany(Category::class, 'vcard');
+        return $this->hasMany(Category::class, 'vcard', 'phone_number');
     }
 
     public function findForPassport($username)

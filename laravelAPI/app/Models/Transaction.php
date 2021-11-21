@@ -33,25 +33,25 @@ class Transaction extends Model
 
     public function vcard()
     {
-        return $this->belongsTo(Vcard::class, 'vcard');
+        return $this->belongsTo(Vcard::class, 'vcard', 'phone_number');
     }
 
     public function pair_vcard()
     {
-        return $this->belongsTo(Vcard::class, 'pair_vcard');
+        return $this->belongsTo(Vcard::class, 'pair_vcard', 'phone_number');
     }
 
     public function category()
     {
-        return $this->belongsTo(Category::class, 'category_id');
+        return $this->belongsTo(Category::class, 'category_id','id');
     }
 
     public function pair_transaction()
     {
-        return $this->hasOne(Transaction::class);
+        return $this->hasOne(Transaction::class, 'pair_transaction', 'id');
     }
 
     public function paymentType(){
-        return $this->belongsTo(PaymentTypes::class, 'payment_type');
+        return $this->belongsTo(PaymentTypes::class, 'payment_type','code');
     }
 }
