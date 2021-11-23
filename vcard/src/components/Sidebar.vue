@@ -118,5 +118,12 @@ export default {
 </script>
 
 <style>
-
+.btn:focus { 
+ outline: none; 
+ box-shadow: none; 
+} 
+ 
+#sidebarMenu { 
+ overflow-y: auto; 
+}
 </style>

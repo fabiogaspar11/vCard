@@ -1,71 +1,138 @@
 <template>
-<form action="action_page.php" method="post">
-  <div id="page" class="row">
-
-    <img id="logo" src="../assets/img/logo.png"> 
-
-  </div>  
-
+  <br />
+  <div class="imgCenter">
+    <img id="logo" src="../assets/img/logo.png" />
+  </div>
+  <div class="imgCenter">
+    <h1>Login</h1>
+  </div>
   <div class="container">
     <label for="uname"><b>Phone Number:</b></label>
-    <input type="text" placeholder="Enter Username" name="uname" required>
-
+    <input
+      type="text"
+      placeholder="Enter Phone Number"
+      name="uname"
+      v-model="phone_number"
+      required
+    />
+    <div v-show="errors.phoneNumber != undefined" class="text-danger">
+      {{ errors.phoneNumber }}
+    </div>
     <label for="psw"><b>Password:</b></label>
-    <input type="password" placeholder="Enter password" name="psw" required>
+    <input
+      type="password"
+      placeholder="Enter password"
+      name="psw"
+      v-model="password"
+      required
+    />
+    <div v-show="errors.password != undefined" class="text-danger">
+      {{ errors.password }}
+    </div>
+    <div v-show="errors.login != undefined" class="text-danger">
+      {{ errors.login }}
+    </div>
+    <button
+      type="submit"
+      id="buttonLogin"
+      class="button"
+      @click.prevent="login"
+    >
+      Login
+    </button>
+  </div>
 
-    <button type="submit" id="buttonLogin" class="button">Login</button>
+  <div class="container" style="background-color: #f1f1f1">
+    <button
+      id="buttonCancel"
+      class="button"
+      @click="$router.push({ name: 'home' })"
+    >
+      Cancel
+    </button>
   </div>
-  <div class="container" >
-    <button id="buttonCancel" class="button" @click="$router.push('/')"> Cancel </button>
- 
-  </div>
-</form>
 </template>
 
-
-
 <script>
-export default {
+import axios from "axios";
 
-}
+export default {
+  name: "login",
+  data() {
+    return {
+      phone_number: localStorage.getItem('phone_number') || null,
+      password: "",
+      errors: [],
+    };
+  },
+  methods: {
+    login() {
+      this.$store
+        .dispatch("authRequest", {
+          username: this.phone_number,
+          password: this.password,
+        })
+        .then((response) => {
+          axios.defaults.headers.common.Authorization = "Bearer " + response.data.access_token;
+          localStorage.setItem("access_token", response.data.access_token);
+          localStorage.setItem("phone_number", this.phone_number);
+        })
+        .then(() => {
+          this.$router.push({
+            name: "dashboard",
+          });
+        })
+        .catch((error) => {
+          localStorage.removeItem("access_token");
+          localStorage.removeItem("phone_number");
+          delete axios.defaults.headers.common.Authorization;
+          this.errors = error.response.data;
+        });
+    },
+  },
+};
 </script>
 
 
 
 <style scope>
-#logo{
-  width: auto ;
-  max-width: 100% ;
-  height: auto ;
-    margin: auto;
+#logo {
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  margin: auto;
 }
-#page{
+#page {
   text-align: center;
-
 }
 
-#buttonCancel{
+#buttonCancel {
   background-color: #ff6666;
 }
-#buttonCancel:hover{
+#buttonCancel:hover {
   transition-duration: 0.5s;
   background-color: red;
 }
 
-#buttonLogin{
-  background-color: #04AA6D;
+#buttonLogin {
+  background-color: #04aa6d;
 }
-#buttonLogin:hover{
+#buttonLogin:hover {
   transition-duration: 0.5s;
   background-color: #036340;
 }
 
-.container{
+.container {
   text-align: center;
 }
 
-.button{
+.button {
   border-radius: 10px;
+}
+
+.imgCenter {
+  display: flex;
+  justify-content: center;
 }
 
 /* Bordered form */
@@ -74,7 +141,8 @@ form {
 }
 
 /* Full-width inputs */
-input[type=text], input[type=password] {
+input[type="text"],
+input[type="password"] {
   width: 100%;
   padding: 12px 20px;
   margin: 8px 0;
@@ -85,7 +153,7 @@ input[type=text], input[type=password] {
 
 /* Set a style for all buttons */
 button {
-  background-color: #04AA6D;
+  background-color: #04aa6d;
   color: white;
   padding: 14px 20px;
   margin: 8px 0;
