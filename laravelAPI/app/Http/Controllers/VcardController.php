@@ -28,6 +28,9 @@ class VcardController extends Controller
         if (!isset($request->phone_number)) {
             throw ValidationException::withMessages(['phone_number' => 'Phone number is mandatory']);
         }
+        $request->validate([
+            'email' => 'regex:/^[\w\-\.]+@([\w\-]+\.)+[\w\-]{2,4}$/'
+        ]);
         $validated_data = $request->validated();
         $vcard = new Vcard();
         $vcard->fill($validated_data);

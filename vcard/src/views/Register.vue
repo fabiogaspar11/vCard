@@ -19,6 +19,10 @@
       {{ errors.phone_number }}
     </div>
     <br />
+    <label for="name"><b>Name:</b></label>
+    <input type="text" v-model="name" placeholder="Enter name" name="name" required>
+    <div v-show="errors.name != undefined" class="text-danger">{{errors.name}}</div>
+    <br>
     <label for="psw"><b>Password:</b></label>
     <input
       type="password"
@@ -31,17 +35,20 @@
       {{ errors.password }}
     </div>
     <br />
-    <!--
-    <label for="psw"><b>Email:</b></label>
-    <input type="text" v-model="email" placeholder="Enter email" name="psw" required>
+    <label for="email"><b>Email:</b></label>
+    <input type="text" v-model="email" placeholder="Enter email" name="email" required>
     <div v-show="errors.email != undefined" class="text-danger">{{errors.email}}</div>
+    <br> <br>
+    <div class="form-group">
+    <input type="file" v-on:change="onFileChange" class="form-control" name="imagem_url" id="inputFoto" style="height: auto">
+     <div v-show="errors.photo_url != undefined" class="text-danger">{{errors.photo_url}}</div>
+    </div>
     <br>
-    -->
-    <label for="psw"><b>PIN:</b></label>
+    <label for="psw"><b>Confirmation Code:</b></label>
     <input
       type="password"
       v-model="pin"
-      placeholder="Enter PIN"
+      placeholder="Enter Confirmation code"
       name="psw"
       required
     />
@@ -58,7 +65,6 @@
       Create a vCard
     </button>
   </div>
-  <!--
   <div class="container" style="background-color: #f1f1f1">
     <button
       id="buttonCancel"
@@ -68,7 +74,6 @@
       Cancel
     </button>
   </div>
-  -->
 </template>
 
 <script>
@@ -79,52 +84,61 @@ export default {
     return {
       phoneNumber: null,
       password: null,
-      //email: null,
+      email: null,
+      name: null,
       pin: null,
+      photo_url : null,
       errors: [],
+      config : {
+        header : {
+          'Content-Type' : 'multipart/form-data'
+        }
+     }
     };
   },
   methods: {
+    onFileChange(e) {
+      var files = e.target.files;
+      if (!files.length){
+        return;
+      }
+      this.photo_url = files[0];
+    },
     createVcard() {
-      let vcard = {};
-
+      let formData = new FormData();
       if (this.phoneNumber != null) {
-        vcard.phone_number = this.phoneNumber;
+        formData.append('phone_number', this.phoneNumber);
       }
-      vcard.name = "<Undefined>";
-
-      vcard.email = "<Undefined>";
-
-      /*
-    if(this.email != null){
-        vcard.email = this.email;
-    }
-    */
-
+      if (this.name != null) {
+         formData.append('name', this.name);
+      }
+      if(this.email != null){
+        formData.append('email', this.email);
+      }
       if (this.password != null) {
-        vcard.password = this.password;
+        formData.append('password', this.password);
       }
-
       if (this.pin != null) {
-        vcard.confirmation_code = this.pin;
+        formData.append('confirmation_code', this.pin);
       }
-
+      if(this.photo_url != null){
+        formData.append('photo_url', this.photo_url);
+      }
+      this.errors = [];
       this.$axios
-        .post(`/vcards`, vcard)
+        .post(`/vcards`, formData,this.config)
         .then((response) => {
           console.log(response);
-          console.log(this.password);
-          console.log(this.phoneNumber);
           this.$store
             .dispatch("authRequest", {
               username: this.phoneNumber,
               password: this.password,
             })
-            .then(() => {
+            .then((response) => {
               axios.defaults.headers.common.Authorization =
                 "Bearer " + response.data.access_token;
               localStorage.setItem("access_token", response.data.access_token);
-              localStorage.setItem("phone_number", this.phone_number);
+              localStorage.setItem("phone_number", this.phoneNumber);
             })
             .then(() => {
               this.$router.push({
@@ -141,11 +155,6 @@ export default {
               delete axios.defaults.headers.common.Authorization;
               this.errors = error.response.data;
             });
-          this.errors = [];
-          this.phoneNumber = null;
-          this.email = null;
-          this.password = null;
-          this.pin = null;
         })
         .catch((error) => {
           this.errors = [];
@@ -155,6 +164,15 @@ export default {
         });
     },
   },
+  mounted(){
+          this.errors = [];
+          this.phoneNumber = null;
+          this.email = null;
+          this.password = null;
+          this.pin = null;
+          this.name = null;
+          this.photo_url = null
+  }
 };
 </script>
 

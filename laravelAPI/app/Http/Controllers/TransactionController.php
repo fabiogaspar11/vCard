@@ -37,9 +37,6 @@ class TransactionController extends Controller
     public function storeTransaction(TransactionRequest $request)
     {
          $validated_data = $request->validated();
-         $request->validate([
-            'email' => 'regex:/^[\w\-\.]+@([\w\-]+\.)+[\w\-]{2,4}$/'
-        ],);
         if($request->category_id != null){
             $category = Category::find($request->category_id);
             if($category->vcard != $request->vcard){
