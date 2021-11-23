@@ -11,18 +11,15 @@
       "
     >
       <div class="container-fluid">
-        <a
-          class="navbar-brand col-md-3 col-lg-2 me-0 px-3"
-          href="#"
-          @click="cycleComponents"
+        <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3"
           ><img
-            src="../assets/logo.png"
+            src="../assets/img/logo.png"
             alt=""
             width="30"
             height="24"
             class="d-inline-block align-text-top"
           />
-          App name</a
+          Vcard</a
         >
         <button
           class="navbar-toggler"
@@ -38,18 +35,6 @@
 
         <div class="collapse navbar-collapse justify-content-end">
           <ul class="navbar-nav">
-            <li class="nav-item">
-              <a class="nav-link"
-                ><i class="bi bi-person-check-fill"></i>
-                Register
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link"
-                ><i class="bi bi-box-arrow-in-right"></i>
-                Login
-              </a>
-            </li>
             <li class="nav-item dropdown">
               <a
                 class="nav-link dropdown-toggle"
@@ -59,11 +44,11 @@
                 aria-expanded="false"
               >
                 <img
-                  src="../assets/img/avatar-exemplo-1.jpg"
+                  src="../assets/img/logo.png"
                   class="rounded-circle z-depth-0 avatar-img"
                   alt="avatar image"
                 />
-                <span class="avatar-text">User Name</span>
+                <span class="avatar-text">{{ phone_number }}</span>
               </a>
               <ul
                 class="dropdown-menu dropdown-menu-dark dropdown-menu-end"
@@ -83,7 +68,7 @@
                   <hr class="dropdown-divider" />
                 </li>
                 <li>
-                  <a class="dropdown-item"
+                  <a class="dropdown-item" @click.prevent="logout"
                     ><i class="bi bi-arrow-right"></i>Logout</a
                   >
                 </li>
@@ -96,13 +81,29 @@
   </div>
 </template>
 
-
-
 <script>
+import axios from "axios";
+
 export default {
   name: "Navbar",
+  data() {
+    return {
+      phone_number: this.$store.getters.phoneNumber || null,
+      password: "",
+    };
+  },
   components: {},
-  methods: {},
+  methods: {
+    logout() {
+      localStorage.removeItem('access_token')
+      this.$store.dispatch("authLogout").then(() => {
+        delete axios.defaults.headers.common.Authorization;
+        this.$router.push({ name: "home" });
+      }).catch(() =>{
+        delete axios.defaults.headers.common.Authorization;
+      });
+    },
+  },
 };
 </script>
 

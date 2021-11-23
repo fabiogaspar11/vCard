@@ -17,11 +17,14 @@
         "
       >
         <h1 class="h2">Dashboard</h1>
+        <div class = "align">     
+             <div @click="closeSuccessMesage" v-if="showMessage" class="alert alert-success alert-dismissible">{{successMessage}}</div>
+        </div>
       </div>
       <div id="page" class="row">
         <div id="dashboard">
           <img class="center" src="../assets/img/logo.png" />
-          <h1 style="margin-bottom: 3%">{{ moneyUser }}</h1>
+          <h1 style="margin-bottom: 3%">{{ moneyUser }} €</h1>
         </div>
 
         <div class="container-fluid">
@@ -50,7 +53,7 @@
             <div class="col-lg-3 col-6">
               <div class="small-box buttonPiggyBank">
                 <i class="bi bi-piggy-bank icon"> </i>
-                <h4 class="title"><i class="iconTitle"> Piggy Bank </i></h4>
+                <h4 class="title"><i class="iconTitle"> Piggy Bank</i></h4>
                 <br />
               </div>
             </div>
@@ -60,7 +63,6 @@
     </main>
   </div>
 </template>
-
 <script>
 import Sidebar from "../components/Sidebar.vue";
 import Navbar from "../components/Navbar.vue";
@@ -71,19 +73,42 @@ export default {
     Sidebar,
     Navbar,
   },
+  
+  props:{
+    successMessage:null,
+  },
+  
   data() {
     return {
-      money: 0,
+      //money: 0,
+      showMessage: this.successMessage != null ? true: false,
+      vcard: null,
+      phoneNumber : localStorage.getItem('phone_number')
     };
   },
   computed: {
     moneyUser: function () {
-      return this.money + "€";
+      return this.vcard == null ? "0.00" : this.vcard.balance;
     },
   },
+  methods:{
+    closeSuccessMesage:function(){
+      this.showMessage = false;
+    }
+  },
+  created(){
+   this.$axios.get(`/vcards/${this.phoneNumber}`)
+    .then(response =>{
+      this.vcard = response.data.data
+    })
+    .catch(() => {
+      this.$router.push({
+        name: "login",
+      })
+    });
+  }
 };
 </script>
-
 <style scoped lang="scss">
 
 .center {
@@ -91,6 +116,11 @@ export default {
   margin-left: auto;
   margin-right: auto;
   width: 50%;
+}
+
+.align{
+  display: flex;
+  justify-content: right;
 }
 
 #page {
