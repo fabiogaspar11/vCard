@@ -76,4 +76,14 @@ class VcardController extends Controller
         $transaction =  $transactions->sortByDesc('datetime')->first();
         return new TransactionResource($transaction);
     }
+
+    public function getVcardTransactions(Vcard $vcard){
+        $transactions = $vcard->transactions;
+        if($transactions->isEmpty()){
+            return [
+                "error"=> "This vcard doesn't have any transactions yet"
+            ];
+        }
+        return TransactionResource::collection($transactions);
+    }
 }

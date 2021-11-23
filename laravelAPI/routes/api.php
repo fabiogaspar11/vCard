@@ -81,6 +81,8 @@ Route::middleware(['auth:api'])->group(function (){
 
     Route::get('vcards/{vcard}/transactions/lastTransaction', [VcardController::class, 'getVcardLastTransaction']);
 
+    Route::get('vcards/{vcard}/transactions', [VcardController::class, 'getVcardTransactions']);
+
     /*************************************** Transactions ***************************************/
 
     Route::post('transactions', [TransactionController::class, 'storeTransaction']);
@@ -88,6 +90,7 @@ Route::middleware(['auth:api'])->group(function (){
     Route::get('transactions', [TransactionController::class, 'getTransactions']);
 
     Route::get('transactions/{transaction}', [TransactionController::class, 'getVcardTransactions']);
+
 
     /*************************************** Logout ***************************************/
 

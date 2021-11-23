@@ -3,6 +3,7 @@ import Register from '../views/Register.vue'
 import Login from '../views/Login.vue'
 import Home from '../views/Home.vue'
 import Dashboard from '../views/Dashboard.vue'
+import Transactions from '../views/Transactions.vue'
 
 const routes = [
   {
@@ -24,6 +25,12 @@ const routes = [
     path: '/dashboard',
     name: 'dashboard',
     component: Dashboard,
+    props: true
+  },
+  {
+    path: '/transactions',
+    name: 'transactions',
+    component: Transactions,
     props: true
   }
 ]

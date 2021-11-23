@@ -44,9 +44,9 @@
               </div>
             </div>
             <div class="col-lg-3 col-6">
-              <div class="small-box buttonTransactions">
+              <div class="small-box buttonTransactions" @click="$router.push({name:'transactions', params: {phoneNumber: this.phoneNumber}})">
                 <i class="bi bi-easel2-fill icon"></i>
-                <h4><i class="iconTitle"> Transactions </i></h4>
+                <h4><i class="iconTitle">Transactions </i></h4>
                 <br />
               </div>
             </div>
