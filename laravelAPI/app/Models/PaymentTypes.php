@@ -14,6 +14,6 @@ class PaymentTypes extends Model
 
     public function transactions()
     {
-        return $this->hasMany(Transaction::class, 'payment_type');
+        return $this->hasMany(Transaction::class, 'payment_type', 'code');
     }
 }

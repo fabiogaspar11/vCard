@@ -21,11 +21,11 @@ class Category extends Model
 
     public function vcard()
     {
-        return $this->belongsTo(Vcard::class, 'vcard');
+        return $this->belongsTo(Vcard::class, 'vcard', 'phone_number');
     }
 
     public function transactions()
     {
-        return $this->hasMany(Transaction::class, 'category_id');
+        return $this->hasMany(Transaction::class, 'category_id','id');
     }
 }

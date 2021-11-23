@@ -23,19 +23,36 @@ class TransactionRequest extends FormRequest
      */
     public function rules()
     {
+        $rulesEachPaymentType = '';
+        if($this->payment_type == 'IBAN'){
+            $rulesEachPaymentType = 'regex:/^PT[0-9]{23}$/';
+        }
+        if($this->payment_type == 'MASTERCARD'){
+            $rulesEachPaymentType = 'regex:/^5[1-5][0-9]{14}|^(222[1-9]|22[3-9]\\d|2[3-6]\\d{2}|27[0-1]\\d|2720)[0-9]{12}$/';
+        }
+        if($this->payment_type == 'MB'){
+            $rulesEachPaymentType = 'regex:/^[0-9]{5}-[0-9]{9}$/';
+        }
+        if($this->payment_type == 'MBWAY'){
+            $rulesEachPaymentType = 'regex:/^(9[0-9])([0-9]{7})?$/';
+        }
+        if($this->payment_type == 'PAYPAL'){
+            $rulesEachPaymentType = 'regex:/^[\w\-\.]+@([\w\-]+\.)+[\w\-]{2,4}$/';
+        }
+        if($this->payment_type == 'VCARD'){
+            $rulesEachPaymentType = 'same:vcard';
+        }
+        if($this->payment_type == 'VISA'){
+            $rulesEachPaymentType = 'regex:/^4[0-9]{12}(?:[0-9]{3})?$/';
+        }
         return [
             'vcard' => ['required','integer','exists:vcards,phone_number','digits:9','regex:/^(9[0-9])([0-9]{7})?$/'],
-            'datetime' => 'required|date_format:Y-m-d H:i:s',
-            'date' => 'required|date',
-            'type' => 'required|digits:1|in:C,D',
-            'value' => ['required','max:12','min:0.01','regex:/^[0-9]+((.|,)[0-9]{1,2})?$/'],
-            'old_balance' => ['required','max:12','regex:/^[0-9]+((.|,)[0-9]{1,2})?$/'],
-            'new_balance' => ['required','max:12','regex:/^[0-9]+((.|,)[0-9]{1,2})?$/'],
-            'payment_type' => 'required|string|max:20',
-            'payment_reference' => 'required',
-            'pair_transaction' => ['required','integer','exists:vcards,phone_number','digits:9','regex:/^(9[0-9])([0-9]{7})?$/'],
-            'pair_vcard' => 'nullable|integer|digits:9|',
-            'category_id' => 'required|integer',
+            'type' => 'required|string|in:C,D',
+            'value' => ['required','numeric','min:0.01','regex:/^[0-9]+((.|,)[0-9]{1,2})?$/'],
+            'payment_type' => 'required|string|max:10','exists:payment_types,code',
+            'payment_reference' => ['required','string','max:255',$rulesEachPaymentType],
+            'pair_vcard' => ['nullable','integer','exists:vcards,phone_number','digits:9','regex:/^(9[0-9])([0-9]{7})?$/'],
+            'category_id' => 'nullable|integer','exists:categories,id',
             'description' => 'nullable|string|max:255'
         ];
     }
@@ -43,9 +60,40 @@ class TransactionRequest extends FormRequest
     public function messages()
     {
         return [
-        'vcard.required' => 'Vcard is mandatory',
-        'vcard.digits' => 'Vcard is mandatory',
-        'vcard.max' => 'Name cannot have more than 9 numbers',
+            'vcard.required' => 'Vcard phone number is mandatory',
+            'vcard.digits' => 'Vcard phone number must have 9 digits',
+            'vcard.max' => 'Vcard phone number cannot have more than 9 numbers',
+            'vcard.exists' => 'There is no Vcard with this phone number',
+            'vcard.regex' => 'Vcard Phone number must start with number 9',
+
+            'type.required' => 'Type is mandatory',
+            'type.string' => 'Type must be a string',
+            'type.in' => 'Type must be C or D',
+
+            'value.required' => 'Value is mandatory',
+            'value.regex' => 'Value is invalid',
+            'value.min' => 'Value must be bigger than 0.01',
+            'value.numeric' => 'Value must be a number',
+
+            'payment_type.required' => 'Payment type is mandatory',
+            'payment_type.string' => 'Payment type must be a string',
+            'payment_type.max' => 'Payment type cannot have more than 10 characters',
+            'payment_type.exists' => 'Payment type does not exists',
+
+            'payment_reference.required' => 'Payment reference does is mandatory',
+            'payment_reference.string' => 'Payment reference must be a string',
+            'payment_reference.max' => 'Payment reference cannot have more than 255 characters',
+
+            'pair_vcard.integer' => 'Phone number of pair vcard must be a integer',
+            'pair_vcard.exists' => 'There is no vcard with this phone number',
+            'pair_vcard.digits' => 'Pair vcard Phone number must have 9 digits',
+            'pair_vcard.regex' => 'Vcard Phone number must start with number 9',
+
+            'category_id.integer' => 'Category id must be a integer',
+            'category_id.exists' => 'There is no category with this id',
+
+            'description.string' => 'Description must be a string',
+            'description.max' => 'Payment reference cannot have more than 255 characters',
         ];
     }
 }

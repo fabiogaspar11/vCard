@@ -3,11 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Vcard;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Requests\VcardRequest;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Resources\VcardResource;
-use Illuminate\Support\Str;
+use App\Http\Resources\TransactionResource;
 use Illuminate\Validation\ValidationException;
 
 class VcardController extends Controller
@@ -28,7 +29,7 @@ class VcardController extends Controller
             throw ValidationException::withMessages(['phone_number' => 'Phone number is mandatory']);
         }
         $validated_data = $request->validated();
-        $vcard = new Vcard;
+        $vcard = new Vcard();
         $vcard->fill($validated_data);
         $filename = $vcard->phone_number . "_" . Str::random(6) . '.jpg';
 
@@ -58,5 +59,18 @@ class VcardController extends Controller
     public function destroyVcard(Vcard $vcard){
         $vcard->delete();
         return new VcardResource($vcard);
+    }
+
+
+    public function getVcardLastTransaction(Vcard $vcard)
+    {
+        $transactions = $vcard->transactions;
+        if($transactions->isEmpty()){
+            return [
+                "error"=> "This vcard doesn't have any transactions yet"
+            ];
+        }
+        $transaction =  $transactions->sortByDesc('datetime')->first();
+        return new TransactionResource($transaction);
     }
 }

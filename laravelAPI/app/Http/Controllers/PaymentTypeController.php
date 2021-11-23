@@ -7,7 +7,7 @@ use App\Http\Resources\PaymentTypesResource;
 use App\Models\PaymentTypes;
 use Illuminate\Http\Request;
 
-class PaymentTypesController extends Controller
+class PaymentTypeController extends Controller
 {
     public function getPaymentsTypes(){
         return  PaymentTypesResource::Collection(PaymentTypes::all());
