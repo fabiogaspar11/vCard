@@ -4,12 +4,13 @@ namespace App\Http\Controllers;
 
 use Exception;
 use App\Models\Vcard;
+use App\Models\Category;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\TransactionRequest;
 use App\Http\Resources\TransactionResource;
-use App\Models\Category;
+use Illuminate\Validation\ValidationException;
 
 class TransactionController extends Controller
 {
@@ -51,13 +52,17 @@ class TransactionController extends Controller
                 "vcard"=> "Recipient vcard cannot be the same as the sender vcard"
             ];
         }
-
         $Begintransaction = new Transaction();
         $Begintransaction->fill($validated_data);
         //update new and old balances
         $value = $Begintransaction->value;
         $vcard = Vcard::find($request->vcard);
         $balance = $vcard->balance;
+        if($balance < $value){
+            return [
+                "value"=> "Balance is insufficient"
+            ];
+        }
         $this->updateNewOldBalance($value, $balance, $Begintransaction);
 
 

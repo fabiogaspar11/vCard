@@ -23,6 +23,7 @@ class TransactionRequest extends FormRequest
      */
     public function rules()
     {
+        $rulePairVcard  = 'nullable';
         $rulesEachPaymentType = '';
         if($this->payment_type == 'IBAN'){
             $rulesEachPaymentType = 'regex:/^PT[0-9]{23}$/';
@@ -40,10 +41,12 @@ class TransactionRequest extends FormRequest
             $rulesEachPaymentType = 'regex:/^[\w\-\.]+@([\w\-]+\.)+[\w\-]{2,4}$/';
         }
         if($this->payment_type == 'VCARD'){
-            $rulesEachPaymentType = 'same:vcard';
+            $rulesEachPaymentType = 'same:pair_vcard';
+            $rulePairVcard = 'required';
         }
         if($this->payment_type == 'VISA'){
             $rulesEachPaymentType = 'regex:/^4[0-9]{12}(?:[0-9]{3})?$/';
+
         }
         return [
             'vcard' => ['required','integer','exists:vcards,phone_number','digits:9','regex:/^(9[0-9])([0-9]{7})?$/'],
@@ -51,7 +54,7 @@ class TransactionRequest extends FormRequest
             'value' => ['required','numeric','min:0.01','regex:/^[0-9]+((.|,)[0-9]{1,2})?$/'],
             'payment_type' => 'required|string|max:10','exists:payment_types,code',
             'payment_reference' => ['required','string','max:255',$rulesEachPaymentType],
-            'pair_vcard' => ['nullable','integer','exists:vcards,phone_number','digits:9','regex:/^(9[0-9])([0-9]{7})?$/'],
+            'pair_vcard' => [$rulePairVcard,'integer','exists:vcards,phone_number','digits:9','regex:/^(9[0-9])([0-9]{7})?$/'],
             'category_id' => 'nullable|integer','exists:categories,id',
             'description' => 'nullable|string|max:255'
         ];
@@ -80,7 +83,7 @@ class TransactionRequest extends FormRequest
             'payment_type.max' => 'Payment type cannot have more than 10 characters',
             'payment_type.exists' => 'Payment type does not exists',
 
-            'payment_reference.required' => 'Payment reference does is mandatory',
+            'payment_reference.required' => 'Payment reference is mandatory',
             'payment_reference.string' => 'Payment reference must be a string',
             'payment_reference.max' => 'Payment reference cannot have more than 255 characters',
 
@@ -88,6 +91,7 @@ class TransactionRequest extends FormRequest
             'pair_vcard.exists' => 'There is no vcard with this phone number',
             'pair_vcard.digits' => 'Pair vcard Phone number must have 9 digits',
             'pair_vcard.regex' => 'Vcard Phone number must start with number 9',
+            'pair_vcard.required' => 'Pair vcard is mandatory',
 
             'category_id.integer' => 'Category id must be a integer',
             'category_id.exists' => 'There is no category with this id',

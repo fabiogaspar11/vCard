@@ -3,7 +3,8 @@ import Register from '../views/Register.vue'
 import Login from '../views/Login.vue'
 import Home from '../views/Home.vue'
 import Dashboard from '../views/Dashboard.vue'
-import Transactions from '../views/Transactions.vue'
+import Transactions from '../views/transactions/Transactions.vue'
+import TransactionDetail from '../views/transactions/TransactionDetail.vue'
 
 const routes = [
   {
@@ -30,7 +31,12 @@ const routes = [
   {
     path: '/transactions',
     name: 'transactions',
-    component: Transactions,
+    component: Transactions
+  },
+  {
+    path: '/transaction',
+    name: 'transaction',
+    component: TransactionDetail,
     props: true
   }
 ]

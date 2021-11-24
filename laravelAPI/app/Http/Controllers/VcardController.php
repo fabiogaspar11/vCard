@@ -78,7 +78,7 @@ class VcardController extends Controller
     }
 
     public function getVcardTransactions(Vcard $vcard){
-        $transactions = $vcard->transactions;
+        $transactions = $vcard->transactions->sortByDesc('datetime');
         if($transactions->isEmpty()){
             return [
                 "error"=> "This vcard doesn't have any transactions yet"

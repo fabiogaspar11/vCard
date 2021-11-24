@@ -12,6 +12,7 @@
             <th>Value</th>
             <th>Payment type</th>
             <th>Payment reference</th>
+            <th>Details</th>
           </tr>
         </thead>
         <tbody>
@@ -21,6 +22,13 @@
             <td>{{ transaction.value }}</td>
             <td>{{ transaction.payment_type }}</td>
             <td>{{ transaction.payment_reference }}</td>
+            <td>
+              <div>
+                <a class="btn btn-info" role="button" aria-pressed="true" @click="$router.push({name:'transaction', params: {id: transaction.id}})">
+                    <i class="bi bi-arrows-fullscreen" style="color:white;margin-right:25%"></i>
+                </a>
+              </div>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -28,23 +36,21 @@
 </template>
 
 <script>
-import Sidebar from "../components/Sidebar.vue";
-import Navbar from "../components/Navbar.vue";
+import Sidebar from "../../components/Sidebar.vue";
+import Navbar from "../../components/Navbar.vue";
 export default {
   name: "Transactions",
   components: {
     Sidebar,
     Navbar,
   },
-  props: {
-    phoneNumber: String,
-  },
   data() {
     return {
-      transactions: null
+      transactions: null,
+      phoneNumber : localStorage.getItem('phone_number')
     };
   },
-created() {
+  mounted() {
      this.transactions = this.$axios
       .get(`/vcards/${this.phoneNumber}/transactions`)
       .then(response =>{
