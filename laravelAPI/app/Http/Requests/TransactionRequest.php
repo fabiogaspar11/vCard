@@ -40,7 +40,7 @@ class TransactionRequest extends FormRequest
             $rulesEachPaymentType = 'regex:/^[\w\-\.]+@([\w\-]+\.)+[\w\-]{2,4}$/';
         }
         if($this->payment_type == 'VCARD'){
-            $rulesEachPaymentType = 'same:vcard';
+            $rulesEachPaymentType = 'same:pair_vcard';
         }
         if($this->payment_type == 'VISA'){
             $rulesEachPaymentType = 'regex:/^4[0-9]{12}(?:[0-9]{3})?$/';
