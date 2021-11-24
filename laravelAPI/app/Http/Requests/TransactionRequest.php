@@ -53,7 +53,7 @@ class TransactionRequest extends FormRequest
             'type' => 'required|string|in:C,D',
             'value' => ['required','numeric','min:0.01','regex:/^[0-9]+((.|,)[0-9]{1,2})?$/'],
             'payment_type' => 'required|string|max:10','exists:payment_types,code',
-            'payment_reference' => ['required','string','max:255',$rulesEachPaymentType],
+            'payment_reference' => ['required','max:255',$rulesEachPaymentType],
             'pair_vcard' => [$rulePairVcard,'integer','exists:vcards,phone_number','digits:9','regex:/^(9[0-9])([0-9]{7})?$/'],
             'category_id' => 'nullable|integer','exists:categories,id',
             'description' => 'nullable|string|max:255'
