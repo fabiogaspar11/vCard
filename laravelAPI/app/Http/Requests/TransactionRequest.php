@@ -54,7 +54,7 @@ class TransactionRequest extends FormRequest
             'value' => ['required','numeric','min:0.01','regex:/^[0-9]+((.|,)[0-9]{1,2})?$/'],
             'payment_type' => 'required|string|max:10','exists:payment_types,code',
             'payment_reference' => ['required','max:255',$rulesEachPaymentType],
-            'pair_vcard' => [$rulePairVcard,'integer','exists:vcards,phone_number','digits:9','regex:/^(9[0-9])([0-9]{7})?$/'],
+            'pair_vcard' => [$rulePairVcard,'integer','digits:9','regex:/^(9[0-9])([0-9]{7})?$/','exists:vcards,phone_number'],
             'category_id' => 'nullable|integer','exists:categories,id',
             'description' => 'nullable|string|max:255'
         ];
@@ -65,7 +65,6 @@ class TransactionRequest extends FormRequest
         return [
             'vcard.required' => 'Vcard phone number is mandatory',
             'vcard.digits' => 'Vcard phone number must have 9 digits',
-            'vcard.max' => 'Vcard phone number cannot have more than 9 numbers',
             'vcard.exists' => 'There is no Vcard with this phone number',
             'vcard.regex' => 'Vcard Phone number must start with number 9',
 
@@ -75,7 +74,7 @@ class TransactionRequest extends FormRequest
 
             'value.required' => 'Value is mandatory',
             'value.regex' => 'Value is invalid',
-            'value.min' => 'Value must be bigger than 0.01',
+            'value.min' => 'Value must be bigger than 0.00',
             'value.numeric' => 'Value must be a number',
 
             'payment_type.required' => 'Payment type is mandatory',
