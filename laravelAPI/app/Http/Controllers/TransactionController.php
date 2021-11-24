@@ -41,16 +41,12 @@ class TransactionController extends Controller
         if($request->category_id != null){
             $category = Category::find($request->category_id);
             if($category->vcard != $request->vcard){
-                return [
-                    "category"=> "This category doesn't belong to the vcard"
-                ];
+                throw ValidationException::withMessages(['category' => "This category doesn't belong to the vcard"]);
             }
         }
 
         if($request->pair_vcard == $request->vcard){
-            return [
-                "vcard"=> "Recipient vcard cannot be the same as the sender vcard"
-            ];
+            throw ValidationException::withMessages(['pair_vcard' => 'Recipient vcard cannot be the same as the sender vcard']);
         }
         $Begintransaction = new Transaction();
         $Begintransaction->fill($validated_data);
@@ -59,13 +55,12 @@ class TransactionController extends Controller
         $vcard = Vcard::find($request->vcard);
         $balance = $vcard->balance;
         if($balance < $value){
-            return [
-                "value"=> "Balance is insufficient"
-            ];
+
+            throw ValidationException::withMessages(['value' => 'Balance is insufficient']);
         }
         $this->updateNewOldBalance($value, $balance, $Begintransaction);
 
-        
+
         //Update vcard balance
         $vcard->balance = $Begintransaction->new_balance;
         $isVCARDTransaction = $Begintransaction->payment_type == "VCARD";
@@ -100,7 +95,7 @@ class TransactionController extends Controller
             $vcard->save();
 
             if($isVCARDTransaction){
-                $vcard->save();
+                $pairVcard->save();
                 $Begintransaction->save();
                 $Endtransaction->save();
 
@@ -113,9 +108,7 @@ class TransactionController extends Controller
           DB::commit();
         } catch (Exception $e) {
             DB::rollback();
-            return [
-                "error"=> "Error creating the transaction"
-            ];
+            throw new Exception("Error creating the transaction");
         }
 
         return new TransactionResource($Begintransaction);
