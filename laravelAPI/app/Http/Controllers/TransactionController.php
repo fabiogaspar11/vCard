@@ -37,7 +37,7 @@ class TransactionController extends Controller
 
     public function storeTransaction(TransactionRequest $request)
     {
-         $validated_data = $request->validated();
+        $validated_data = $request->validated();
         if($request->category_id != null){
             $category = Category::find($request->category_id);
             if($category->vcard != $request->vcard){
@@ -65,7 +65,7 @@ class TransactionController extends Controller
         }
         $this->updateNewOldBalance($value, $balance, $Begintransaction);
 
-
+        
         //Update vcard balance
         $vcard->balance = $Begintransaction->new_balance;
         $isVCARDTransaction = $Begintransaction->payment_type == "VCARD";
