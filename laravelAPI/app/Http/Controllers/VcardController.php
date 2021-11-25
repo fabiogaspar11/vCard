@@ -72,7 +72,7 @@ class VcardController extends Controller
         $vcard->fill($request->validated());
         $vcard->phone_number = $phone_number;
         $vcard->save();
-        return new VcardResource($request);
+        return new VcardResource($vcard);
     }
 
     public function destroyVcard(Vcard $vcard){

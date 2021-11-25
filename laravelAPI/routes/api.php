@@ -91,6 +91,7 @@ Route::middleware(['auth:api'])->group(function (){
 
     Route::get('transactions/{transaction}', [TransactionController::class, 'getVcardTransactions']);
 
+    Route::put('transactions/{transaction}', [TransactionController::class, 'updateTransaction']);
 
     /*************************************** Logout ***************************************/
 

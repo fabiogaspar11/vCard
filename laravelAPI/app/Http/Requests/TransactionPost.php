@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class TransactionRequest extends FormRequest
+class TransactionPost extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,6 +23,8 @@ class TransactionRequest extends FormRequest
      */
     public function rules()
     {
+
+
         $rulePairVcard  = 'nullable';
         $rulesEachPaymentType = '';
         if($this->payment_type == 'IBAN'){
@@ -46,13 +48,12 @@ class TransactionRequest extends FormRequest
         }
         if($this->payment_type == 'VISA'){
             $rulesEachPaymentType = 'regex:/^4[0-9]{12}(?:[0-9]{3})?$/';
-
         }
         return [
             'vcard' => ['required','integer','exists:vcards,phone_number','digits:9','regex:/^(9[0-9])([0-9]{7})?$/'],
-            'type' => 'required|string|in:C,D',
+            'type' => ['required', 'string', 'in:C,D'],
             'value' => ['required','numeric','min:0.01','regex:/^[0-9]+((.|,)[0-9]{1,2})?$/'],
-            'payment_type' => 'required|string|max:10','exists:payment_types,code',
+            'payment_type' => ['required', 'string', 'max:10', 'exists:payment_types,code' ],
             'payment_reference' => ['required','max:255',$rulesEachPaymentType],
             'pair_vcard' => [$rulePairVcard,'integer','digits:9','regex:/^(9[0-9])([0-9]{7})?$/','exists:vcards,phone_number'],
             'category_id' => 'nullable|integer','exists:categories,id',

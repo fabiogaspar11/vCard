@@ -8,7 +8,8 @@ use App\Models\Category;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Http\Requests\TransactionRequest;
+use App\Http\Requests\TransactionPut;
+use App\Http\Requests\TransactionPost;
 use App\Http\Resources\TransactionResource;
 use Illuminate\Validation\ValidationException;
 
@@ -34,16 +35,26 @@ class TransactionController extends Controller
              $transaction->new_balance = $transaction->old_balance + $value;
          }
     }
-
-    public function storeTransaction(TransactionRequest $request)
-    {
-        $validated_data = $request->validated();
-        if($request->category_id != null){
+    private function verifyCategoryBelongsToVcard(TransactionPost $request){
+        if(isset($request->category_id)){
             $category = Category::find($request->category_id);
             if($category->vcard != $request->vcard){
                 throw ValidationException::withMessages(['category' => "This category doesn't belong to the vcard"]);
             }
         }
+    }
+    private function verifyCategoryBelongsToVcardPUT(TransactionPut $request){
+        if(isset($request->category_id)){
+            $category = Category::find($request->category_id);
+            if($category->vcard != $request->vcard){
+                throw ValidationException::withMessages(['category' => "This category doesn't belong to the vcard"]);
+            }
+        }
+    }
+    public function storeTransaction(TransactionPost $request)
+    {
+        $validated_data = $request->validated();
+        $this->verifyCategoryBelongsToVcard($request);
 
         if($request->pair_vcard == $request->vcard){
             throw ValidationException::withMessages(['pair_vcard' => 'Recipient vcard cannot be the same as the sender vcard']);
@@ -112,6 +123,16 @@ class TransactionController extends Controller
         }
 
         return new TransactionResource($Begintransaction);
+    }
+
+    public function updateTransaction(TransactionPut $request, Transaction $transaction){
+
+        $this->verifyCategoryBelongsToVcardPUT($request);
+
+        $validated_data = $request->validated();
+        $transaction->fill($validated_data);
+        $transaction->save();
+        return new TransactionResource($transaction);
     }
 
 }
