@@ -7,9 +7,10 @@ use App\Models\Vcard;
 use App\Models\Category;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Http\Requests\VcardPut;
 use App\Models\DefaultCategory;
+use App\Http\Requests\VcardPost;
 use Illuminate\Support\Facades\DB;
-use App\Http\Requests\VcardRequest;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Resources\VcardResource;
 use App\Http\Resources\TransactionResource;
@@ -27,11 +28,8 @@ class VcardController extends Controller
         return new VcardResource($vcard);
     }
 
-    public function storeVcard(VcardRequest $request)
+    public function storeVcard(VcardPost $request)
     {
-        if (!isset($request->phone_number)) {
-            throw ValidationException::withMessages(['phone_number' => 'Phone number is mandatory']);
-        }
         $validated_data = $request->validated();
         $vcard = new Vcard();
         $vcard->fill($validated_data);
@@ -66,11 +64,11 @@ class VcardController extends Controller
         return new VcardResource($vcard);
     }
 
-    public function updateVcard(VcardRequest $request, Vcard $vcard)
+    public function updateVcard(VcardPut $request, Vcard $vcard)
     {
-        $phone_number = $vcard->phone_number;
-        $vcard->fill($request->validated());
-        $vcard->phone_number = $phone_number;
+
+        $validated_data = $request->validated();
+        $vcard->fill($validated_data);
         $vcard->save();
         return new VcardResource($vcard);
     }

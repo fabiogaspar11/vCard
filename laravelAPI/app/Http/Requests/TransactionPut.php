@@ -24,7 +24,7 @@ class TransactionPut extends FormRequest
     public function rules()
     {
         return [
-           'category_id' => 'nullable|integer|exists:categories,id',
+            'category_id' => 'nullable|integer|exists:categories,id',
             'description' => 'nullable|string|max:255'
         ];
     }
