@@ -30,7 +30,7 @@
         <div class="container-fluid">
           <div class="row">
             <div class="col-lg-3 col-6">
-              <div class="small-box buttonUserDetails">
+              <div class="small-box buttonUserDetails" @click="$router.push({name:'userdetails'})">
                 <i class="bi bi-person-bounding-box icon"></i>
                 <h4><i class="iconTitle"> User Details </i></h4>
                 <br />

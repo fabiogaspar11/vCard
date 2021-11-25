@@ -5,6 +5,7 @@ import Home from '../views/Home.vue'
 import Dashboard from '../views/Dashboard.vue'
 import Transactions from '../views/transactions/Transactions.vue'
 import TransactionDetail from '../views/transactions/TransactionDetail.vue'
+import Userdetails from '../views/user/Userdetails.vue'
 
 const routes = [
   {
@@ -37,6 +38,12 @@ const routes = [
     path: '/transaction',
     name: 'transaction',
     component: TransactionDetail,
+    props: true
+  },
+  {
+    path: '/userdetails',
+    name: 'userdetails',
+    component: Userdetails,
     props: true
   }
 ]
