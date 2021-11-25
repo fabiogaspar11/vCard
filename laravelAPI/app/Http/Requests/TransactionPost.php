@@ -24,7 +24,6 @@ class TransactionPost extends FormRequest
     public function rules()
     {
 
-
         $rulePairVcard  = 'nullable';
         $rulesEachPaymentType = '';
         if($this->payment_type == 'IBAN'){

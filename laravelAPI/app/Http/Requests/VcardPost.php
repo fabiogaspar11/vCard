@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class VcardRequest extends FormRequest
+class VcardPost extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +24,7 @@ class VcardRequest extends FormRequest
     public function rules()
     {
         return [
-            'phone_number'       => ['nullable','integer','digits:9','unique:vcards,phone_number','regex:/^(9[0-9])([0-9]{7})?$/'],
+            'phone_number'       => ['required','integer','digits:9','unique:vcards,phone_number','regex:/^(9[0-9])([0-9]{7})?$/'],
             'name'               => 'required|string|max:50',
             'email'              => 'required|string|max:255|email',
             'photo_url'          => 'nullable|image|mimes:jpeg,png,jpg|max:8192',
@@ -42,6 +42,7 @@ class VcardRequest extends FormRequest
             'phone_number.integer' => 'Phone number can only have numbers',
             'phone_number.digits' => 'Phone number must have 9 digits',
             'phone_number.regex' => 'Phone number must start with number 9',
+            'phone_number.required' => 'Phone number is mandatory',
             'name.required' => 'Name is mandatory',
             'name.max' => 'Name cannot have more than 50 characters',
             'email.required' => 'Email is mandatory',

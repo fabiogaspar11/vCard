@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\TransactionPut;
 use App\Http\Requests\TransactionPost;
+use function PHPUnit\Framework\isNull;
+
 use App\Http\Resources\TransactionResource;
 use Illuminate\Validation\ValidationException;
 
@@ -38,19 +40,27 @@ class TransactionController extends Controller
     private function verifyCategoryBelongsToVcard(TransactionPost $request){
         if(isset($request->category_id)){
             $category = Category::find($request->category_id);
+            if($category == null){
+                throw ValidationException::withMessages(['category' => "This category doesn't exists"]);
+            }
             if($category->vcard != $request->vcard){
                 throw ValidationException::withMessages(['category' => "This category doesn't belong to the vcard"]);
             }
         }
     }
-    private function verifyCategoryBelongsToVcardPUT(TransactionPut $request){
+    private function verifyCategoryBelongsToVcardPUT(TransactionPut $request, Transaction $transaction){
         if(isset($request->category_id)){
+            $category = null;
             $category = Category::find($request->category_id);
-            if($category->vcard != $request->vcard){
-                throw ValidationException::withMessages(['category' => "This category doesn't belong to the vcard"]);
+            return -1;
+            $vcard = Vcard::find($transaction->vcard);
+            if($category->vcard != $vcard->phone_number){
+                return 0;
             }
         }
+        return 1;
     }
+
     public function storeTransaction(TransactionPost $request)
     {
         $validated_data = $request->validated();
@@ -127,8 +137,9 @@ class TransactionController extends Controller
 
     public function updateTransaction(TransactionPut $request, Transaction $transaction){
 
-        $this->verifyCategoryBelongsToVcardPUT($request);
-
+        if($this->verifyCategoryBelongsToVcardPUT($request, $transaction) == -1){
+            throw ValidationException::withMessages(['category' => "This category doesn't belong to the vcard"]);
+        }
         $validated_data = $request->validated();
         $transaction->fill($validated_data);
         $transaction->save();
