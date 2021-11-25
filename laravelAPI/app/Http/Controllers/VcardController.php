@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use App\Models\Vcard;
+use App\Models\Category;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Models\DefaultCategory;
+use Illuminate\Support\Facades\DB;
 use App\Http\Requests\VcardRequest;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Resources\VcardResource;
@@ -28,9 +32,6 @@ class VcardController extends Controller
         if (!isset($request->phone_number)) {
             throw ValidationException::withMessages(['phone_number' => 'Phone number is mandatory']);
         }
-        $request->validate([
-            'email' => 'regex:/^[\w\-\.]+@([\w\-]+\.)+[\w\-]{2,4}$/'
-        ]);
         $validated_data = $request->validated();
         $vcard = new Vcard();
         $vcard->fill($validated_data);
@@ -46,7 +47,22 @@ class VcardController extends Controller
         $vcard->blocked = 0;
         $vcard->password = Hash::make($vcard->password);
         $vcard->confirmation_code = Hash::make($vcard->confirmation_code);
-        $vcard->save();
+
+        try{
+            $vcard->save();
+
+            $categoriesDefault = DefaultCategory::all();
+            foreach($categoriesDefault as $categoryDef){
+                $category = new Category();
+                $category->vcard = $vcard->phone_number;
+                $category->type = $categoryDef->type;
+                $category->name = $categoryDef->name;
+                $category->save();
+            }
+        }catch(Exception $e){
+            DB::rollback();
+            throw new Exception("Error creating the vcard");
+        }
         return new VcardResource($vcard);
     }
 

@@ -26,7 +26,7 @@ class VcardRequest extends FormRequest
         return [
             'phone_number'       => ['nullable','integer','digits:9','unique:vcards,phone_number','regex:/^(9[0-9])([0-9]{7})?$/'],
             'name'               => 'required|string|max:50',
-            'email'              => 'required|string|max:255',
+            'email'              => 'required|string|max:255|email',
             'photo_url'          => 'nullable|image|mimes:jpeg,png,jpg|max:8192',
             'password'           => 'required|string|max:255',
             'confirmation_code'  => 'required|integer|digits:4',
