@@ -55,9 +55,13 @@
                 aria-labelledby="navbarDropdownMenuLink"
               >
                 <li>
-                  <a class="dropdown-item"
-                    ><i class="bi bi-person-square"></i>Profile</a
-                  >
+                  <router-link
+                    class="dropdown-item"
+                    :class="{ active: $route.name === 'userdetails' }"
+                    :to="{ name: 'userdetails' }"
+                    ><i class="bi bi-person-square"></i>
+                    User Details
+                  </router-link>
                 </li>
                 <li>
                   <a class="dropdown-item"
@@ -95,13 +99,16 @@ export default {
   components: {},
   methods: {
     logout() {
-      localStorage.removeItem('access_token')
-      this.$store.dispatch("authLogout").then(() => {
-        delete axios.defaults.headers.common.Authorization;
-        this.$router.push({ name: "home" });
-      }).catch(() =>{
-        delete axios.defaults.headers.common.Authorization;
-      });
+      localStorage.removeItem("access_token");
+      this.$store
+        .dispatch("authLogout")
+        .then(() => {
+          delete axios.defaults.headers.common.Authorization;
+          this.$router.push({ name: "home" });
+        })
+        .catch(() => {
+          delete axios.defaults.headers.common.Authorization;
+        });
     },
   },
 };
@@ -110,10 +117,13 @@ export default {
 <style lang="scss">
 @import "../assets/css/dashboard.css";
 
+.container-fluid {
+  padding-left: 0px;
+}
 .avatar-img {
-  margin: -1.2rem 0.8rem -2rem 0.8rem;
-  width: 3.3rem;
-  height: 3.3rem;
+  //margin: -1.2rem 0.8rem -2rem 0.8rem;
+  width: 2.5rem;
+  height: 2.5rem;
   // border-width: 1px;
   // border-color: rgb(33, 37, 41);
   // border-style: solid;
@@ -126,5 +136,6 @@ export default {
 
 .dropdown-item {
   font-size: 0.875rem;
+  cursor: pointer;
 }
 </style>

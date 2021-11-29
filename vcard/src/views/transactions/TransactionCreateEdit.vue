@@ -33,6 +33,10 @@ export default {
       phoneNumber : localStorage.getItem('phone_number'),
     };
   },
+  emits : [
+    'updateCategory',
+    'updateDescription'
+  ],
   methods:{
     updateCategory () {
       this.$emit('updateCategory', this.category)
