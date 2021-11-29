@@ -52,7 +52,7 @@ class TransactionController extends Controller
         if(isset($request->category_id)){
             $category = null;
             $category = Category::find($request->category_id);
-            return -1;
+
             $vcard = Vcard::find($transaction->vcard);
             if($category->vcard != $vcard->phone_number){
                 return 0;
@@ -137,8 +137,8 @@ class TransactionController extends Controller
 
     public function updateTransaction(TransactionPut $request, Transaction $transaction){
 
-        if($this->verifyCategoryBelongsToVcardPUT($request, $transaction) == -1){
-            throw ValidationException::withMessages(['category' => "This category doesn't belong to the vcard"]);
+        if($this->verifyCategoryBelongsToVcardPUT($request, $transaction) == 0){
+            throw ValidationException::withMessages(['category_id' => "This category doesn't belong to the vcard"]);
         }
         $validated_data = $request->validated();
         $transaction->fill($validated_data);

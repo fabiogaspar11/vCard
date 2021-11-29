@@ -23,9 +23,12 @@
             <td>{{ transaction.payment_type }}</td>
             <td>{{ transaction.payment_reference }}</td>
             <td>
-              <div>
-                <a class="btn btn-info" role="button" aria-pressed="true" @click="$router.push({name:'transaction', params: {id: transaction.id}})">
+              <div class="container">
+                <a class="btn btn-info m-1" role="button" aria-pressed="true" @click="$router.push({name:'transactionDetails', params: {id: transaction.id}})">
                     <i class="bi bi-arrows-fullscreen" style="color:white;margin-right:25%"></i>
+                </a>
+                <a class="btn btn-primary m-1" role="button" aria-pressed="true" @click="$router.push({name:'transactionEdit', params: {transactionId: transaction.id}})">
+                  <i class="bi bi-pencil-square" style="color:white;margin-right:25%"></i>
                 </a>
               </div>
             </td>

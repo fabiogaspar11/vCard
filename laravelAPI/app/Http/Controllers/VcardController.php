@@ -11,6 +11,7 @@ use App\Http\Requests\VcardPut;
 use App\Models\DefaultCategory;
 use App\Http\Requests\VcardPost;
 use App\Http\Requests\VcardDelete;
+use App\Http\Resources\CategoryResource;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Resources\VcardResource;
@@ -131,5 +132,15 @@ class VcardController extends Controller
             ];
         }
         return TransactionResource::collection($transactions);
+    }
+
+    public function getVcardCategories(Vcard $vcard){
+        $categories = $vcard->categories;
+        if($categories->isEmpty()){
+            return response()->json([
+                'error' => 'This vcard does not have any categories yet'
+            ], 404);
+        }
+        return CategoryResource::collection($categories);
     }
 }
