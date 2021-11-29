@@ -37,9 +37,9 @@
               </div>
             </div>
             <div class="col-lg-3 col-6">
-              <div class="small-box buttonSendReceive">
+              <div class="small-box buttonSendReceive" @click="$router.push({name:'transaction'})">
                 <i class="bi bi-cash-coin icon"></i>
-                <h4><i class="iconTitle"> Send/Receive </i></h4>
+                <h4><i class="iconTitle"> Create a Transaction </i></h4>
                 <br />
               </div>
             </div>

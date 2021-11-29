@@ -2,9 +2,9 @@
   <Sidebar></Sidebar>
   <Navbar></Navbar>
   <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-    <h1>Transaction</h1>
+    <h1>Transaction {{this.id}}</h1>
 
-    <div class="container-md bg-light rounded">
+    <div class="container-md bg-light rounded" v-if="loaded">
       <div class="row text-start">
         <div class="col-sm">
           <p><b>Vcard: </b>{{ transaction.vcard }}</p>
@@ -46,6 +46,8 @@
         <div v-if="transaction.description != null" class="col-sm">
           <p><b>Description: </b>{{ transaction.description }}</p>
         </div>
+         <div class="col-sm">
+        </div>
       </div>
     </div>
   </main>
@@ -66,6 +68,7 @@ export default {
   data() {
     return {
       transaction: null,
+      loaded:false
     };
   },
   created() {
@@ -73,7 +76,7 @@ export default {
       .get(`transactions/${this.id}`)
       .then((response) => {
         this.transaction = response.data.data;
-        console.log(this.transaction)
+        this.loaded = true;
       })
       .catch((error) => {
         console.log(error)

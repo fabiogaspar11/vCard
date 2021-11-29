@@ -41,9 +41,9 @@ Route::middleware(['auth:api'])->group(function (){
 
     /*************************************** PaymentTypes ***************************************/
 
-    Route::get('paytypes',[PaymentTypeController::class, 'getPaymentsTypes']);
+    Route::get('paymentTypes',[PaymentTypeController::class, 'getPaymentsTypes']);
 
-    Route::get('paytypes/{payment_type}',[PaymentTypeController::class, 'getPaymentType']);
+    Route::get('paymentTypes/{payment_type}',[PaymentTypeController::class, 'getPaymentType']);
 
     /*************************************** Categories ***************************************/
 
@@ -84,6 +84,8 @@ Route::middleware(['auth:api'])->group(function (){
     Route::get('vcards/{vcard}/transactions', [VcardController::class, 'getVcardTransactions']);
 
     Route::get('vcards/storage/{vcard}', [VcardController::class, 'getVcardPhoto']);
+
+    Route::get('vcards/{vcard}/categories',[VcardController::class, 'getVcardCategories']);
 
     /*************************************** Transactions ***************************************/
 

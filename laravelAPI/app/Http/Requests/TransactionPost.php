@@ -85,6 +85,8 @@ class TransactionPost extends FormRequest
             'payment_reference.required' => 'Payment reference is mandatory',
             'payment_reference.string' => 'Payment reference must be a string',
             'payment_reference.max' => 'Payment reference cannot have more than 255 characters',
+            'payment_reference.same' => 'Payment reference must be equal to Pair Vcard',
+            'payment_reference.regex' => 'Payment reference is not valid',
 
             'pair_vcard.integer' => 'Phone number of pair vcard must be a integer',
             'pair_vcard.exists' => 'There is no vcard with this phone number',

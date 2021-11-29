@@ -4,7 +4,9 @@ import Login from '../views/Login.vue'
 import Home from '../views/Home.vue'
 import Dashboard from '../views/Dashboard.vue'
 import Transactions from '../views/transactions/Transactions.vue'
-import TransactionDetail from '../views/transactions/TransactionDetail.vue'
+import TransactionDetails from '../views/transactions/TransactionDetails.vue'
+import TransactionCreate from '../views/transactions/TransactionCreate.vue'
+import TransactionEdit from '../views/transactions/TransactionEdit.vue'
 import Userdetails from '../views/user/Userdetails.vue'
 
 const routes = [
@@ -35,15 +37,26 @@ const routes = [
     component: Transactions
   },
   {
-    path: '/transaction',
-    name: 'transaction',
-    component: TransactionDetail,
+    path: '/transactionDetails',
+    name: 'transactionDetails',
+    component: TransactionDetails,
     props: true
   },
   {
     path: '/userdetails',
     name: 'userdetails',
     component: Userdetails,
+    props: true
+  },
+  {
+    path: '/transaction',
+    name: 'transaction',
+    component: TransactionCreate
+  },
+  {
+    path: '/transactionEdit',
+    name: 'transactionEdit',
+    component: TransactionEdit,
     props: true
   }
 ]

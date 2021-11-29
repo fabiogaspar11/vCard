@@ -13,6 +13,8 @@ use App\Http\Requests\VcardPhoto;
 
 use App\Models\DefaultCategory;
 use App\Http\Requests\VcardPost;
+use App\Http\Requests\VcardDelete;
+use App\Http\Resources\CategoryResource;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Resources\VcardResource;
@@ -103,8 +105,39 @@ class VcardController extends Controller
         return new VcardResource($vcard);
     }
 
-    public function destroyVcard(Vcard $vcard){
-        $vcard->delete();
+    public function destroyVcard(VcardDelete $request, Vcard $vcard){
+
+        if(!Hash::check($vcard->password,Hash::make($vcard->password))){
+            throw ValidationException::withMessages(['password' => "Password is not correct"]);
+        }
+        if(!Hash::check($vcard->confirmation_code,Hash::make($vcard->confirmation_code))){
+            throw ValidationException::withMessages(['confirmation_code' => "PIN is not correct"]);
+        }
+        if($vcard->balance > 0){
+            throw ValidationException::withMessages(['balance' => "Vcard cannot be deleted - Balance is bigger than 0.00"]);
+        }
+        $transactions = $vcard->transactions;
+        $numberTransactions = count($transactions);
+        try{
+            if($numberTransactions > 0){
+                foreach($transactions as $transaction){
+                    $transaction->delete();
+                }
+                $vcard->delete();
+            }
+            if($numberTransactions == 0){
+                $categories = $vcard->categories;
+                foreach($categories as $category){
+                    $category->forceDelete();
+                }
+                $vcard->forceDelete();
+            }
+
+        }catch(Exception $e){
+            DB::rollback();
+            throw new Exception("Error deleting the vcard");
+        }
+
         return new VcardResource($vcard);
     }
 
@@ -131,12 +164,19 @@ class VcardController extends Controller
         return TransactionResource::collection($transactions);
     }
 
-    public function getVcardPhoto(VcardPut $request, Vcard $vcard){
+    public function getVcardPhoto(Vcard $vcard){
 
         $photo = $vcard->photo_url;
-
-
-
         return Storage::disk('local')->get('public/fotos/'.$photo);
+    }
+
+    public function getVcardCategories(Vcard $vcard){
+        $categories = $vcard->categories;
+        if($categories->isEmpty()){
+            return response()->json([
+                'error' => 'This vcard does not have any categories yet'
+            ], 404);
+        }
+        return CategoryResource::collection($categories);
     }
 }

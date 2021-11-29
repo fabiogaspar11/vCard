@@ -1,0 +1,60 @@
+<template>
+        <br><br> 
+        <div class="form-group" style="display: flex; flex-direction: column" >
+            <label for="selectPaymentType"><b>Category</b></label>
+            <select  @change="updateCategory" v-if="errorCategories==null" v-model="category" name="category" id="category" class="form-select" >
+                <option v-for="category in categories" :key="category.id" :value="category.id" >
+                    {{category.name}}
+                </option>
+            </select>
+            <div v-else class="text-danger">
+                {{ errorCategories }}
+            </div>
+        </div><br><br>
+        <label for="description"><b>Description:</b></label>
+        <input type="text" @input="updateDescription" v-model="description" class="form-control" placeholder="Enter Description" name="description" required/>
+        <div v-show="errors.description != undefined" class="text-danger">
+          {{ errors.description }}
+        </div>
+</template>
+
+<script>
+
+export default {
+  name: "TransactionCreateEdit",
+  data() {
+    return {
+      description: null,
+      errors: [],
+      category: null,
+      categories: null,
+      loadedCategories:false,
+      errorCategories:null,
+      phoneNumber : localStorage.getItem('phone_number'),
+    };
+  },
+  methods:{
+    updateCategory () {
+      this.$emit('updateCategory', this.category)
+    },
+    updateDescription(){
+      this.$emit('updateDescription', this.description)
+    }
+  },
+  created(){
+    this.$axios
+      .get(`/vcards/${this.phoneNumber}/categories`)
+      .then(response =>{
+      this.categories = response.data.data; 
+      this.loadedCategories = true;
+    })
+      .catch((error) => {
+        this.errorCategories = error.response.data.error; 
+        this.loadedCategories = false;
+    });
+  }
+};
+</script>
+
+<style scoped>
+</style>
