@@ -97,7 +97,7 @@ export default {
     }
   },
   created(){
-   this.$axios.get(`/vcards/${this.phoneNumber}`)
+   this.$axios.get(`/vcards/${this.$store.getters.phoneNumber}`)
     .then(response =>{
       this.vcard = response.data.data
     })
