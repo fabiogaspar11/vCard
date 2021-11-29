@@ -27,6 +27,7 @@ class VcardPut extends FormRequest
             'name'               => 'nullable|string|max:50',
             'email'              => 'nullable|string|max:255|email',
             'photo_url'          => 'nullable|image|mimes:jpeg,png,jpg|max:8192',
+            'old_password'       => 'nullable|string|max:255',
             'password'           => 'nullable|string|max:255',
             'confirmation_code'  => 'nullable|integer|digits:4',
             'blocked'            => 'nullable|integer|in:0,1',

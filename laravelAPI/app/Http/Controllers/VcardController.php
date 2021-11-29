@@ -6,8 +6,11 @@ use Exception;
 use App\Models\Vcard;
 use App\Models\Category;
 use Illuminate\Support\Str;
-use Illuminate\Http\Request;
+
 use App\Http\Requests\VcardPut;
+
+use App\Http\Requests\VcardPhoto;
+
 use App\Models\DefaultCategory;
 use App\Http\Requests\VcardPost;
 use App\Http\Requests\VcardDelete;
@@ -17,6 +20,9 @@ use Illuminate\Support\Facades\Hash;
 use App\Http\Resources\VcardResource;
 use App\Http\Resources\TransactionResource;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Storage;
+
+use Image;
 
 class VcardController extends Controller
 {
@@ -38,7 +44,7 @@ class VcardController extends Controller
         $filename = $vcard->phone_number . "_" . Str::random(6) . '.jpg';
 
         if ($request->hasFile('photo_url')) {
-            $request->file('photo_url')->storeAs('public/fotos', $filename);
+            $request->file('photo_url')->storeAs('fotos', $filename);
             $vcard->photo_url = $filename;
         }
 
@@ -68,9 +74,33 @@ class VcardController extends Controller
 
     public function updateVcard(VcardPut $request, Vcard $vcard)
     {
+        $old_photo = $vcard->photo_url;
+        if($request->old_password != null){
+            if(!Hash::check($request->old_password, $vcard->password)){
+                throw ValidationException::withMessages(['password' => "Password is not correct"]);
+            }
+            if($request->old_password == $request->password){
+                throw ValidationException::withMessages(['password' => "Old password and new password must be different"]);
+            }
+        }
+        else if ($request->password != null || $request->confirmation_code != null){
+            throw ValidationException::withMessages(['password' => "You must insert the old password first"]);
+        }
+
 
         $validated_data = $request->validated();
         $vcard->fill($validated_data);
+
+        $filename = $vcard->phone_number . "_" . Str::random(6) . '.jpg';
+
+        if ($request->hasFile('photo_url')) {
+            Storage::disk('local')->delete('public/fotos/'. $old_photo);
+            $request->file('photo_url')->storeAs('fotos', $filename);
+            $vcard->photo_url = $filename;
+        }
+
+        $vcard->password = Hash::make($vcard->password);
+        $vcard->confirmation_code = Hash::make($vcard->confirmation_code);
         $vcard->save();
         return new VcardResource($vcard);
     }
@@ -132,6 +162,12 @@ class VcardController extends Controller
             ];
         }
         return TransactionResource::collection($transactions);
+    }
+
+    public function getVcardPhoto(Vcard $vcard){
+
+        $photo = $vcard->photo_url;
+        return Storage::disk('local')->get('public/fotos/'.$photo);
     }
 
     public function getVcardCategories(Vcard $vcard){

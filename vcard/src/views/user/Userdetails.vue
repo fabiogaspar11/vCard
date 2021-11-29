@@ -16,20 +16,21 @@
           border-bottom
         "
       >
-        <h1 class="h2">User Details</h1>
+        <h1 class="h2"> User Details</h1>
         <div class="align">
         </div>
       </div>
 
-      <div id="userdetails">
+      <div id="dashboard" v-if="this.vcard != null">
         <div class="container-fluid">
           <div class="row">
-            <div class="col-lg-4 profileDiv">
-              <!--<img class="profile" :src="`${this.vcard.photo_url}`" /> -->
-              <img class="profile" src="../../assets/img/avatar-none.png" />
-              <button type="button" class="btn btn-secondary">
-                Change Photo
-              </button>
+            <div class="col-lg-3 profileDiv">
+              <img class="profile" :src="photo" />
+  
+              <div v-show="errors.photo_url != undefined" class="text-danger">{{errors.photo_url}}</div>
+              <div class="form-group">
+                <input type="file" v-on:change="onFileChange" class="form-control" name="imagem_url" id="inputFoto" style="height: auto" >
+              </div>
             </div>
 
             <div class="col-lg-8">
@@ -38,12 +39,7 @@
                   <h5>Phone number:</h5>
                 </div>
                 <div class="col-8">
-                  <input
-                    type="text"
-                    class="form-control inputdetails"
-                    placeholder="Phone number"
-                    v-model="this.vcard.phone_number"
-                  />
+                  <input type="text" class="form-control inputdetails" placeholder="Phone number" v-model="this.phoneNumber" />
                 </div>
               </div>
               <div class="row">
@@ -51,12 +47,8 @@
                   <h5>Name:</h5>
                 </div>
                 <div class="col-8">
-                  <input
-                    type="text"
-                    class="form-control inputdetails"
-                    placeholder="Name"
-                    v-model="this.vcard.name"
-                  />
+                  <input type="text" class="form-control inputdetails" placeholder="Name" v-model="this.name" />
+                  <div v-show="errors.name != undefined" class="text-danger">{{errors.name}}</div>
                 </div>
               </div>
               <div class="row">
@@ -64,12 +56,8 @@
                   <h5>Email:</h5>
                 </div>
                 <div class="col-8">
-                  <input
-                    type="text"
-                    class="form-control inputdetails"
-                    placeholder="Email"
-                    v-model="this.vcard.email"
-                  />
+                  <input type="text" class="form-control inputdetails" placeholder="Email" v-model="this.email" />
+                  <div v-show="errors.email != undefined" class="text-danger">{{errors.email}}</div>
                 </div>
               </div>
               <hr />
@@ -78,42 +66,76 @@
                   <h5>Confirmation Code:</h5>
                 </div>
                 <div class="col-4">
-                  <input
-                    type="text"
-                    class="form-control inputdetails"
-                    placeholder="Current Password"
-                  />
                 </div>
                 <div class="col-4">
-                  <input
-                    type="text"
-                    class="form-control inputdetails"
-                    placeholder="Confirmation Code"
-                  />
+                  <input type="text" class="form-control inputdetails" placeholder="Confirmation Code" v-model="this.confirmation_code" />
+                  <div v-show="errors.confirmation_code != undefined" class="text-danger">{{errors.confirmation_code}}</div>
                 </div>
               </div>
               <div class="row">
                 <div class="col-4 details">
                   <h5>Password:</h5>
                 </div>
-                <div class="col-4">
-                  <input
-                    type="text"
-                    class="form-control inputdetails"
-                    placeholder="Current Password"
-                  />
+                 <div class="col-4">
+                  <input type="text" class="form-control inputdetails" placeholder="Current Password" v-model="this.old_password" />
+                  <div v-show="errors.password != undefined" class="text-danger">{{errors.password}}</div>
                 </div>
                 <div class="col-4">
-                  <input
-                    type="text"
-                    class="form-control inputdetails"
-                    placeholder="New Password"
-                  />
+                  <input type="text" class="form-control inputdetails" placeholder="New Password" v-model="this.password" />
                 </div>
               </div>
-              <button type="button" class="btn btn-primary saveDetails">
-                Save
-              </button>
+              <button type="button" class="btn btn-primary saveDetails" @click.prevent="save">Save</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="text-align: center;">
+        <div
+          class="spinner-border text-primary loading_vcard"
+          role="status"
+          v-show="!this.loaded"
+        >
+          <span class="sr-only"></span>
+        </div>
+      </div>
+
+      <div id="page" class="row">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-lg-3 col-6">
+              <div
+                class="small-box buttonUserDetails"
+                @click="$router.push({ name: 'userdetails' })"
+              >
+                <i class="bi bi-person-bounding-box icon"></i>
+                <h4><i class="iconTitle"> User Details </i></h4>
+                <br />
+              </div>
+            </div>
+            <div class="col-lg-3 col-6">
+              <div class="small-box buttonSendReceive">
+                <i class="bi bi-cash-coin icon"></i>
+                <h4><i class="iconTitle"> Send/Receive </i></h4>
+                <br />
+              </div>
+            </div>
+            <div class="col-lg-3 col-6">
+              <div
+                class="small-box buttonTransactions"
+                @click="$router.push({ name: 'transactions' })"
+              >
+                <i class="bi bi-list-columns icon" style="color: white"></i>
+                <h4><i class="iconTitle"> Transactions </i></h4>
+                <br />
+              </div>
+            </div>
+            <div class="col-lg-3 col-6">
+              <div class="small-box buttonPiggyBank">
+                <i class="bi bi-piggy-bank icon"> </i>
+                <h4 class="title"><i class="iconTitle"> Piggy Bank</i></h4>
+                <br />
+              </div>
             </div>
           </div>
         </div>
@@ -125,6 +147,7 @@
 import Sidebar from "../../components/Sidebar.vue";
 import Navbar from "../../components/Navbar.vue";
 
+
 export default {
   name: "Userdetails",
   components: {
@@ -133,28 +156,121 @@ export default {
   },
   data() {
     return {
-      vcard: '',
+      showMessage: this.successMessage != null ? true : false,
       phoneNumber: localStorage.getItem("phone_number"),
+      vcard: null,
+      name: null,
+      email: null,
+      photo : "",
+      photo_url : null,
+      pin: null,
+      password: null,
+      currentPasswordCC: null,
+      currentPasswordP: null,
+      loaded: false,
+      errors: [],
+
+      config : {
+        header : {
+          'Content-Type' : 'multipart/form-data',
+          'Authorization' : "Bearer " + localStorage.getItem("access_token")
+        }
+      }
     };
   },
-  computed: {
-    card: function () {
-      return this.vcard == null ? "0.00" : this.vcard.balance;
-    },
-  },
   methods: {
+    onFileChange(e) {
+      var files = e.target.files;
+      if (!files.length){
+        return;
+      }     
+
+      var reader = new FileReader();
+
+      reader.onload = (e) => {
+        this.photo = e.target.result;
+      }
+      this.photo_url = files[0]
+      reader.readAsDataURL(files[0]);
+      console.log(this.photo_url)
+    },
+    
+    closeSuccessMesage: function () {
+      this.showMessage = false;
+    },
+    save(){
+      let formData = new FormData();
+      if (this.name != null) {
+        formData.append('name', this.name);
+      }
+      if(this.email != null){
+        formData.append('email', this.email);
+      }
+      if(this.photo_url != null){
+        formData.append('photo_url', this.photo_url);
+      }
+      if(this.password != null){
+        formData.append('password', this.password);
+      }
+      if(this.old_password != null){
+        formData.append('old_password', this.old_password);
+      }
+      formData.append('_method', 'PUT')
+
+     
+
+      console.log(...formData.entries());
+
+
+      this.errors = [];
+
+
+      this.$axios.post(`/vcards/${this.$store.getters.phoneNumber}`, formData, this.config)
+        .then(response =>{
+          this.vcard = response.data.data
+        })
+        .catch((error) => {
+          this.errors = [];
+          Object.entries(error.response.data.errors).forEach(([key, val]) => {
+            this.errors[key] = val[0];
+          });
+        });
+    },
+
   },
   created() {
-    this.$axios
-      .get(`/vcards/${this.phoneNumber}`)
+    this.$axios.get(`/vcards/${this.$store.getters.phoneNumber}`)
       .then((response) => {
         this.vcard = response.data.data;
+        this.name = this.vcard.name;
+        this.email = this.vcard.email;
+        this.photo_url = this.vcard.photo_url;
+        this.loaded = true;
       })
       .catch(() => {
         this.$router.push({
           name: "dashboard",
         });
       });
+    this.$axios.get(`/vcards/storage/900000002`)
+    .then((response) => {
+   
+      var reader = new FileReader();
+
+      reader.onload = (e) => {
+        this.photo = e.target.result;
+      }
+
+      if (response){
+        this.photo_url = btoa(response);
+        console.log(this.photo_url);
+        reader.readAsDataURL(this.photo_url);
+      }
+      
+      
+      
+
+    })
   },
 };
 </script>
@@ -231,4 +347,11 @@ export default {
   float: right;
   margin-bottom: 3%;
 }
+
+.loading_vcard {
+  margin: 5% auto auto auto;
+  width: 10rem;
+  height: 10rem;
+}
+
 </style>

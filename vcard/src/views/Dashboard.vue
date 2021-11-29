@@ -111,17 +111,16 @@ export default {
       this.showMessage = false;
     },
   },
-  created() {
-    this.$axios
-      .get(`/vcards/${this.phoneNumber}`)
-      .then((response) => {
-        this.vcard = response.data.data;
-      })
-      .catch(() => {
-        this.$router.push({
-          name: "login",
-        });
+  created(){
+   this.$axios.get(`/vcards/${this.$store.getters.phoneNumber}`)
+    .then(response =>{
+      this.vcard = response.data.data
+    })
+    .catch(() => {
+      this.$router.push({
+        name: "login",
       });
+    });
   },
 };
 </script>
