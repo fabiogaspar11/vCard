@@ -161,8 +161,8 @@ export default {
       vcard: null,
       name: null,
       email: null,
-      photo : "",
       photo_url : null,
+      photo : "",
       pin: null,
       password: null,
       currentPasswordCC: null,
@@ -217,14 +217,9 @@ export default {
       }
       formData.append('_method', 'PUT')
 
-     
-
       console.log(...formData.entries());
 
-
       this.errors = [];
-
-
       this.$axios.post(`/vcards/${this.$store.getters.phoneNumber}`, formData, this.config)
         .then(response =>{
           this.vcard = response.data.data
@@ -236,7 +231,6 @@ export default {
           });
         });
     },
-
   },
   created() {
     this.$axios.get(`/vcards/${this.$store.getters.phoneNumber}`)
@@ -245,6 +239,8 @@ export default {
         this.name = this.vcard.name;
         this.email = this.vcard.email;
         this.photo_url = this.vcard.photo_url;
+        this.photo = "http://laravelapi.test/storage/fotos/" + this.photo_url,
+        console.log(this.photo_url)
         this.loaded = true;
       })
       .catch(() => {
@@ -252,6 +248,8 @@ export default {
           name: "dashboard",
         });
       });
+      
+      /*
     this.$axios.get(`/vcards/storage/900000002`)
     .then((response) => {
    
@@ -266,11 +264,8 @@ export default {
         console.log(this.photo_url);
         reader.readAsDataURL(this.photo_url);
       }
-      
-      
-      
-
     })
+    */
   },
 };
 </script>
