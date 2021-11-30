@@ -1,5 +1,5 @@
 <template>
-  <Navbar></Navbar>
+   <SideBardAdmin></SideBardAdmin>
   <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
  
       <h1>Administrators</h1>
@@ -19,11 +19,8 @@
              <td>{{ admin.email }}</td>
             <td>
               <div class="container">
-                <a class="btn btn-info m-1" role="button" aria-pressed="true" >
-                    <i class="bi bi-arrows-fullscreen" style="color:white;margin-right:25%"></i>
-                </a>
-                <a class="btn btn-primary m-1" role="button" aria-pressed="true" >
-                  <i class="bi bi-pencil-square" style="color:white;margin-right:25%"></i>
+                <a class="btn btn-danger m-1" role="button" aria-pressed="true" @click="deleteAdmin(admin.id)">
+                  <i class="bi bi-trash" style="color:white;margin-right:25%"></i>
                 </a>
               </div>
             </td>
@@ -34,16 +31,30 @@
 </template>
 
 <script>
-import Navbar from "../../components/Navbar.vue";
+import SideBardAdmin from "./../../components/SideBarAdmin.vue";
 export default {
   name: "Administrators",
   components: {
-    Navbar,
+    SideBardAdmin,
   },
   data() {
     return {
       administrators: null
     };
+  },
+  methods:{
+    deleteAdmin(id){
+    this.$axios.delete(`administrators/${id}`)
+    .then(response =>{
+      console.log(response)
+      alert(`Administrator ${id} removed`);
+      this.router.push({ name: 'dashboardAdmin' })
+    })
+    .catch((error) => {
+      console.log(error)
+      alert(`Could not delete administrator ${id}`);
+    });
+    }
   },
   mounted() {
      this.$axios

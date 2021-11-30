@@ -1,10 +1,7 @@
 <template>
   <SideBardAdmin></SideBardAdmin>
-    <div>
-    <button type="button " class="btn btn-secondary">Left</button>
-    <button type="button" class="btn btn-secondary">Middle</button>
-    <button type="button" class="btn btn-secondary">Right</button>
-    </div>
+    <router-link to="layoutAdmin"> </router-link>
+    <router-view />
 </template>
 
 <script>
