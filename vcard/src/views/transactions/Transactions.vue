@@ -54,7 +54,7 @@ export default {
     };
   },
   mounted() {
-     this.transactions = this.$axios
+     this.$axios
       .get(`/vcards/${this.phoneNumber}/transactions`)
       .then(response =>{
       this.transactions = response.data.data; 

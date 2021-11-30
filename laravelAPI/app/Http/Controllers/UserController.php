@@ -11,8 +11,9 @@ use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
-    public function getUsers(){
-        return UserResource::collection(User::all());
+    public function getAdministrators(){
+        $administrators=User::all()->where("user_type","=",'A');
+        return UserResource::collection($administrators);
     }
 
     public function getUser(User $user)

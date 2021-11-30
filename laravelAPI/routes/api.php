@@ -29,15 +29,15 @@ Route::middleware(['auth:api'])->group(function (){
 
     /*************************************** Users ***************************************/
 
-    Route::get('users',[UserController::class, 'getUsers']);
+    Route::get('administrators',[UserController::class, 'getAdministrators']);
 
-    Route::get('users/{user}',[UserController::class, 'getUser']);
+    Route::get('administrators/{user}',[UserController::class, 'getUser']);
 
-    Route::post('users', [UserController::class, 'storeUser']);
+    Route::post('administrators', [UserController::class, 'storeUser']);
 
-    Route::put('users/{user}', [UserController::class, 'updateUser']);
+    Route::put('administrators/{user}', [UserController::class, 'updateUser']);
 
-    Route::delete('users/{user}', [UserController::class, 'destroyUser']);
+    Route::delete('administrators/{user}', [UserController::class, 'destroyUser']);
 
     /*************************************** PaymentTypes ***************************************/
 
@@ -74,6 +74,8 @@ Route::middleware(['auth:api'])->group(function (){
     Route::get('vcards', [VcardController::class, 'getVcards']);
 
     Route::get('vcards/{vcard}', [VcardController::class, 'getVcard']);
+
+    Route::get('vcards/{vcard}/isVcard', [VcardController::class, 'checkVcard']);
 
     Route::put('vcards/{vcard}', [VcardController::class, 'updateVcard']);
 

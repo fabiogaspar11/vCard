@@ -1,52 +1,29 @@
 <template>
-    <nav
+  <Navbar></Navbar>
+     <nav
         id="sidebarMenu"
         class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse"
       >
         <div class="position-sticky pt-3">
           <ul class="nav flex-column">
             <li class="nav-item">
-              <a
-                class="nav-link active"
-                aria-current="page"
-               
-              >
-                <i class="bi bi-house"></i>
-                Dashboard
-              </a>
-            </li>
-
-            <li class="nav-item">
-              <a
-                class="nav-link"
-               
-              >
-                <i class="bi bi-currency-euro"></i>
-                Transfer Money
-              </a>
-            </li>
-
-            <li class="nav-item">
-              <a
-                class="nav-link"
-               
-              >
-                <i class="bi bi-people"></i>
-                User Details
-              </a>
-            </li>
-            <li class="nav-item">
-              <a
-                class="nav-link"
-                
-              >
-                <i class="bi bi-bar-chart-line"></i>
-                Transactions
-              </a>
-            </li>
-            <li class="nav-item">
               <a class="btn btn-light" role="button" aria-pressed="true" @click="$router.push({name:'dashboardAdmin'})">
                    Administrator Dashboard
+                </a>
+            </li>
+            <li class="nav-item">
+              <a class="btn btn-light" role="button" aria-pressed="true" @click="$router.push({name:'administrators'})">
+                   Administrators
+                </a>
+            </li>
+            <li class="nav-item">
+              <a class="btn btn-light" role="button" aria-pressed="true" >
+                   Transactions
+                </a>
+            </li>
+            <li class="nav-item">
+              <a class="btn btn-light" role="button" aria-pressed="true" >
+                   Statistics
                 </a>
             </li>
           </ul>       
@@ -113,22 +90,19 @@
             </ul>
           </div>
         </div>
-    </nav>
+    </nav> 
 </template>
 
 <script>
+import Navbar from "./Navbar.vue";
 export default {
-
+  name: "DashboardAdmin",
+  components: {
+    Navbar
+  }
 }
 </script>
 
 <style>
-.btn:focus { 
- outline: none; 
- box-shadow: none; 
-} 
- 
-#sidebarMenu { 
- overflow-y: auto; 
-}
+
 </style>
