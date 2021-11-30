@@ -107,10 +107,10 @@ class VcardController extends Controller
 
     public function destroyVcard(VcardDelete $request, Vcard $vcard){
 
-        if(!Hash::check($vcard->password,Hash::make($vcard->password))){
+        if(!Hash::check($request->password, $vcard->password)){
             throw ValidationException::withMessages(['password' => "Password is not correct"]);
         }
-        if(!Hash::check($vcard->confirmation_code,Hash::make($vcard->confirmation_code))){
+        if(!Hash::check($request->confirmation_code, $vcard->confirmation_code)){
             throw ValidationException::withMessages(['confirmation_code' => "PIN is not correct"]);
         }
         if($vcard->balance > 0){
@@ -137,6 +137,8 @@ class VcardController extends Controller
             DB::rollback();
             throw new Exception("Error deleting the vcard");
         }
+
+
 
         return new VcardResource($vcard);
     }
