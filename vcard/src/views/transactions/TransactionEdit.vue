@@ -4,8 +4,9 @@
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
     <div class="text-center mt-5">
       <h2>Edit Transaction Nº {{transactionId}}</h2>
+      <p>Current Description: {{this.transaction.description != null ? this.transaction.description : '---'}} | Category: {{this.transaction.category_id != null ? this.transaction.category_id.name : '---'}}</p>
       <div class="container">
-       <TransactionCreateEdit @updateCategory="updateCategory" @updateDescription="updateDescription"></TransactionCreateEdit>
+       <TransactionCreateEdit @updateCategory="updateCategory" @updateDescription="updateDescription" :errors="errors"></TransactionCreateEdit>
         <div class="container">
           <br>
           <button
@@ -41,24 +42,36 @@ export default {
     TransactionCreateEdit
   },
   props:{
-    transactionId: Number
+    transactionId: String
   },
   data() {
     return {
       errors: [],
       category: null,
-      description: null
+      description: null,
+      transaction:[]
     };
   },
   methods: {
     updateCategory(category){
+      this.errors = [];
+       if(this.transaction.category_id !=null && this.transaction.category_id.id == category){
+        this.errors.category_id = "Category is equal";
+        return;
+      }
         this.category = category;
     },
     updateDescription(description){
+       this.errors = [];
+      if(this.transaction.description != null && this.transaction.description == description){
+        this.errors.description = "Description is equal";
+        return;
+      }
         this.description = description;
     },
     fillTransaction(){
       let transaction = {};
+      
       if (this.category != null) {
         transaction.category_id = this.category;
       }
@@ -86,6 +99,13 @@ export default {
           });
         });
     },
+    },
+    created(){
+       this.$axios
+      .get(`/transactions/${parseInt(this.transactionId)}`)
+      .then(response =>{
+      this.transaction = response.data.data; 
+    });
   },
 };
 </script>

@@ -2,12 +2,12 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\PaymentTypeController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\VcardController;
-use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\PaymentTypeController;
+use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\AdministratorController;
 use App\Http\Controllers\DefaultCategoryController;
 
 /*
@@ -29,15 +29,15 @@ Route::middleware(['auth:api'])->group(function (){
 
     /*************************************** Users ***************************************/
 
-    Route::get('administrators',[UserController::class, 'getAdministrators']);
+    Route::get('administrators',[AdministratorController::class, 'getAdministrators']);
 
-    Route::get('administrators/{user}',[UserController::class, 'getUser']);
+    Route::get('administrators/{admin}',[AdministratorController::class, 'getAdministrators']);
 
-    Route::post('administrators', [UserController::class, 'storeUser']);
+    Route::post('administrators', [AdministratorController::class, 'storeAdministrator']);
 
-    Route::put('administrators/{user}', [UserController::class, 'updateUser']);
+    Route::put('administrators/{admin}', [AdministratorController::class, 'updateAdministrator']);
 
-    Route::delete('administrators/{user}', [UserController::class, 'destroyUser']);
+    Route::delete('administrators/{admin}', [AdministratorController::class, 'destroyAdministrator']);
 
     /*************************************** PaymentTypes ***************************************/
 

@@ -17,8 +17,8 @@
                 </a>
             </li>
             <li class="nav-item">
-              <a class="btn btn-light" role="button" aria-pressed="true" >
-                   Transactions
+              <a class="btn btn-light" role="button" aria-pressed="true"  @click="$router.push({name:'defaultCategories'})">
+                   Default Categories
                 </a>
             </li>
             <li class="nav-item">
@@ -96,7 +96,7 @@
 <script>
 import Navbar from "./Navbar.vue";
 export default {
-  name: "DashboardAdmin",
+  name: "SideBarAdmin",
   components: {
     Navbar
   }

@@ -10,9 +10,12 @@
             <div v-else class="text-danger">
                 {{ errorCategories }}
             </div>
+          <div v-show="errors.category_id != undefined" class="text-danger">
+                {{ errors.category_id }}
+          </div>
         </div><br><br>
         <label for="description"><b>Description:</b></label>
-        <input type="text" @input="updateDescription" v-model="description" class="form-control" placeholder="Enter Description" name="description" required/>
+        <input type="text" @change="updateDescription" v-model="description" class="form-control" placeholder="Enter Description" name="description" required/>
         <div v-show="errors.description != undefined" class="text-danger">
           {{ errors.description }}
         </div>
@@ -22,10 +25,12 @@
 
 export default {
   name: "TransactionCreateEdit",
+    props:{
+    errors:Array
+  },
   data() {
     return {
       description: null,
-      errors: [],
       category: null,
       categories: null,
       loadedCategories:false,

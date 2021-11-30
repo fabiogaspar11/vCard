@@ -60,6 +60,7 @@
         <TransactionCreateEdit
           @updateCategory="updateCategory"
           @updateDescription="updateDescription"
+          :errors="errors"
         ></TransactionCreateEdit>
         <div class="container">
           <br />

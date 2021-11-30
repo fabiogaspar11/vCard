@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UserRequest extends FormRequest
+class AdministratorPost extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,7 +25,7 @@ class UserRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'email' => 'required|string|max:255',
+            'email' => 'required|string|max:255|email',
             'password' => 'required|string|max:255'
         ];
     }
@@ -36,6 +36,7 @@ class UserRequest extends FormRequest
         'name.required' => 'Name is mandatory',
         'name.max' => 'Name cannot have more than 255 characters',
         'email.required' => 'Email is mandatory',
+        'email.email' => 'Email is not a valid email',
         'email.max' => 'Email cannot have more than 255 characters',
         'password.required' => 'Password is mandatory',
         'password.max' => 'Password cannot have more than 255 characters',

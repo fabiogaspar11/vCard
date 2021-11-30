@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Resources\VcardResource;
 use App\Http\Resources\TransactionResource;
+use App\Models\Transaction;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Storage;
 

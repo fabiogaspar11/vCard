@@ -12,7 +12,7 @@
             <th>Value</th>
             <th>Payment type</th>
             <th>Payment reference</th>
-            <th>Details</th>
+            <th>Options</th>
           </tr>
         </thead>
         <tbody>
@@ -24,10 +24,10 @@
             <td>{{ transaction.payment_reference }}</td>
             <td>
               <div class="container">
-                <a class="btn btn-info m-1" role="button" aria-pressed="true" @click="$router.push({name:'transactionDetails', params: {id: Number(transaction.id)}})">
+                <a class="btn btn-info m-1" role="button" aria-pressed="true" @click="$router.push({name:'transactionDetails', params: {id: parseInt(transaction.id)}})">
                     <i class="bi bi-arrows-fullscreen" style="color:white;margin-right:25%"></i>
                 </a>
-                <a class="btn btn-primary m-1" role="button" aria-pressed="true" @click="$router.push({name:'transactionEdit', params: {transactionId: Number(transaction.id)}})">
+                <a class="btn btn-primary m-1" role="button" aria-pressed="true" @click="$router.push({name:'transactionEdit', params: {transactionId: transaction.id}})">
                   <i class="bi bi-pencil-square" style="color:white;margin-right:25%"></i>
                 </a>
               </div>
