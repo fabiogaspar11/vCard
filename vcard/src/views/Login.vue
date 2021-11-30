@@ -60,7 +60,7 @@ export default {
   name: "login",
   data() {
     return {
-      phone_number: localStorage.getItem('phone_number') || null,
+      phone_number: localStorage.getItem("phone_number") || null,
       password: "",
       errors: [],
     };
@@ -73,7 +73,8 @@ export default {
           password: this.password,
         })
         .then((response) => {
-          axios.defaults.headers.common.Authorization = "Bearer " + response.data.access_token;
+          axios.defaults.headers.common.Authorization =
+            "Bearer " + response.data.access_token;
           localStorage.setItem("access_token", response.data.access_token);
           localStorage.setItem("phone_number", this.phone_number);
         })

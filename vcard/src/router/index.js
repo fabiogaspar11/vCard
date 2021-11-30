@@ -47,7 +47,6 @@ const routes = [
     path: '/userdetails',
     name: 'userdetails',
     component: Userdetails,
-    props: true
   },
   {
     path: '/transaction',
@@ -85,11 +84,11 @@ router.beforeEach((to, from, next) => {
     return
   }
 
-  if (store.state.status == false){
-    next({name : 'login'})
+  if (store.state.status == false) {
+    next({ name: 'login' })
     return
   }
-  next() 
+  next()
 });
 
 export default router

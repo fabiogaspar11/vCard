@@ -63,7 +63,7 @@ export default {
     Navbar,
   },
   props: {
-    id: String,
+    id: Number,
   },
   data() {
     return {
