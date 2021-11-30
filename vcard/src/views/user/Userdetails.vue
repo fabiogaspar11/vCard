@@ -240,7 +240,6 @@ export default {
         this.email = this.vcard.email;
         this.photo_url = this.vcard.photo_url;
         this.photo = "http://laravelapi.test/storage/fotos/" + this.photo_url,
-        console.log(this.photo_url)
         this.loaded = true;
       })
       .catch(() => {

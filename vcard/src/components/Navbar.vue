@@ -1,5 +1,4 @@
 <template>
-  <div>
     <nav
       class="
         navbar navbar-expand-md navbar-dark
@@ -10,7 +9,7 @@
         shadow
       "
     >
-      <div class="container-fluid">
+      <div class="container-fluid position-sticky">
         <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3"
           ><img
             src="../assets/img/logo.png"
@@ -82,7 +81,6 @@
         </div>
       </div>
     </nav>
-  </div>
 </template>
 
 <script>
