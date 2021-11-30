@@ -24,10 +24,10 @@
             <td>{{ transaction.payment_reference }}</td>
             <td>
               <div class="container">
-                <a class="btn btn-info m-1" role="button" aria-pressed="true" @click="$router.push({name:'transactionDetails', params: {id: transaction.id}})">
+                <a class="btn btn-info m-1" role="button" aria-pressed="true" @click="$router.push({name:'transactionDetails', params: {id: Number(transaction.id)}})">
                     <i class="bi bi-arrows-fullscreen" style="color:white;margin-right:25%"></i>
                 </a>
-                <a class="btn btn-primary m-1" role="button" aria-pressed="true" @click="$router.push({name:'transactionEdit', params: {transactionId: transaction.id}})">
+                <a class="btn btn-primary m-1" role="button" aria-pressed="true" @click="$router.push({name:'transactionEdit', params: {transactionId: Number(transaction.id)}})">
                   <i class="bi bi-pencil-square" style="color:white;margin-right:25%"></i>
                 </a>
               </div>
@@ -54,7 +54,7 @@ export default {
     };
   },
   mounted() {
-     this.transactions = this.$axios
+     this.$axios
       .get(`/vcards/${this.phoneNumber}/transactions`)
       .then(response =>{
       this.transactions = response.data.data; 

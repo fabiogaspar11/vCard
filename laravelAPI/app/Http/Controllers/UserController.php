@@ -2,17 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\UserRequest;
-use App\Http\Resources\UserResource;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use App\Http\Requests\UserRequest;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
 
 class UserController extends Controller
 {
-    public function getUsers(){
-        return UserResource::collection(User::all());
+    public function getAdministrators(){
+        $administrators=User::all()->where("user_type","=",'A');
+        return UserResource::collection($administrators);
     }
 
     public function getUser(User $user)
@@ -39,7 +41,8 @@ class UserController extends Controller
     }
 
     public function destroyUser(User $user){
-        $user->delete();
+        $userFound = DB::table('users')->where('id', $user->id);
+        $userFound->delete();
         return new UserResource($user);
     }
 }

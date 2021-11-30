@@ -31,6 +31,11 @@ class VcardController extends Controller
         $allVcards = Vcard::all();
         return VcardResource::collection($allVcards);
     }
+
+    public function checkVcard(int $vcard){
+        $vcardFound = Vcard::find($vcard);
+        return $vcardFound == null ? ["response" => "No"] : ["response" =>  "Yes"] ;
+    }
     public function getVcard(Vcard $vcard)
     {
         return new VcardResource($vcard);

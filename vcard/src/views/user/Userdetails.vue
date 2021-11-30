@@ -18,13 +18,6 @@
       >
         <h1 class="h2"> User Details</h1>
         <div class="align">
-          <div
-            @click="closeSuccessMesage"
-            v-if="showMessage"
-            class="alert alert-success alert-dismissible"
-          >
-            {{ successMessage }}
-          </div>
         </div>
       </div>
 
@@ -39,8 +32,8 @@
                 <input type="file" v-on:change="onFileChange" class="form-control" name="imagem_url" id="inputFoto" style="height: auto" >
               </div>
             </div>
-            
-            <div class="col-lg-9">
+
+            <div class="col-lg-8">
               <div class="row">
                 <div class="col-4 details">
                   <h5>Phone number:</h5>
@@ -67,7 +60,7 @@
                   <div v-show="errors.email != undefined" class="text-danger">{{errors.email}}</div>
                 </div>
               </div>
-              <hr/>
+              <hr />
               <div class="row">
                 <div class="col-4 details">
                   <h5>Confirmation Code:</h5>
@@ -156,16 +149,11 @@ import Navbar from "../../components/Navbar.vue";
 
 
 export default {
-  name: "Dashboard",
+  name: "Userdetails",
   components: {
     Sidebar,
     Navbar,
   },
-
-  props: {
-    successMessage: null,
-  },
-
   data() {
     return {
       showMessage: this.successMessage != null ? true : false,
@@ -173,8 +161,8 @@ export default {
       vcard: null,
       name: null,
       email: null,
-      photo : "",
       photo_url : null,
+      photo : "",
       pin: null,
       password: null,
       currentPasswordCC: null,
@@ -229,14 +217,9 @@ export default {
       }
       formData.append('_method', 'PUT')
 
-     
-
       console.log(...formData.entries());
 
-
       this.errors = [];
-
-
       this.$axios.post(`/vcards/${this.$store.getters.phoneNumber}`, formData, this.config)
         .then(response =>{
           this.vcard = response.data.data
@@ -248,7 +231,6 @@ export default {
           });
         });
     },
-
   },
   created() {
     this.$axios.get(`/vcards/${this.$store.getters.phoneNumber}`)
@@ -257,13 +239,16 @@ export default {
         this.name = this.vcard.name;
         this.email = this.vcard.email;
         this.photo_url = this.vcard.photo_url;
+        this.photo = "http://laravelapi.test/storage/fotos/" + this.photo_url,
         this.loaded = true;
       })
       .catch(() => {
         this.$router.push({
-          name: "login",
+          name: "dashboard",
         });
       });
+      
+      /*
     this.$axios.get(`/vcards/storage/900000002`)
     .then((response) => {
    
@@ -278,11 +263,8 @@ export default {
         console.log(this.photo_url);
         reader.readAsDataURL(this.photo_url);
       }
-      
-      
-      
-
     })
+    */
   },
 };
 </script>
@@ -304,7 +286,7 @@ export default {
   margin: 0 auto;
 }
 
-#dashboard {
+#userdetails {
   background: #e6e6e6;
 }
 
@@ -318,38 +300,6 @@ export default {
   margin-bottom: 10%;
 }
 
-.buttonUserDetails {
-  background: #17a2b8;
-}
-.buttonUserDetails:hover {
-  background: #0e6471;
-  transition-duration: 0.5s;
-}
-
-.buttonSendReceive {
-  background: #198754;
-}
-.buttonSendReceive:hover {
-  background: #105635;
-  transition-duration: 0.5s;
-}
-
-.buttonTransactions {
-  background: #ffc107;
-}
-.buttonTransactions:hover {
-  background: #b38600;
-  transition-duration: 0.5s;
-}
-
-.buttonPiggyBank {
-  background: #dc3545;
-}
-.buttonPiggyBank:hover {
-  background: #981b27;
-  transition-duration: 0.5s;
-}
-
 .small-box {
   border-radius: 10px;
   cursor: pointer;
@@ -361,13 +311,16 @@ export default {
   border-radius: 30px;
   width: 100%;
   height: 85%;
-  
- 
 }
 
-.profileDiv{
- padding-top: 1%;
- margin-bottom: 5%;
+.profileDiv {
+  padding-top: 3%;
+  padding-left: 3%;
+  margin-bottom: 5%;
+}
+
+.btn-secondary {
+  margin-top: 10%;
 }
 
 .details {
@@ -378,14 +331,15 @@ export default {
   height: 60%;
 }
 
-.profileMoney{
+.profileMoney {
   text-align: center;
 }
 
-.saveDetails{
-  width:10%;
+.saveDetails {
+  width: 20%;
   height: 10%;
   float: right;
+  margin-bottom: 3%;
 }
 
 .loading_vcard {

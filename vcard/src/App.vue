@@ -10,7 +10,7 @@ import axios from "axios";
 
 export default {
   mounted() {
-    const token = localStorage.getItem('access_token');
+    const token = localStorage.getItem("access_token");
 
     if (token) {
       axios.defaults.headers.common["Authorization"] = "Bearer " + token;
@@ -23,8 +23,6 @@ export default {
   },
 };
 </script>
-
-
 
 <style>
 </style>

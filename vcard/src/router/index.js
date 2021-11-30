@@ -8,7 +8,8 @@ import TransactionDetails from '../views/transactions/TransactionDetails.vue'
 import TransactionCreate from '../views/transactions/TransactionCreate.vue'
 import TransactionEdit from '../views/transactions/TransactionEdit.vue'
 import Userdetails from '../views/user/Userdetails.vue'
-
+import Administrators from '../views/administrators/Administrators.vue'
+import DashboardAdmin from '../views/DashboardAdmin.vue'
 const routes = [
   {
     path: '/',
@@ -46,7 +47,6 @@ const routes = [
     path: '/userdetails',
     name: 'userdetails',
     component: Userdetails,
-    props: true
   },
   {
     path: '/transaction',
@@ -58,6 +58,16 @@ const routes = [
     name: 'transactionEdit',
     component: TransactionEdit,
     props: true
+  },
+  {
+    path: '/administrators',
+    name: 'administrators',
+    component: Administrators
+  },
+  {
+    path: '/dashboardAdmin',
+    name: 'dashboardAdmin',
+    component: DashboardAdmin
   }
 ]
 
@@ -74,11 +84,11 @@ router.beforeEach((to, from, next) => {
     return
   }
 
-  if (store.state.status == false){
-    next({name : 'login'})
+  if (store.state.status == false) {
+    next({ name: 'login' })
     return
   }
-  next() 
+  next()
 });
 
 export default router
