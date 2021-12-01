@@ -24,16 +24,14 @@ class VcardDelete extends FormRequest
     public function rules()
     {
         return [
-            'password'           => 'required|string|max:255',
-            'confirmation_code'  => 'required|integer|digits:4'
+            'password'           => 'nullable|string|max:255',
+            'confirmation_code'  => 'nullable|integer|digits:4'
         ];
     }
     public function messages()
     {
         return [
-            'password.required' => 'Password is mandatory',
             'password.max' => 'Password cannot have more than 255 characters',
-            'confirmation_code.required' => 'PIN is mandatory',
             'confirmation_code.integer' => 'PIN can only have numbers',
             'confirmation_code.digits' => 'PIN must have 4 digits'
         ];

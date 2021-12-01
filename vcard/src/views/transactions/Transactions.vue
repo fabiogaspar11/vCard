@@ -50,7 +50,7 @@ export default {
   data() {
     return {
       transactions: null,
-      phoneNumber : localStorage.getItem('phone_number')
+      phoneNumber : localStorage.getItem('username')
     };
   },
   mounted() {

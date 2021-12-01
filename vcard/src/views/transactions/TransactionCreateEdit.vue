@@ -35,7 +35,7 @@ export default {
       categories: null,
       loadedCategories:false,
       errorCategories:null,
-      phoneNumber : localStorage.getItem('phone_number'),
+      phoneNumber : localStorage.getItem('username'),
     };
   },
   emits : [

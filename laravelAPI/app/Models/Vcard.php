@@ -47,11 +47,6 @@ class Vcard extends Model
         return $this->hasMany(Category::class, 'vcard', 'phone_number');
     }
 
-    public function findForPassport($username)
-    {
-        return $this->where('phone_number', $username)->first();
-    }
-
     public function getAuthPassword()
     {
         return $this->password;

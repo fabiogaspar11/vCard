@@ -106,7 +106,7 @@ export default {
       payment_types: [],
       loadedPaymentTypes: false,
       payment_type: null,
-      phoneNumber: localStorage.getItem("phone_number"),
+      phoneNumber: localStorage.getItem("username"),
       payment_reference: null,
       category: null,
       description: null,

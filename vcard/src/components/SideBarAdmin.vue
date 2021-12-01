@@ -16,6 +16,11 @@
                    Administrators
                 </a>
             </li>
+           <li class="nav-item">
+              <a class="btn btn-light" role="button" aria-pressed="true" @click="$router.push({name:'vcards'})">
+                   Vcard Users
+                </a>
+            </li>
             <li class="nav-item">
               <a class="btn btn-light" role="button" aria-pressed="true"  @click="$router.push({name:'defaultCategories'})">
                    Default Categories

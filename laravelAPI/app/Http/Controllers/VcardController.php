@@ -111,13 +111,20 @@ class VcardController extends Controller
         return new VcardResource($vcard);
     }
 
-    public function destroyVcard(VcardDelete $request, Vcard $vcard){
-
-        if(!Hash::check($request->password, $vcard->password)){
-            throw ValidationException::withMessages(['password' => "Password is not correct"]);
-        }
-        if(!Hash::check($request->confirmation_code, $vcard->confirmation_code)){
-            throw ValidationException::withMessages(['confirmation_code' => "PIN is not correct"]);
+    public function destroyVcard(VcardDelete $request, Vcard $vcard){//VcardDelete $request,
+        if( auth()->user()->user_type != 'A'){
+            if(!isset($request->password)){
+                throw ValidationException::withMessages(['password' => "Password is mandatory"]);
+            }
+            if(!isset($request->confirmation_code)){
+                throw ValidationException::withMessages(['confirmation_code' => "PIN is mandatory"]);
+            }
+            if(!Hash::check($request->password, $vcard->password)){
+                throw ValidationException::withMessages(['password' => "Password is not correct"]);
+            }
+            if(!Hash::check($request->confirmation_code, $vcard->confirmation_code)){
+                throw ValidationException::withMessages(['confirmation_code' => "PIN is not correct"]);
+            }
         }
         if($vcard->balance > 0){
             throw ValidationException::withMessages(['balance' => "Vcard cannot be deleted - Balance is bigger than 0.00"]);
@@ -143,8 +150,6 @@ class VcardController extends Controller
             DB::rollback();
             throw new Exception("Error deleting the vcard");
         }
-
-
 
         return new VcardResource($vcard);
     }

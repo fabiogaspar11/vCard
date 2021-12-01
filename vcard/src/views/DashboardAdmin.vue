@@ -4,7 +4,7 @@
      <div class="container d-flex flex-row" style="width:75%">
         <button class="m-2 btn btn-dark btn-lg" @click="$router.push({name:'administrators'})">Administrators</button>
         <button class="m-2 btn btn-dark btn-lg" @click="$router.push({name:'defaultCategories'})">Default Categories</button>
-        <button class="m-2 btn btn-dark btn-lg">Transactions</button>
+        <button class="m-2 btn btn-dark btn-lg" @click="$router.push({name:'vcards'})">Vcard Users</button>
         <button class="m-2 btn btn-dark btn-lg">Statistics</button>
      </div>
      </main>

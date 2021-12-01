@@ -14,6 +14,7 @@ import AdministratorCreate from '../views/administrators/AdministratorCreate.vue
 import DefaultCategories from '../views/defaultCategories/DefaultCategories.vue'
 import DefaultCategoriesCreate from '../views/defaultCategories/DefaultCategoriesCreate.vue'
 import DefaultCategoriesEdit from '../views/defaultCategories/DefaultCategoriesEdit.vue'
+import Vcards from '../views/vcards/Vcards.vue'
 const routes = [
   {
     path: '/',
@@ -95,6 +96,11 @@ const routes = [
     name: 'defaultCategoriesEdit',
     component: DefaultCategoriesEdit,
     props: true
+  },
+  {
+    path: '/vcards',
+    name: 'vcards',
+    component: Vcards
   }
 ]
 

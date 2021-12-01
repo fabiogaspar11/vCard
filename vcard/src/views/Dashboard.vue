@@ -98,7 +98,7 @@ export default {
       //money: 0,
       showMessage: this.successMessage != null ? true : false,
       vcard: '',
-      phoneNumber: localStorage.getItem("phone_number"),
+      phoneNumber: localStorage.getItem("username"),
     };
   },
   computed: {
