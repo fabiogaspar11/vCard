@@ -1,15 +1,18 @@
 <template>
    <SideBardAdmin></SideBardAdmin>
   <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
- 
+
+      <div class="container d-flex flex-row justify-content-between">
       <h1>Administrators</h1>
+      <router-link class="m-2 btn btn-primary" :to="{name:'administratorCreate'}">New Administrator</router-link>
+      </div>
       <table class="table">
         <thead>
           <tr>
             <th>Id</th>
             <th>Name</th>
             <th>Email</th>
-            <th>Details</th>
+            <th>Options</th>
           </tr>
         </thead>
         <tbody>
@@ -48,7 +51,7 @@ export default {
     .then(response =>{
       console.log(response)
       alert(`Administrator ${id} removed`);
-      this.router.push({ name: 'dashboardAdmin' })
+      this.$router.push({name:'dashboardAdmin'})
     })
     .catch((error) => {
       console.log(error)

@@ -29,7 +29,7 @@ class AuthController extends Controller
             if ($e->getCode() === 400){
                 if( $request->username == null){
                     return response()->json(
-                        ['phoneNumber' => 'Phone number is mandatory'], $e->getCode());
+                        ['username' => 'Username is mandatory'], $e->getCode());
                 }
                 if( $request->password == null){
                     return response()->json(

@@ -13,6 +13,11 @@ import CategoriesEdit from '../views/categories/CategoriesEdit.vue'
 import Userdetails from '../views/user/Userdetails.vue'
 import Administrators from '../views/administrators/Administrators.vue'
 import DashboardAdmin from '../views/DashboardAdmin.vue'
+import AdministratorCreate from '../views/administrators/AdministratorCreate.vue'
+import DefaultCategories from '../views/defaultCategories/DefaultCategories.vue'
+import DefaultCategoriesCreate from '../views/defaultCategories/DefaultCategoriesCreate.vue'
+import DefaultCategoriesEdit from '../views/defaultCategories/DefaultCategoriesEdit.vue'
+import Vcards from '../views/vcards/Vcards.vue'
 const routes = [
   {
     path: '/',
@@ -50,6 +55,7 @@ const routes = [
     path: '/userdetails',
     name: 'userdetails',
     component: Userdetails,
+    props: true
   },
   {
     path: '/transaction',
@@ -87,6 +93,33 @@ const routes = [
     name: 'categoriesEdit',
     component: CategoriesEdit,
     props: true
+  },
+  {
+    path: '/administratorCreate',
+    name: 'administratorCreate',
+    component: AdministratorCreate
+  },
+  {
+    path: '/defaultCategories',
+    name: 'defaultCategories',
+    component: DefaultCategories
+  },
+  {
+    path: '/defaultCategoriesCreate',
+    name: 'defaultCategoriesCreate',
+    component: DefaultCategoriesCreate
+  }
+  ,
+  {
+    path: '/defaultCategoriesEdit',
+    name: 'defaultCategoriesEdit',
+    component: DefaultCategoriesEdit,
+    props: true
+  },
+  {
+    path: '/vcards',
+    name: 'vcards',
+    component: Vcards
   }
 ]
 
@@ -103,11 +136,11 @@ router.beforeEach((to, from, next) => {
     return
   }
 
-  if (store.state.status == false) {
-    next({ name: 'login' })
+  if (store.state.status == false){
+    next({name : 'login'})
     return
   }
-  next()
+  next() 
 });
 
 export default router

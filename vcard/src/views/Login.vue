@@ -7,16 +7,16 @@
     <h1>Login</h1>
   </div>
   <div class="container">
-    <label for="uname"><b>Phone Number:</b></label>
+    <label for="uname"><b>Username:</b></label>
     <input
       type="text"
-      placeholder="Enter Phone Number"
+      placeholder="Enter username"
       name="uname"
-      v-model="phone_number"
+      v-model="username"
       required
     />
-    <div v-show="errors.phoneNumber != undefined" class="text-danger">
-      {{ errors.phoneNumber }}
+    <div v-show="errors.username != undefined" class="text-danger">
+      {{ errors.username }}
     </div>
     <label for="psw"><b>Password:</b></label>
     <input
@@ -60,7 +60,7 @@ export default {
   name: "login",
   data() {
     return {
-      phone_number: localStorage.getItem("phone_number") || null,
+      username: localStorage.getItem("username") || null,
       password: "",
       errors: [],
     };
@@ -69,14 +69,14 @@ export default {
     login() {
       this.$store
         .dispatch("authRequest", {
-          username: this.phone_number,
+          username: this.username,
           password: this.password,
         })
         .then((response) => {
           axios.defaults.headers.common.Authorization =
             "Bearer " + response.data.access_token;
           localStorage.setItem("access_token", response.data.access_token);
-          localStorage.setItem("phone_number", this.phone_number);
+          localStorage.setItem("username", this.username);
         })
         .then(() => {
           this.$router.push({
@@ -85,7 +85,7 @@ export default {
         })
         .catch((error) => {
           localStorage.removeItem("access_token");
-          localStorage.removeItem("phone_number");
+          localStorage.removeItem("username");
           delete axios.defaults.headers.common.Authorization;
           this.errors = error.response.data;
         });

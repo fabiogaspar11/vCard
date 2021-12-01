@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\DefaultCategoryRequest;
+use App\Http\Requests\DefaultCategoryPost;
+use App\Http\Requests\DefaultCategoryPut;
 use App\Http\Resources\DefaultCategoryResource;
 use App\Models\DefaultCategory;
 use Illuminate\Http\Request;
@@ -15,11 +16,11 @@ class DefaultCategoryController extends Controller
         return DefaultCategoryResource::collection($allDefaultCategory);
     }
 
-    public function getDefaultCategory(DefaultCategoryRequest $defaultCategory){
+    public function getDefaultCategory(DefaultCategory $defaultCategory){
         return new DefaultCategoryResource($defaultCategory);
     }
 
-    public function storeDefaultCategory(DefaultCategoryRequest $request)
+    public function storeDefaultCategory(DefaultCategoryPost $request)
     {
         $validated_data = $request->validated();
         $defaultCategory = new DefaultCategory();
@@ -28,7 +29,7 @@ class DefaultCategoryController extends Controller
         return new DefaultCategoryResource($defaultCategory);
     }
 
-    public function updateDefaultCategory(DefaultCategoryRequest $request, DefaultCategory $defaultCategory)
+    public function updateDefaultCategory(DefaultCategoryPut $request, DefaultCategory $defaultCategory)
     {
         $validated_data = $request->validated();
         $defaultCategory->fill($validated_data);

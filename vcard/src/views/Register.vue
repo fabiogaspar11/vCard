@@ -138,7 +138,7 @@ export default {
               axios.defaults.headers.common.Authorization =
                 "Bearer " + response.data.access_token;
               localStorage.setItem("access_token", response.data.access_token);
-              localStorage.setItem("phone_number", this.phoneNumber);
+              localStorage.setItem("username", this.phoneNumber);
             })
             .then(() => {
               this.$router.push({

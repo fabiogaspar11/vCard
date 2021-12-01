@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class DefaultCategoryRequest extends FormRequest
+class DefaultCategoryPut extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,17 +24,15 @@ class DefaultCategoryRequest extends FormRequest
     public function rules()
     {
         return [
-            'type' => 'required|string|in:C,D',
-            'name' => 'required|string|max:50'
+            'type' => 'nullable|string|in:C,D',
+            'name' => 'nullable|string|max:50'
         ];
     }
 
     public function messages()
     {
         return [
-            'name.required' => 'Name is mandatory',
             'name.max' => 'Name cannot have more than 50 characters',
-            'type.required' => 'Type is mandatory',
             'type.in' => 'Type must be "C" or "D"'
         ];
     }

@@ -1,5 +1,6 @@
 <?php
 
+
 return [
 
     /*
@@ -44,10 +45,6 @@ return [
             'driver' => 'passport',
             'provider' => 'users',
         ],
-        'api' => [
-            'driver' => 'passport',
-            'provider' => 'vcards',
-        ],
     ],
 
     /*
@@ -72,15 +69,6 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
         ],
-        'vcards' => [
-            'driver' => 'eloquent',
-            'model' => App\Models\Vcard::class,
-        ],
-
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
     ],
 
     /*

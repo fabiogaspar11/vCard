@@ -157,7 +157,7 @@ export default {
   data() {
     return {
       showMessage: this.successMessage != null ? true : false,
-      phoneNumber: localStorage.getItem("phone_number"),
+      phoneNumber: localStorage.getItem("username"),
       vcard: null,
       name: null,
       email: null,

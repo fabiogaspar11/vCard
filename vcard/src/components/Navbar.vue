@@ -47,7 +47,7 @@
                   class="rounded-circle z-depth-0 avatar-img"
                   alt="avatar image"
                 />
-                <span class="avatar-text">{{ phone_number }}</span>
+                <span class="avatar-text">{{ username }}</span>
               </a>
               <ul
                 class="dropdown-menu dropdown-menu-dark dropdown-menu-end"
@@ -90,7 +90,7 @@ export default {
   name: "Navbar",
   data() {
     return {
-      phone_number: this.$store.getters.phoneNumber || null,
+      username: this.$store.getters.username || null,
       password: "",
     };
   },
