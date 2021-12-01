@@ -57,7 +57,7 @@ data() {
         this.name = name;
         },
         editDefaultCategory() {
-           this.errors = [];
+        this.errors = [];
         if(this.name == this.previousName){
           this.errors.name = "Name is equal";
           this.name = null
@@ -84,6 +84,7 @@ data() {
         })
         .catch((error) => {
           this.errors = [];
+          console.log(error.response)
           Object.entries(error.response.data.errors).forEach(([key, val]) => {
             this.errors[key] = val[0];
           });
