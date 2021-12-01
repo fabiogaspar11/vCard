@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\CategoryRequest;
+use App\Http\Requests\CategoryPost;
+use App\Http\Requests\CategoryPut;
 use App\Http\Resources\CategoryResource;
 use App\Models\Category;
 use Illuminate\Http\Request;
@@ -17,7 +18,7 @@ class CategoryController extends Controller
         return new CategoryResource($category);
     }
 
-    public function storeCategory(CategoryRequest $request)
+    public function storeCategory(CategoryPost $request)
     {
         $validated_data = $request->validated();
         $category = new Category();
@@ -26,7 +27,7 @@ class CategoryController extends Controller
         return new CategoryResource($category);
     }
 
-    public function updateCategory(CategoryRequest $request, Category $category)
+    public function updateCategory(CategoryPut $request, Category $category)
     {
         $validated_data = $request->validated();
         $category->fill($validated_data);

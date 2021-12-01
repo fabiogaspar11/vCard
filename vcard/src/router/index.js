@@ -7,6 +7,9 @@ import Transactions from '../views/transactions/Transactions.vue'
 import TransactionDetails from '../views/transactions/TransactionDetails.vue'
 import TransactionCreate from '../views/transactions/TransactionCreate.vue'
 import TransactionEdit from '../views/transactions/TransactionEdit.vue'
+import Categories from '../views/categories/Categories.vue'
+import CategoriesCreate from '../views/categories/CategoriesCreate.vue'
+import CategoriesEdit from '../views/categories/CategoriesEdit.vue'
 import Userdetails from '../views/user/Userdetails.vue'
 import Administrators from '../views/administrators/Administrators.vue'
 import DashboardAdmin from '../views/DashboardAdmin.vue'
@@ -68,6 +71,22 @@ const routes = [
     path: '/dashboardAdmin',
     name: 'dashboardAdmin',
     component: DashboardAdmin
+  },
+  {
+    path: '/categories',
+    name: 'categories',
+    component: Categories,
+  },
+  {
+    path: '/categoriesCreate',
+    name: 'categoriesCreate',
+    component: CategoriesCreate,
+  },
+  {
+    path: '/categoriesEdit',
+    name: 'categoriesEdit',
+    component: CategoriesEdit,
+    props: true
   }
 ]
 

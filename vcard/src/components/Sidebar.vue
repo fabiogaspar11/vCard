@@ -27,6 +27,16 @@
 
         <li class="nav-item">
           <router-link
+            class="nav-link"
+            :class="{ active: $route.name === 'categories' }"
+            :to="{ name: 'categories' }"
+            ><i class="bi bi-bookmark"></i>
+            Categories
+          </router-link>
+        </li>
+
+        <li class="nav-item">
+          <router-link
             class="btn btn-light"
             :class="{ active: $route.name === 'userdetails' }"
             :to="{ name: 'userdetails' }"
