@@ -37,7 +37,7 @@
 
         <li class="nav-item">
           <router-link
-            class="btn btn-light"
+            class="nav-link"
             :class="{ active: $route.name === 'userdetails' }"
             :to="{ name: 'userdetails' }"
             ><i class="bi bi-people"></i>
@@ -46,7 +46,7 @@
         </li>
         <li class="nav-item">
           <router-link
-            class="btn btn-light"
+            class="nav-link"
             :class="{ active: $route.name === 'transactions' }"
             :to="{ name: 'transactions' }"
             ><i class="bi bi-people"></i>

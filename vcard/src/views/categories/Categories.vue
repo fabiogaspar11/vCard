@@ -78,17 +78,15 @@ export default {
 
   },
   created(){
-   this.$axios.get(`/vcards/${this.$store.getters.phoneNumber}`)
+   this.$axios.get(`/vcards/${this.$store.getters.username}`)
     .then(response =>{
       this.vcard = response.data.data
-      this.$axios.get(`/vcards/${this.$store.getters.phoneNumber}/categories`).then((response) => {
+      this.$axios.get(`/vcards/${this.$store.getters.username}/categories`).then((response) => {
         this.categories = response.data.data;
       });
     })
-    .catch(() => {
-      this.$router.push({
-        name: "login",
-      });
+    .catch((error) => {
+      console.log(error)
     });
   },
 };

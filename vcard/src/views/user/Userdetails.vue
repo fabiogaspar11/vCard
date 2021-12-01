@@ -220,7 +220,7 @@ export default {
       console.log(...formData.entries());
 
       this.errors = [];
-      this.$axios.post(`/vcards/${this.$store.getters.phoneNumber}`, formData, this.config)
+      this.$axios.post(`/vcards/${this.$store.getters.username}`, formData, this.config)
         .then(response =>{
           this.vcard = response.data.data
         })
@@ -233,7 +233,7 @@ export default {
     },
   },
   created() {
-    this.$axios.get(`/vcards/${this.$store.getters.phoneNumber}`)
+    this.$axios.get(`/vcards/${this.$store.getters.username}`)
       .then((response) => {
         this.vcard = response.data.data;
         this.name = this.vcard.name;
