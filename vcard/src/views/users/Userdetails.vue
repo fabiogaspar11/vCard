@@ -165,8 +165,10 @@ export default {
       photo : "",
       pin: null,
       password: null,
+      old_password: null,
       currentPasswordCC: null,
       currentPasswordP: null,
+      confirmation_code: null,
       loaded: false,
       errors: [],
 
