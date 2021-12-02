@@ -15,7 +15,7 @@ export default createStore({
     },
     mutationAuthReset(state) {
       state.status = false,
-      state.phoneNumber = null
+      state.username = null
     },
   },
 

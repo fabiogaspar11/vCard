@@ -31,8 +31,7 @@ class VcardPut extends FormRequest
             'password'           => 'nullable|string|max:255',
             'confirmation_code'  => 'nullable|integer|digits:4',
             'blocked'            => 'nullable|integer|in:0,1',
-            'balance'            => ['nullable', 'numeric', 'min:0.00', 'regex:/^[0-9]+((.|,)[0-9]{1,2})?$/'],
-            'max_debit'          => ['nullable', 'numeric', 'regex:/^[0-9]+((.|,)[0-9]{1,2})?$/']
+            'max_debit'          => ['nullable', 'integer', 'min:0.00', 'regex:/^[0-9]+((.|,)[0-9]{1,2})?$/']
         ];
     }
     public function messages()
@@ -44,6 +43,9 @@ class VcardPut extends FormRequest
             'password.max' => 'Password cannot have more than 255 characters',
             'confirmation_code.integer' => 'PIN can only have numbers',
             'confirmation_code.digits' => 'PIN must have 4 digits',
+            'max_debit.integer' => 'Max debit must be a number',
+            'max_debit.min' => 'Max debit must be bigger than 0.00',
+            'max_debit.regex' => 'Max debit is in a wrong format',
         ];
     }
 }

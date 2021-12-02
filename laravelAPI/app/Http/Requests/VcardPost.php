@@ -31,9 +31,7 @@ class VcardPost extends FormRequest
             'password'           => 'required|string|max:255',
             'confirmation_code'  => 'required|integer|digits:4',
             'blocked'            => 'nullable|integer|in:0,1',
-            'balance'            => ['nullable', 'numeric', 'min:0.00', 'regex:/^[0-9]+((.|,)[0-9]{1,2})?$/'],
-            'max_debit'          => ['nullable', 'numeric', 'regex:/^[0-9]+((.|,)[0-9]{1,2})?$/']
-        ];
+            ];
     }
         public function messages()
         {

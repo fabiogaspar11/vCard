@@ -95,6 +95,9 @@ class TransactionController extends Controller
 
             throw ValidationException::withMessages(['value' => 'Balance is insufficient']);
         }
+        if($request->type == 'D' && $request->value > $vcard->max_debit){
+            throw ValidationException::withMessages(['value' => 'Value to debit cannot be bigger than the max debit ' . $vcard->max_debit]);
+        }
         $this->updateNewOldBalance($value, $balance, $Begintransaction);
 
 

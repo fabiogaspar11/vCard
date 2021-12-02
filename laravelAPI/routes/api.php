@@ -71,9 +71,13 @@ Route::middleware(['auth:api'])->group(function (){
 
     Route::get('vcards', [VcardController::class, 'getVcards']);
 
+    Route::get('vcards/filter', [VcardController::class, 'filterVcards']);
+
     Route::get('vcards/{vcard}', [VcardController::class, 'getVcard']);
 
     Route::get('vcards/{vcard}/alterBlock', [VcardController::class, 'alterBlock']);
+
+    Route::put('vcards/{vcard}/alterDebitLimit', [VcardController::class, 'alterDebitLimit']);
 
     Route::get('vcards/{vcard}/isVcard', [VcardController::class, 'checkVcard']);
 

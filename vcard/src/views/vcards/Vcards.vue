@@ -1,66 +1,78 @@
 <template>
    <SideBardAdmin></SideBardAdmin>
   <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-<div class="filter-bar">
-            <div class="filter-item">
-                <label>Estado</label>          
+    <div class="container d-flex flex-column">
+      <div class="container d-flex justify-content-between align-items-center" >
+
+            <div class="w-50 m-2">
+                <label>State</label>  
+                <select v-model="stateFilter"  class="form-select" >
+                <option value="1" >Blocked</option>
+                <option value="0" >Not Blocked</option>
+                </select>       
             </div>
-            <div class="filter-item">
-                <label>Vcard user phone number</label>
-                <input type="number" class="form-control" name="cliente" >
+            <div class="w-50 m-2">
+                <label>Vcard Phone number</label>
+                <input type="number"  class="form-control"  v-model="phoneNumberSearch">
             </div>
-            <div class="filter-item">
-                <label>Vcard user name</label>
-                <input type="text" class="form-control" name="data" >
-            </div>
-            <div class="filter-item" style="flex-grow: 0">
-                <label>Filtrar</label>
-                <a type="submit" class="btn btn-info" style="height: 38px;">
-                    <i class="bi bi-search-fill"></i>
-                </a>
-            </div>
+      </div>
+      <div class="container d-flex justify-content-between align-items-center" >
+      <label class="w-25">Vcard Name</label>
+        <div class="w-75">       
+            <input type="text" class="form-control" v-model="nameSearch">
         </div>
-      <h1>Vcards</h1>   
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Phone Number</th>
-            <th>Name</th>
-            <th>Balance</th>
-            <th>Blocked</th>
-            <th>Options</th>
-            <th>Change Debit</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="vcard in vcards" :key="vcard.id">
-            <td>{{ vcard.phone_number }}</td>
-            <td>{{ vcard.name }}</td>
-            <td>{{ vcard.balance }}</td>
-            <td>{{vcard.blocked == 1 ? 'Yes' : 'No'}}</td>
-            <td>
-              <div class="container">
-                 <a class="btn btn-info m-1" role="button" aria-pressed="true"  @click="$router.push({ name: 'userdetailsAdmin', params:{phone_number : vcard.phone_number }})">
-                  <i class="bi bi-arrows-fullscreen" style="color:white;margin-right:25%"></i>
-                </a>
-                <a class="btn btn-danger m-1" role="button" aria-pressed="true"  @click="deleteVcard(vcard.phone_number)">
-                  <i class="bi bi-trash" style="color:white;margin-right:25%"></i>
-                </a>
-               <a :class="vcard.blocked == 1 ? 'btn btn-success m-1' : 'btn btn-warning m-1'" role="button" aria-pressed="true" @click="toggleStatusBlock(vcard.phone_number)">
-                  <i :class="vcard.blocked == 1 ? 'bi bi-unlock-fill' : 'bi bi-lock-fill'" style="color:white;margin-right:25%"></i>      
-                </a>          
+        <div class="text-end m-2">
+          <a type="submit" class="btn btn-info">
+            <i class="bi bi-search" style="color:white;margin-right:25%" @click="submitSearch"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+    <h1>Vcards</h1>   
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Phone Number</th>
+          <th>Name</th>
+          <th>Balance</th>
+          <th>Blocked</th>
+          <th>Options</th>
+          <th>Change Debit</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="vcard in vcards" :key="vcard.phone_number">
+          <td>{{ vcard.phone_number }}</td>
+          <td>{{ vcard.name }}</td>
+          <td>{{ vcard.balance }}</td>
+          <td>{{vcard.blocked == 1 ? 'Yes' : 'No'}}</td>
+          <td class="w-25">
+            <div class="container w-75">
+                <a class="btn btn-info m-1 btn-sm" role="button" aria-pressed="true"  @click="$router.push({ name: 'userdetailsAdmin', params:{phone_number : vcard.phone_number }})">
+                <i class="bi bi-arrows-fullscreen" style="color:white;margin-right:25%"></i>
+              </a>
+              <a class="btn btn-danger m-1 btn-sm" role="button" aria-pressed="true"  @click="deleteVcard(vcard.phone_number)">
+                <i class="bi bi-trash" style="color:white;margin-right:25%"></i>
+              </a>
+              <a :class="vcard.blocked == 1 ? 'btn btn-success m-1 btn-sm ' : 'btn btn-warning m-1 btn-sm'" role="button" aria-pressed="true" @click="toggleStatusBlock(vcard.phone_number)">
+                <i :class="vcard.blocked == 1 ? 'bi bi-unlock-fill' : 'bi bi-lock-fill'" style="color:white;margin-right:25%"></i>      
+              </a>          
+            </div>
+          </td>
+          <td  class="w-25">
+              <div class="container d-flex flex-row">
+              <a class="btn btn-primary m-1 btn-sm" role="button" aria-pressed="true" @click="selectVcard(vcard)">
+                <i class="bi bi-credit-card" style="color:white;margin-right:25%"></i>
+              </a>           
+              <input v-if="selectedVcard === vcard" class="form-control w-50" type="number" v-model="newDebitLimit" >
+              <a v-if="selectedVcard === vcard" class="btn btn-success m-1 btn-sm" role="button" aria-pressed="true" @click="changeDebidLimit(vcard.phone_number, vcard.max_debit)">
+                <i class=" bi bi-check-circle-fill" style="color:white;margin-right:25%"></i>
+              </a>              
               </div>
-            </td>
-            <td>
-                <div class="container">
-                <a class="btn btn-primary m-1" role="button" aria-pressed="true">
-                  <i class="bi bi-credit-card" style="color:white;margin-right:25%"></i>
-                </a>
-                </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </main>
 </template>
 
@@ -73,10 +85,46 @@ export default {
   },
   data() {
     return {
-      vcards: null
+      vcards: null,
+      newDebitLimit:null,
+      debitButtonclicked:false,
+      selectedVcard:null,
+      phoneNumberSearch:null,
+      nameSearch:null,
+      stateFilter:null,
+       config : {
+        header : {
+          'Content-Type' : 'application/json'
+        }
+     }
     };
   },
   methods:{
+    submitSearch(){
+      let values = {};
+      if(this.stateFilter == null && this.nameSearch == null && this.phoneNumberSearch == null){
+          alert("No filter information provided");
+          return;
+      }
+      if(this.stateFilter != null){       
+        values.state = this.stateFilter;
+      }
+      if(this.nameSearch != null){       
+        values.name = this.nameSearch;     
+      }
+       if(this.phoneNumberSearch != null){       
+         values.phone_number = this.phoneNumberSearch;
+      }
+ 
+       this.$axios
+         .get("/vcards/filter", {params:values})
+         .then(response =>{
+            this.vcards = response.data.data; 
+         })
+         .catch((error)=>{
+           console.log(error.response.data)
+         });
+    },
       deleteVcard(phone_number){
          this.$axios
          .delete(`/vcards/${parseInt(phone_number)}`)
@@ -85,6 +133,32 @@ export default {
          })
          .catch((error)=>{
            console.log(error.response.data)
+         });
+      },
+      selectVcard(vcard) {
+            this.selectedVcard = vcard;
+      },
+      changeDebidLimit(phone_number, previousDebitLimit){
+        if(this.newDebitLimit==null){
+            alert("Must insert new debit limit");
+            return;
+        }
+        if(this.newDebitLimit==previousDebitLimit){
+            alert("New debit limit equal to the old debit limit - nothing to update");
+             return;
+        }
+        let vcardDebit={};
+        vcardDebit.max_debit = this.newDebitLimit;
+         this.$axios
+         .put(`/vcards/${parseInt(phone_number)}/alterDebitLimit`, vcardDebit)
+         .then(response =>{
+            this.vcards = response.data.data; 
+            alert(`Debit lemit of Vcard ${phone_number} was updated`);
+            this.$router.push({name:'dashboardAdmin'})
+         })
+         .catch((error)=>{
+           console.log(error.response.data)
+           alert("Error updating the debit limit "+error.response.data.max_debit);
          });
       },
       toggleStatusBlock(phone_number){

@@ -23,31 +23,7 @@ class TransactionPost extends FormRequest
      */
     public function rules()
     {
-        /*
-        $rulePairVcard  = 'nullable';
-        $rulesEachPaymentType = '';
-        if($this->payment_type == 'IBAN'){
-            $rulesEachPaymentType = 'regex:/^PT[0-9]{23}$/';
-        }
-        if($this->payment_type == 'MASTERCARD'){
-            $rulesEachPaymentType = 'regex:/^5[1-5][0-9]{14}|^(222[1-9]|22[3-9]\\d|2[3-6]\\d{2}|27[0-1]\\d|2720)[0-9]{12}$/';
-        }
-        if($this->payment_type == 'MB'){
-            $rulesEachPaymentType = 'regex:/^[0-9]{5}-[0-9]{9}$/';
-        }
-        if($this->payment_type == 'MBWAY'){
-            $rulesEachPaymentType = 'regex:/^(9[0-9])([0-9]{7})?$/';
-        }
-        if($this->payment_type == 'PAYPAL'){
-            $rulesEachPaymentType = 'email';
-        }
-        if($this->payment_type == 'VCARD'){
-            $rulesEachPaymentType = 'same:pair_vcard';
-            $rulePairVcard = 'required';
-        }
-        if($this->payment_type == 'VISA'){
-            $rulesEachPaymentType = 'regex:/^4[0-9]{12}(?:[0-9]{3})?$/';
-        }*/
+
         return [
             'vcard' => ['required','integer','exists:vcards,phone_number','digits:9','regex:/^(9[0-9])([0-9]{7})?$/'],
             'type' => ['required', 'string', 'in:C,D'],
@@ -85,14 +61,10 @@ class TransactionPost extends FormRequest
             'payment_reference.required' => 'Payment reference is mandatory',
             'payment_reference.string' => 'Payment reference must be a string',
             'payment_reference.max' => 'Payment reference cannot have more than 255 characters',
-          /*  'payment_reference.same' => 'Payment reference must be equal to Pair Vcard',
-            'payment_reference.regex' => 'Payment reference is not valid',
-          */
             'pair_vcard.integer' => 'Phone number of pair vcard must be a integer',
             'pair_vcard.exists' => 'There is no vcard with this phone number',
             'pair_vcard.digits' => 'Pair vcard Phone number must have 9 digits',
             'pair_vcard.regex' => 'Vcard Phone number must start with number 9',
-           // 'pair_vcard.required' => 'Pair vcard is mandatory',
 
             'category_id.integer' => 'Category id must be a integer',
             'category_id.exists' => 'There is no category with this id',

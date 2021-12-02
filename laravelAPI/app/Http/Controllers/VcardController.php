@@ -2,28 +2,25 @@
 
 namespace App\Http\Controllers;
 
+use Image;
 use Exception;
 use App\Models\Vcard;
 use App\Models\Category;
+
 use Illuminate\Support\Str;
 
+use Illuminate\Http\Request;
 use App\Http\Requests\VcardPut;
-
-use App\Http\Requests\VcardPhoto;
-
 use App\Models\DefaultCategory;
 use App\Http\Requests\VcardPost;
 use App\Http\Requests\VcardDelete;
-use App\Http\Resources\CategoryResource;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Resources\VcardResource;
-use App\Http\Resources\TransactionResource;
-use App\Models\Transaction;
-use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Storage;
-
-use Image;
+use App\Http\Resources\CategoryResource;
+use App\Http\Resources\TransactionResource;
+use Illuminate\Validation\ValidationException;
 
 class VcardController extends Controller
 {
@@ -116,7 +113,16 @@ class VcardController extends Controller
         return new VcardResource($vcard);
     }
 
-    public function destroyVcard(VcardDelete $request, Vcard $vcard){//VcardDelete $request,
+    public function alterDebitLimit(VcardPut $request,Vcard $vcard){
+        if(!isset($request->max_debit)){
+            throw ValidationException::withMessages(['max_debit' => "Max debit is mandatory"]);
+        }
+        $vcard->max_debit = $request->max_debit;
+        $vcard->save();
+        return new VcardResource($vcard);
+    }
+
+    public function destroyVcard(VcardDelete $request, Vcard $vcard){
         if( auth()->user()->user_type != 'A'){
             if(!isset($request->password)){
                 throw ValidationException::withMessages(['password' => "Password is mandatory"]);
@@ -196,5 +202,25 @@ class VcardController extends Controller
             ], 404);
         }
         return CategoryResource::collection($categories);
+    }
+
+    public function filterVcards(Request $request){
+
+        $state = $request->has('state') == false ? null : $request->input("state");
+        $phone_number = $request->has('phone_number') == false ? null : $request->input('phone_number');
+        $name = $request->has('name') == false ? null : $request->input('name');
+        $query = Vcard::query();
+        if($state != null) {
+            $query->where("blocked", '=', $state);
+        }
+        if($phone_number != null) {
+            $query->where('phone_number','=', $phone_number);
+        }
+        if($name != null) {
+            $query->where('name','=',$name);
+        }
+        $vcards = $query->get();
+
+        return VcardResource::collection($vcards);
     }
 }
