@@ -29,7 +29,7 @@ class TransactionPost extends FormRequest
             'type' => ['required', 'string', 'in:C,D'],
             'value' => ['required','numeric','min:0.01','regex:/^[0-9]+((.|,)[0-9]{1,2})?$/'],
             'payment_type' => ['required', 'string', 'max:10', 'exists:payment_types,code' ],
-            'payment_reference' => ['required','max:255'],
+            'payment_reference' => ['nullable','max:255'],
             'pair_vcard' => ['nullable','integer','digits:9','regex:/^(9[0-9])([0-9]{7})?$/','exists:vcards,phone_number'],
             'category_id' => 'nullable|integer','exists:categories,id',
             'description' => 'nullable|string|max:255'
@@ -58,7 +58,6 @@ class TransactionPost extends FormRequest
             'payment_type.max' => 'Payment type cannot have more than 10 characters',
             'payment_type.exists' => 'Payment type does not exists',
 
-            'payment_reference.required' => 'Payment reference is mandatory',
             'payment_reference.string' => 'Payment reference must be a string',
             'payment_reference.max' => 'Payment reference cannot have more than 255 characters',
             'pair_vcard.integer' => 'Phone number of pair vcard must be a integer',

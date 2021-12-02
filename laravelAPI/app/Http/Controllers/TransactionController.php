@@ -65,23 +65,33 @@ class TransactionController extends Controller
 
     public function storeTransaction(TransactionPost $request)
     {
-        $validated_data = $request->validated();
         $this->verifyCategoryBelongsToVcard($request);
         $paymentTypeFound = PaymentType::find($request->payment_type);
         $rule = json_decode($paymentTypeFound->validation_rules)->validation;
         if($request->payment_type == 'VCARD'){
-            $validator = Validator::make($request->all(), [
+            $request->validate([
                 'pair_vcard' => 'required',
-                'payment_reference' => $rule
+                'payment_reference' => [$rule, 'required']
+            ],
+            ['payment_reference.required' => 'Payment reference is mandatory',
+            'payment_reference.regex' => 'Payment reference is not valid',
+            'payment_reference.same' => 'Payment reference is not valid',
+            'payment_reference.email' => 'Payment reference is not valid',
+            'pair_vcard.required' => 'Pair vcard is mandatory'
             ]);
         }else{
-            $validator = Validator::make($request->all(), [
-                'payment_reference' => $rule,
+            $request->validate([
+                    'payment_reference' => [$rule, 'required'],
+                ],
+                ['payment_reference.required' => 'Payment reference is mandatory',
+                'payment_reference.regex' => 'Payment reference is not valid',
+                'payment_reference.same' => 'Payment reference is not valid',
+                'payment_reference.email' => 'Payment reference is not valid',
             ]);
         }
-        if($validator->fails()){
-            throw ValidationException::withMessages(['payment_reference' => 'Payment reference is not valid']);
-        }
+
+        $validated_data = $request->validated();
+
         if($request->pair_vcard == $request->vcard){
             throw ValidationException::withMessages(['pair_vcard' => 'Recipient vcard cannot be the same as the sender vcard']);
         }

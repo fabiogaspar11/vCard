@@ -187,6 +187,7 @@ export default {
           });
         })
         .catch((error) => {
+          console.log(error.response.data.errors)
           Object.entries(error.response.data.errors).forEach(([key, val]) => {
             this.errors[key] = val[0];
           });
