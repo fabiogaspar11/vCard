@@ -10,7 +10,7 @@ import TransactionEdit from '../views/transactions/TransactionEdit.vue'
 import Categories from '../views/categories/Categories.vue'
 import CategoriesCreate from '../views/categories/CategoriesCreate.vue'
 import CategoriesEdit from '../views/categories/CategoriesEdit.vue'
-import Userdetails from '../views/user/Userdetails.vue'
+import Userdetails from '../views/users/Userdetails.vue'
 import Administrators from '../views/administrators/Administrators.vue'
 import DashboardAdmin from '../views/DashboardAdmin.vue'
 import AdministratorCreate from '../views/administrators/AdministratorCreate.vue'
@@ -19,6 +19,7 @@ import DefaultCategoriesCreate from '../views/defaultCategories/DefaultCategorie
 import DefaultCategoriesEdit from '../views/defaultCategories/DefaultCategoriesEdit.vue'
 import Statistics from '../views/Statistics.vue'
 import Vcards from '../views/vcards/Vcards.vue'
+import UserdetailsAdmin from '../views/users/UserdetailsAdmin.vue'
 const routes = [
   {
     path: '/',
@@ -55,13 +56,13 @@ const routes = [
   {
     path: '/userdetails',
     name: 'userdetails',
-    component: Userdetails,
-    props: true
+    component: Userdetails
   },
   {
     path: '/transaction',
     name: 'transaction',
-    component: TransactionCreate
+    component: TransactionCreate,
+    props: true
   },
   {
     path: '/transactionEdit',
@@ -126,6 +127,12 @@ const routes = [
     path: '/statistics',
     name: 'statistics',
     component: Statistics
+  },
+  {
+    path: '/userdetailsAdmin',
+    name: 'userdetailsAdmin',
+    component: UserdetailsAdmin,
+    props: true
   }
 ]
 

@@ -57,7 +57,7 @@ data() {
         this.name = name;
         },
         editDefaultCategory() {
-           this.errors = [];
+        this.errors = [];
         if(this.name == this.previousName){
           this.errors.name = "Name is equal";
           this.name = null

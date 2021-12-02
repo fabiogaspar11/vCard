@@ -6,12 +6,14 @@ use Exception;
 use App\Models\Vcard;
 use App\Models\Category;
 use App\Models\Transaction;
+use App\Models\PaymentType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\TransactionPut;
 use App\Http\Requests\TransactionPost;
-use function PHPUnit\Framework\isNull;
 
+use function PHPUnit\Framework\isNull;
+use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\TransactionResource;
 use Illuminate\Validation\ValidationException;
 
@@ -65,7 +67,21 @@ class TransactionController extends Controller
     {
         $validated_data = $request->validated();
         $this->verifyCategoryBelongsToVcard($request);
-
+        $paymentTypeFound = PaymentType::find($request->payment_type);
+        $rule = json_decode($paymentTypeFound->validation_rules)->validation;
+        if($request->payment_type == 'VCARD'){
+            $validator = Validator::make($request->all(), [
+                'pair_vcard' => 'required',
+                'payment_reference' => $rule
+            ]);
+        }else{
+            $validator = Validator::make($request->all(), [
+                'payment_reference' => $rule,
+            ]);
+        }
+        if($validator->fails()){
+            throw ValidationException::withMessages(['payment_reference' => 'Payment reference is not valid']);
+        }
         if($request->pair_vcard == $request->vcard){
             throw ValidationException::withMessages(['pair_vcard' => 'Recipient vcard cannot be the same as the sender vcard']);
         }
@@ -75,7 +91,7 @@ class TransactionController extends Controller
         $value = $Begintransaction->value;
         $vcard = Vcard::find($request->vcard);
         $balance = $vcard->balance;
-        if($balance < $value){
+        if($request->type == 'D' && $balance < $value){
 
             throw ValidationException::withMessages(['value' => 'Balance is insufficient']);
         }
@@ -107,8 +123,12 @@ class TransactionController extends Controller
         $date = date('Y-m-d');
         $Begintransaction->date = $date;
         $Begintransaction->datetime = $datetime;
-        $Endtransaction->date = $date;
-        $Endtransaction->datetime = $datetime;
+
+        if($isVCARDTransaction){
+            $Endtransaction->date = $date;
+            $Endtransaction->datetime = $datetime;
+        }
+
 
         try {
           DB::beginTransaction();

@@ -51,6 +51,10 @@ data() {
         this.name = name;
         },
         createDefaultCategory() {
+        //if it doesn't click then nothing is emitted
+        if(this.type == null){
+          this.type = 'D';
+        }
         let defaultCategory = {};
         if(this.name != null){
             defaultCategory.name = this.name;

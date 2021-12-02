@@ -1,6 +1,6 @@
 <template>
         <label for="name"><b>Name:</b></label>
-        <input type="text" @input="updateName" v-model="name" class="form-control" placeholder="Enter Name" name="name" required/>
+        <input type="text" @change="updateName" v-model="name" class="form-control" placeholder="Enter Name" name="name" required/>
         <div v-show="errors.name != undefined" class="text-danger">
           {{ errors.name }}
         </div>
@@ -48,6 +48,9 @@ export default {
       
     },
     updateName(){
+      if(this.name == ''){
+        this.name = null
+      }
       this.$emit('updateName', this.name)
     }
   }

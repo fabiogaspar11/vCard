@@ -110,6 +110,11 @@ class VcardController extends Controller
         $vcard->save();
         return new VcardResource($vcard);
     }
+    public function alterBlock(Vcard $vcard){
+        $vcard->blocked = $vcard->blocked == 1 ? 0 : 1;
+        $vcard->save();
+        return new VcardResource($vcard);
+    }
 
     public function destroyVcard(VcardDelete $request, Vcard $vcard){//VcardDelete $request,
         if( auth()->user()->user_type != 'A'){
