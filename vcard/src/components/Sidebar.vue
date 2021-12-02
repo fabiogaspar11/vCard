@@ -49,8 +49,17 @@
             class="nav-link"
             :class="{ active: $route.name === 'transactions' }"
             :to="{ name: 'transactions' }"
-            ><i class="bi bi-people"></i>
+            ><i class="bi bi-list-columns"></i>
             Transactions
+          </router-link>
+        </li>
+        <li class="nav-item">
+          <router-link
+            class="nav-link"
+            :class="{ active: $route.name === 'statistics' }"
+            :to="{ name: 'statistics' }"
+            ><i class="bi bi-bar-chart-line-fill"></i>
+            Statistics
           </router-link>
         </li>
          <li class="nav-item">
