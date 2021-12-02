@@ -3,8 +3,8 @@ import axios from "axios";
 
 export default createStore({
   state: {
-    username: localStorage.getItem('username') || null,
-    status : false
+    username: null,
+    status: false
   },
   getters: {
     username: state => state.username
@@ -12,6 +12,7 @@ export default createStore({
   mutations: {
     mutationAuthOk(state) {
       state.status = true
+      state.username = localStorage.getItem('username')
     },
     mutationAuthReset(state) {
       state.status = false,
@@ -20,7 +21,7 @@ export default createStore({
   },
 
   actions: {
-    changeState(context){
+    changeState(context) {
       context.commit('mutationAuthOk')
     },
 
@@ -32,7 +33,6 @@ export default createStore({
         })
           .then(response => {
             context.commit('mutationAuthOk')
-            localStorage.setItem('username', credentials.username)
             resolve(response)
           })
           .catch(error => {

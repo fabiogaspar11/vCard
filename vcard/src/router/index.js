@@ -17,6 +17,7 @@ import AdministratorCreate from '../views/administrators/AdministratorCreate.vue
 import DefaultCategories from '../views/defaultCategories/DefaultCategories.vue'
 import DefaultCategoriesCreate from '../views/defaultCategories/DefaultCategoriesCreate.vue'
 import DefaultCategoriesEdit from '../views/defaultCategories/DefaultCategoriesEdit.vue'
+import Statistics from '../views/Statistics.vue'
 import Vcards from '../views/vcards/Vcards.vue'
 import UserdetailsAdmin from '../views/users/UserdetailsAdmin.vue'
 const routes = [
@@ -121,7 +122,13 @@ const routes = [
     path: '/vcards',
     name: 'vcards',
     component: Vcards
-  },{
+  },
+  {
+    path: '/statistics',
+    name: 'statistics',
+    component: Statistics
+  },
+  {
     path: '/userdetailsAdmin',
     name: 'userdetailsAdmin',
     component: UserdetailsAdmin,

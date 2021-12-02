@@ -165,8 +165,10 @@ export default {
       photo : "",
       pin: null,
       password: null,
+      old_password: null,
       currentPasswordCC: null,
       currentPasswordP: null,
+      confirmation_code: null,
       loaded: false,
       errors: [],
 
@@ -246,24 +248,6 @@ export default {
           name: "dashboard",
         });
       });
-      
-      /*
-    this.$axios.get(`/vcards/storage/900000002`)
-    .then((response) => {
-   
-      var reader = new FileReader();
-
-      reader.onload = (e) => {
-        this.photo = e.target.result;
-      }
-
-      if (response){
-        this.photo_url = btoa(response);
-        console.log(this.photo_url);
-        reader.readAsDataURL(this.photo_url);
-      }
-    })
-    */
   },
 };
 </script>
