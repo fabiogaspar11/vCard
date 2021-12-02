@@ -46,12 +46,9 @@
                 <a class="btn btn-danger m-1" role="button" aria-pressed="true"  @click="deleteVcard(vcard.phone_number)">
                   <i class="bi bi-trash" style="color:white;margin-right:25%"></i>
                 </a>
-               <a v-if="vcard.blocked == 1" class="btn btn-success m-1" role="button" aria-pressed="true">
-                  <i class="bi bi-unlock-fill" style="color:white;margin-right:25%"></i>      
-                </a>
-               <a v-else class="btn btn-warning m-1" role="button" aria-pressed="true">
-                  <i class="bi bi-lock-fill" style="color:white;margin-right:25%"></i>      
-                </a>            
+               <a :class="vcard.blocked == 1 ? 'btn btn-success m-1' : 'btn btn-warning m-1'" role="button" aria-pressed="true" @click="toggleStatusBlock(vcard.phone_number)">
+                  <i :class="vcard.blocked == 1 ? 'bi bi-unlock-fill' : 'bi bi-lock-fill'" style="color:white;margin-right:25%"></i>      
+                </a>          
               </div>
             </td>
             <td>
@@ -89,7 +86,19 @@ export default {
          .catch((error)=>{
            console.log(error.response.data)
          });
-      }
+      },
+      toggleStatusBlock(phone_number){
+          this.$axios
+         .get(`/vcards/${parseInt(phone_number)}/alterBlock`)
+         .then(response =>{
+            this.vcards = response.data.data; 
+            alert(`Vcard ${response.data.data.name} was ${response.data.data.blocked == 1 ? 'blocked': 'unblocked'}`);
+            this.$router.push({name:'dashboardAdmin'})
+         })
+         .catch((error)=>{
+           console.log(error.response.data)
+         });
+      }     
   },
   mounted() {
      this.$axios

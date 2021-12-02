@@ -52,6 +52,6 @@ class Transaction extends Model
     }
 
     public function paymentType(){
-        return $this->belongsTo(PaymentTypes::class, 'payment_type','code');
+        return $this->belongsTo(PaymentType::class, 'payment_type','code');
     }
 }

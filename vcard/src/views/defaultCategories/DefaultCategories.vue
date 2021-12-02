@@ -56,8 +56,7 @@ export default {
       alert(`Default Category ${response.data.data.name} removed`);
       this.$router.push({name:'dashboardAdmin'})
     })
-    .catch((error) => {
-      console.log(error)
+    .catch(() => {
       alert(`Could not delete default category ${id}`);
     });
     },

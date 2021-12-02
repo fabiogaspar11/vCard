@@ -48,13 +48,11 @@ export default {
   methods:{
     deleteAdmin(id){
     this.$axios.delete(`administrators/${id}`)
-    .then(response =>{
-      console.log(response)
+    .then(() =>{
       alert(`Administrator ${id} removed`);
       this.$router.push({name:'dashboardAdmin'})
     })
-    .catch((error) => {
-      console.log(error)
+    .catch(() => {
       alert(`Could not delete administrator ${id}`);
     });
     }

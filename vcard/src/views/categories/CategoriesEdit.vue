@@ -67,7 +67,6 @@ methods: {
       this.errors.type = "Nothing to update";
     }
     if(this.type == null){
-      console.log("ola")
       this.type = this.previousType;
     }
     

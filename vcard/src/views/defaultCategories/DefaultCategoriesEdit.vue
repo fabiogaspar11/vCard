@@ -84,7 +84,6 @@ data() {
         })
         .catch((error) => {
           this.errors = [];
-          console.log(error.response)
           Object.entries(error.response.data.errors).forEach(([key, val]) => {
             this.errors[key] = val[0];
           });

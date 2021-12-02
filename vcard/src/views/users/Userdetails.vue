@@ -192,7 +192,6 @@ export default {
       }
       this.photo_url = files[0]
       reader.readAsDataURL(files[0]);
-      console.log(this.photo_url)
     },
     
     closeSuccessMesage: function () {

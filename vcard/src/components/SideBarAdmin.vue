@@ -11,6 +11,11 @@
                    Administrator Dashboard
                 </a>
             </li>
+             <li class="nav-item">
+              <a class="btn btn-light" role="button" aria-pressed="true" @click="$router.push({name:'transaction', params:{isAdmin:true}})">
+                   Credit Transactions
+                </a>
+            </li>
             <li class="nav-item">
               <a class="btn btn-light" role="button" aria-pressed="true" @click="$router.push({name:'administrators'})">
                    Administrators

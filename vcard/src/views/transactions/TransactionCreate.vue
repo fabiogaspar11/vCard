@@ -1,6 +1,11 @@
 <template>
+  <div v-if="isAdmin">
+  <SideBardAdmin></SideBardAdmin>
+  </div>
+  <div v-else>
   <Sidebar></Sidebar>
-  <Navbar></Navbar>
+   <Navbar></Navbar>
+  </div>
 
   <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
     <div class="text-center mt-5">
@@ -45,6 +50,19 @@
         <div v-show="errors.pair_vcard != undefined" class="text-danger">
           {{ errors.pair_vcard }}
         </div>
+        <label  v-if="isAdmin" for="value"><b>Vcard: </b></label>
+        <input  
+          v-if="isAdmin"
+          type="number"
+          v-model="phoneNumber"
+          class="form-control"
+          placeholder="Enter Vcard"
+          name="value"
+          required
+        />
+        <div v-show="errors.vcard != undefined" class="text-danger">
+          {{ errors.vcard }}
+        </div><br>
         <label for="value"><b>Value: </b></label>
         <input
           type="number"
@@ -88,15 +106,21 @@
 <script>
 import Navbar from "../../components/Navbar.vue";
 import Sidebar from "../../components/Sidebar.vue";
-
 import TransactionCreateEdit from "../transactions/TransactionCreateEdit.vue";
-
+import SideBardAdmin from '../../components/SideBarAdmin.vue';
 export default {
   name: "TransactionCreate",
   components: {
     Sidebar,
     Navbar,
     TransactionCreateEdit,
+    SideBardAdmin
+  },
+  props:{
+    isAdmin:{
+      type:String,
+      required:false
+    }
   },
   data() {
     return {
@@ -106,7 +130,7 @@ export default {
       payment_types: [],
       loadedPaymentTypes: false,
       payment_type: null,
-      phoneNumber: localStorage.getItem("username"),
+      phoneNumber: this.isAdmin ? null : parseInt(localStorage.getItem("username")),
       payment_reference: null,
       category: null,
       description: null,
@@ -121,8 +145,8 @@ export default {
     },
     fillTransaction() {
       let transaction = {};
-      transaction.vcard = parseInt(this.phoneNumber);
-      transaction.type = "D";
+      transaction.vcard = this.phoneNumber;
+      transaction.type = this.isAdmin ? 'C' : 'D';
       if (this.payment_type != null) {
         transaction.payment_type = this.payment_type;
       }
@@ -150,7 +174,6 @@ export default {
 
     transactionCreate() {
       let transaction = this.fillTransaction();
-
       this.$axios
         .post(`/transactions`, transaction)
         .then(() => {
@@ -164,7 +187,6 @@ export default {
           });
         })
         .catch((error) => {
-          this.errors = [];
           Object.entries(error.response.data.errors).forEach(([key, val]) => {
             this.errors[key] = val[0];
           });
@@ -176,6 +198,13 @@ export default {
       .get(`/paymentTypes`)
       .then((response) => {
         this.payment_types = response.data.data;
+        if(this.isAdmin){
+         for (var i = this.payment_types.length - 1; i >= 0; --i) {
+              if (this.payment_types[i].code == 'VCARD') {
+                  this.payment_types.splice(i,1);
+              }
+          }
+        }
         this.loadedPaymentTypes = true;
       })
       .catch((error) => {

@@ -68,8 +68,7 @@ export default {
         .then((response) => {
           alert(`Category ${response.data.data.name} removed`);
         })
-        .catch((error) => {
-          console.log(error);
+        .catch(() => {
           alert(`Could not delete category ${id}`);
         });
     },

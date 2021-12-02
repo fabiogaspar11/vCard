@@ -43,8 +43,6 @@ Route::middleware(['auth:api'])->group(function (){
 
     Route::get('paymentTypes',[PaymentTypeController::class, 'getPaymentsTypes']);
 
-    Route::get('paymentTypes/{payment_type}',[PaymentTypeController::class, 'getPaymentType']);
-
     /*************************************** Categories ***************************************/
 
     Route::get('categories',[CategoryController::class, 'getCategories']);
@@ -74,6 +72,8 @@ Route::middleware(['auth:api'])->group(function (){
     Route::get('vcards', [VcardController::class, 'getVcards']);
 
     Route::get('vcards/{vcard}', [VcardController::class, 'getVcard']);
+
+    Route::get('vcards/{vcard}/alterBlock', [VcardController::class, 'alterBlock']);
 
     Route::get('vcards/{vcard}/isVcard', [VcardController::class, 'checkVcard']);
 

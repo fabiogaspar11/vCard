@@ -60,7 +60,8 @@ const routes = [
   {
     path: '/transaction',
     name: 'transaction',
-    component: TransactionCreate
+    component: TransactionCreate,
+    props: true
   },
   {
     path: '/transactionEdit',
