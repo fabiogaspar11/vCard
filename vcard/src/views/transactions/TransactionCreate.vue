@@ -79,6 +79,7 @@
           @updateCategory="updateCategory"
           @updateDescription="updateDescription"
           :errors="errors"
+          v-if="!this.isAdmin"
         ></TransactionCreateEdit>
         <div class="container">
           <br />
