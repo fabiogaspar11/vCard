@@ -16,12 +16,13 @@
           style="display: flex; flex-direction: column"
           v-show="loadedPaymentTypes"
         >
-          <label for="selectPaymentType"><b>Payment Type</b></label>
+          <label v-if="!isAdmin" for="selectPaymentType"><b>Payment Type</b></label>
           <select
             v-model="payment_type"
             name="payment_type_id"
             id="selectPaymentType"
             class="form-select"
+            v-if="!isAdmin"
           >
             <option
               v-for="payment in payment_types"
@@ -36,13 +37,14 @@
           </div>
         </div>
         <br />
-        <label for="payment_ref"><b>Payment reference: </b></label>
+        <label v-if="!isAdmin" for="payment_ref"><b>Payment reference: </b></label>
         <input
           type="text"
           v-model="payment_reference"
           placeholder="Enter Payment reference"
           name="payment_ref"
           required
+          v-if="!isAdmin"
         />
         <div v-show="errors.payment_reference != undefined" class="text-danger">
           {{ errors.payment_reference }}
@@ -79,6 +81,7 @@
           @updateCategory="updateCategory"
           @updateDescription="updateDescription"
           :errors="errors"
+          v-if="!isAdmin"
         ></TransactionCreateEdit>
         <div class="container">
           <br />
@@ -147,25 +150,28 @@ export default {
       let transaction = {};
       transaction.vcard = this.phoneNumber;
       transaction.type = this.isAdmin ? 'C' : 'D';
-      if (this.payment_type != null) {
-        transaction.payment_type = this.payment_type;
-      }
-      if (this.payment_reference != null) {
-        transaction.payment_reference = this.payment_reference;
-        if (this.payment_type == "VCARD") {
-          transaction.pair_vcard = this.payment_reference;
+
+      if(this.isAdmin){
+          transaction.payment_type = 'VCARD';
+          transaction.payment_reference = transaction.vcard;
+      }else{        
+        if (this.payment_type != null) {
+          transaction.payment_type = this.payment_type;
+        }
+        if (this.payment_reference != null) {
+          transaction.payment_reference = this.payment_reference;
+          if (this.payment_type == "VCARD") {
+            transaction.pair_vcard = this.payment_reference;
+          }
+        }
+        if (this.category != null) {
+          transaction.category_id = this.category;
+        }
+        if (this.description != null) {
+          transaction.description = this.description;
         }
       }
-      if (this.value != null) {
-        transaction.value = this.value;
-      }
 
-      if (this.category != null) {
-        transaction.category_id = this.category;
-      }
-      if (this.description != null) {
-        transaction.description = this.description;
-      }
       if (this.value != null) {
         transaction.value = this.value;
       }
@@ -174,6 +180,7 @@ export default {
 
     transactionCreate() {
       let transaction = this.fillTransaction();
+      console.log(transaction)
       this.$axios
         .post(`/transactions`, transaction)
         .then(() => {
@@ -187,6 +194,7 @@ export default {
           });
         })
         .catch((error) => {
+          this.errors=[]
           console.log(error.response.data.errors)
           Object.entries(error.response.data.errors).forEach(([key, val]) => {
             this.errors[key] = val[0];
@@ -199,13 +207,6 @@ export default {
       .get(`/paymentTypes`)
       .then((response) => {
         this.payment_types = response.data.data;
-        if(this.isAdmin){
-         for (var i = this.payment_types.length - 1; i >= 0; --i) {
-              if (this.payment_types[i].code == 'VCARD') {
-                  this.payment_types.splice(i,1);
-              }
-          }
-        }
         this.loadedPaymentTypes = true;
       })
       .catch((error) => {

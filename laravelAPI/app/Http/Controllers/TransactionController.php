@@ -66,34 +66,44 @@ class TransactionController extends Controller
     public function storeTransaction(TransactionPost $request)
     {
         $this->verifyCategoryBelongsToVcard($request);
-        $paymentTypeFound = PaymentType::find($request->payment_type);
-        $rule = json_decode($paymentTypeFound->validation_rules)->validation;
-        if($request->payment_type == 'VCARD'){
-            $request->validate([
-                'pair_vcard' => 'required',
-                'payment_reference' => [$rule, 'required']
-            ],
-            ['payment_reference.required' => 'Payment reference is mandatory',
-            'payment_reference.regex' => 'Payment reference is not valid',
-            'payment_reference.same' => 'Payment reference is not valid',
-            'payment_reference.email' => 'Payment reference is not valid',
-            'pair_vcard.required' => 'Pair vcard is mandatory'
-            ]);
-        }else{
-            $request->validate([
-                    'payment_reference' => [$rule, 'required'],
+        if(auth()->user()->user_type=='V'){
+            $paymentTypeFound = PaymentType::find($request->payment_type);
+            $rule = json_decode($paymentTypeFound->validation_rules)->validation;
+            if($request->payment_type == 'VCARD'){
+                $request->validate([
+                    'pair_vcard' => 'required',
+                    'payment_reference' => [$rule, 'required']
                 ],
                 ['payment_reference.required' => 'Payment reference is mandatory',
                 'payment_reference.regex' => 'Payment reference is not valid',
                 'payment_reference.same' => 'Payment reference is not valid',
                 'payment_reference.email' => 'Payment reference is not valid',
+                'pair_vcard.required' => 'Pair vcard is mandatory'
+            ]);
+            }else{
+                $request->validate([
+                    'payment_reference' => [$rule, 'required'],
+                ],
+                ['payment_reference.required' => 'Payment reference is mandatory',
+                'payment_reference.regex' => 'Payment reference is not valid',
+                'payment_reference.email' => 'Payment reference is not valid',
+                ]);
+            }
+        }else{
+            $request->validate([
+                'payment_reference' => 'same:vcard'
+            ],
+            [
+                'payment_reference.same' => 'Payment reference and vcard must match'
             ]);
         }
 
-        $validated_data = $request->validated();
+    $validated_data = $request->validated();
 
-        if($request->pair_vcard == $request->vcard){
-            throw ValidationException::withMessages(['pair_vcard' => 'Recipient vcard cannot be the same as the sender vcard']);
+        if(auth()->user()->user_type=='V'){
+            if($request->pair_vcard == $request->vcard){
+                throw ValidationException::withMessages(['pair_vcard' => 'Recipient vcard cannot be the same as the sender vcard']);
+            }
         }
         $Begintransaction = new Transaction();
         $Begintransaction->fill($validated_data);
@@ -114,7 +124,8 @@ class TransactionController extends Controller
         //Update vcard balance
         $vcard->balance = $Begintransaction->new_balance;
         $isVCARDTransaction = $Begintransaction->payment_type == "VCARD";
-        if($isVCARDTransaction){
+
+        if($isVCARDTransaction && auth()->user()->user_type=='V'){
             $Endtransaction = new Transaction();
             $Endtransaction->fill($validated_data);
             //Vcards and Pair vcards
@@ -132,12 +143,13 @@ class TransactionController extends Controller
             $Begintransaction->pair_vcard = null;
         }
 
+
         $datetime = date('Y-m-d H:i:s');
         $date = date('Y-m-d');
         $Begintransaction->date = $date;
         $Begintransaction->datetime = $datetime;
 
-        if($isVCARDTransaction){
+        if($isVCARDTransaction && auth()->user()->user_type=='V'){
             $Endtransaction->date = $date;
             $Endtransaction->datetime = $datetime;
         }
@@ -148,7 +160,7 @@ class TransactionController extends Controller
 
             $vcard->save();
 
-            if($isVCARDTransaction){
+            if($isVCARDTransaction  && auth()->user()->user_type=='V'){
                 $pairVcard->save();
                 $Begintransaction->save();
                 $Endtransaction->save();
