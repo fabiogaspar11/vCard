@@ -118,7 +118,7 @@ export default {
     })
     .catch(() => {
       this.$router.push({
-        name: "dashboardAdmin", //HERE
+        name: "login",
       });
     });
   },
