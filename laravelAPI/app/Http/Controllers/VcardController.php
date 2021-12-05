@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Http\Resources\CategoryResource;
 use App\Http\Resources\TransactionResource;
 use Illuminate\Validation\ValidationException;
+use Nette\Utils\Json;
 
 class VcardController extends Controller
 {
@@ -223,4 +224,44 @@ class VcardController extends Controller
 
         return VcardResource::collection($vcards);
     }
+
+
+    public function piggyBankState(Vcard $vcard){
+        return $vcard->custom_options == null ? ["response" => "No"] : ["response" =>  "Yes"];
+    }
+
+
+    public function createPiggyBank(Vcard $vcard){
+        $piggyBank = array();
+        $piggyBank["balance"] = 0;
+
+        $json = json_encode($piggyBank);
+        $vcard->custom_data =  $json;
+        $vcard->save();
+    }
+
+
+
+    public function piggyBankOperation(Vcard $vcard, Request $request){
+        $piggyBank = json_decode($vcard->custom_data);
+        $currentBalance = $piggyBank->balance;
+
+        if($request->type == 'C'){
+            $newBalance = $currentBalance + $request->amount;
+        }
+        if($request->type == 'D'){
+            $newBalance = $currentBalance - $request->amount;
+        }
+
+        $newPiggyBank = array();
+        $newPiggyBank["balance"] = $newBalance;
+
+        $json = json_encode($newPiggyBank);
+        $vcard->custom_data = $json;
+        $vcard->save();
+
+        return $newBalance;
+    }
+
+
 }
