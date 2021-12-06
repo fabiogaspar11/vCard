@@ -59,7 +59,7 @@ export default {
     return {
       vcard: null,
       categories: null,
-      phone_number: localStorage.getItem("phone_number") || null,
+      phone_number: localStorage.getItem("username") || null,
     };
   },
   methods: {
@@ -77,10 +77,10 @@ export default {
 
   },
   created(){
-   this.$axios.get(`/vcards/${this.$store.getters.username}`)
+   this.$axios.get(`/vcards/${this.phone_number}`)
     .then(response =>{
       this.vcard = response.data.data
-      this.$axios.get(`/vcards/${this.$store.getters.username}/categories`).then((response) => {
+      this.$axios.get(`/vcards/${this.phone_number}/categories`).then((response) => {
         this.categories = response.data.data;
       });
     })

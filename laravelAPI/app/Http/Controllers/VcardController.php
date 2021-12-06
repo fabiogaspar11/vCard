@@ -22,6 +22,7 @@ use App\Http\Resources\CategoryResource;
 use App\Http\Resources\TransactionResource;
 use App\Models\Transaction;
 use Illuminate\Validation\ValidationException;
+use Nette\Utils\Json;
 
 class VcardController extends Controller
 {
@@ -242,20 +243,50 @@ class VcardController extends Controller
         return $sql;
     }
 
-    public function getVcardTransactionsPaymentType(Request $request, Vcard $vcard){
-        $transactions = $vcard->transactions->sortByDesc('datetime');
-        if($transactions->isEmpty()){
-            return [
-                "error"=> "This vcard doesn't have any transactions yet"
-            ];
+    public function piggyBankState(Vcard $vcard){
+        return $vcard->custom_data == null ? ["response" => false] : ["response" => true];
+    }
+
+    public function getPiggyBankBalance(Vcard $vcard){
+        return $vcard->custom_data;
+    }
+
+
+    public function createPiggyBank(Vcard $vcard){
+        if($vcard->custom_data != null)
+            return "Vcard already has a piggy bank";
+
+        $piggyBank = array();
+        $piggyBank["balance"] = 0;
+
+        $json = json_encode($piggyBank);
+        $vcard->custom_data =  $json;
+        $vcard->save();
+        return $piggyBank["balance"];
+    }
+
+
+
+    public function piggyBankOperation(Vcard $vcard, Request $request){
+        $piggyBank = json_decode($vcard->custom_data);
+        $currentBalance = $piggyBank->balance;
+
+        if($request->type == 'C'){
+            $newBalance = $currentBalance + $request->amount;
+        }
+        if($request->type == 'D'){
+            $newBalance = $currentBalance - $request->amount;
         }
 
-        $sql = Transaction::select(DB::raw('payment_type, COUNT(payment_type) as count '))
-            	            ->where('vcard', $vcard->phone_number)
-                            ->groupBy('payment_type')
-                            ->get();
+        $newPiggyBank = array();
+        $newPiggyBank["balance"] = $newBalance;
 
+        $json = json_encode($newPiggyBank);
+        $vcard->custom_data = $json;
+        $vcard->save();
 
-        return $sql;
+        return $newBalance;
     }
+
+
 }
