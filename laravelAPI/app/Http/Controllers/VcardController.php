@@ -227,17 +227,25 @@ class VcardController extends Controller
 
 
     public function piggyBankState(Vcard $vcard){
-        return $vcard->custom_options == null ? ["response" => "No"] : ["response" =>  "Yes"];
+        return $vcard->custom_data == null ? ["response" => false] : ["response" => true];
+    }
+
+    public function getPiggyBankBalance(Vcard $vcard){
+        return $vcard->custom_data;
     }
 
 
     public function createPiggyBank(Vcard $vcard){
+        if($vcard->custom_data != null)
+            return "Vcard already has a piggy bank";
+
         $piggyBank = array();
         $piggyBank["balance"] = 0;
 
         $json = json_encode($piggyBank);
         $vcard->custom_data =  $json;
         $vcard->save();
+        return $piggyBank["balance"];
     }
 
 

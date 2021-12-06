@@ -99,6 +99,7 @@ Route::middleware(['auth:api'])->group(function (){
 
     Route::post('vcards/{vcard}/piggyBankOperation',[VcardController::class, 'piggyBankOperation']);
 
+    Route::get('vcards/{vcard}/getPiggyBankBalance',[VcardController::class, 'getPiggyBankBalance']);
 
 
 
