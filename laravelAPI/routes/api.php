@@ -125,5 +125,4 @@ Route::middleware(['auth:api'])->group(function (){
 Route::post('/login', [AuthController::class, 'login']);
 
 /*************************************** Create vcard ***************************************/
-Route::post('vcards', [VcardController::class, 'storeVcard'])->middleware('can:create,App\Models\Vcard');
-
+Route::post('vcards', [VcardController::class, 'storeVcard']);
