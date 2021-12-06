@@ -103,7 +103,7 @@ export default {
     submitSearch(){
       let values = {};
       if(this.stateFilter == null && this.nameSearch == null && this.phoneNumberSearch == null){
-          alert("No filter information provided");
+          this.$toast.error("No filter information provided");
           return;
       }
       if(this.stateFilter != null){       
@@ -140,12 +140,12 @@ export default {
       },
       changeDebidLimit(phone_number, previousDebitLimit){
         if(this.newDebitLimit==null){
-            alert("Must insert new debit limit");
+            this.$toast.error("Must insert new debit limit");
             return;
         }
         if(this.newDebitLimit==previousDebitLimit){
-            alert("New debit limit equal to the old debit limit - nothing to update");
-             return;
+            this.$toast.error("New debit limit equal to the old debit limit - nothing to update");
+            return;
         }
         let vcardDebit={};
         vcardDebit.max_debit = this.newDebitLimit;
@@ -153,12 +153,11 @@ export default {
          .put(`/vcards/${parseInt(phone_number)}/alterDebitLimit`, vcardDebit)
          .then(response =>{
             this.vcards = response.data.data; 
-            alert(`Debit lemit of Vcard ${phone_number} was updated`);
+            this.$toast.info(`Debit lemit of Vcard ${phone_number} was updated`);
             this.$router.push({name:'dashboardAdmin'})
          })
          .catch((error)=>{
-           console.log(error.response.data)
-           alert("Error updating the debit limit "+error.response.data.max_debit);
+            this.$toast.info("Error updating the debit limit "+error.response.data.max_debit);
          });
       },
       toggleStatusBlock(phone_number){
@@ -166,7 +165,7 @@ export default {
          .get(`/vcards/${parseInt(phone_number)}/alterBlock`)
          .then(response =>{
             this.vcards = response.data.data; 
-            alert(`Vcard ${response.data.data.name} was ${response.data.data.blocked == 1 ? 'blocked': 'unblocked'}`);
+            this.$toast.info(`Vcard ${response.data.data.name} was ${response.data.data.blocked == 1 ? 'blocked': 'unblocked'}`);
             this.$router.push({name:'dashboardAdmin'})
          })
          .catch((error)=>{

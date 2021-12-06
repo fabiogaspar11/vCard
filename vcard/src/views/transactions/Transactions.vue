@@ -60,6 +60,23 @@ export default {
       this.transactions = response.data.data; 
     });
   },
+  computed: {
+    newTransacion(){
+      return this.$store.getters.newTransacion;
+    }
+  },
+   watch: {
+      newTransacion() {
+        console.log("shit")
+        if(this.$store.getters.newTransacion){
+          this.$axios
+          .get(`/vcards/${this.phoneNumber}/transactions`)
+          .then(response =>{
+          this.transactions = response.data.data; 
+        });
+        }
+      }
+   }
 };
 </script>
 

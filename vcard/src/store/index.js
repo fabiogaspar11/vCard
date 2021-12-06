@@ -5,22 +5,29 @@ export default createStore({
   state: {
     username: null,
     status: false,
-    type:null
+    type:null,
+    newTransacion:null
   },
   getters: {
     username: state => state.username,
-    type: state => state.type
+    type: state => state.type,
+    newTransacion : state => state.newTransacion,
   },
   mutations: {
+    toggleNewTransacion(state, value){
+      state.newTransacion = value
+    },
     mutationAuthOk(state) {
       state.status = true
       state.username = localStorage.getItem('username')
       state.type = isNaN(parseInt(localStorage.getItem('username'))) ? 'A' : 'V'
+      state.newTransacion = false
     },
     mutationAuthReset(state) {
       state.status = false,
       state.username = null,
       state.type = null
+      state.newTransacion = null
     },
   },
 

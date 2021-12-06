@@ -27,7 +27,6 @@ io.on('connection', function (socket) {
     })   
     
     socket.on('newTransaction', function (transaction, username) {
-        console.log("New Transacion created")
         io.to(username).emit('newTransaction', transaction, username)
     })
    })

@@ -105,12 +105,25 @@ export default {
     moneyUser: function () {
       return this.vcard == null ? "0.00" : this.vcard.balance;
     },
+    newTransacion(){
+      return this.$store.getters.newTransacion;
+    }
   },
   methods: {
     closeSuccessMesage: function () {
       this.showMessage = false;
     },
   },
+  watch: {
+  newTransacion() {
+    if(this.$store.getters.newTransacion){
+      this.$axios.get(`/vcards/${this.phoneNumber}`)
+      .then(response =>{
+        this.vcard = response.data.data
+      });
+    }
+  }
+},
   created(){
    this.$axios.get(`/vcards/${this.phoneNumber}`)
     .then(response =>{

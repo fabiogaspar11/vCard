@@ -49,11 +49,11 @@ export default {
     deleteAdmin(id){
     this.$axios.delete(`administrators/${id}`)
     .then(() =>{
-      alert(`Administrator ${id} removed`);
+      this.$toast.info(`Administrator ${id} removed`);
       this.$router.push({name:'dashboardAdmin'})
     })
     .catch(() => {
-      alert(`Could not delete administrator ${id}`);
+      this.$toast.info(`Could not delete administrator ${id}`);
     });
     }
   },

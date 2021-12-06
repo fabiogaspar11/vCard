@@ -66,10 +66,10 @@ export default {
     deleteCategory(id) {
       this.$axios.delete(`categories/${id}`)
         .then((response) => {
-          alert(`Category ${response.data.data.name} removed`);
+          this.$toast.info(`Category ${response.data.data.name} removed`);
         })
         .catch(() => {
-          alert(`Could not delete category ${id}`);
+          this.$toast.info(`Could not delete category ${id}`);
         });
     },
   },

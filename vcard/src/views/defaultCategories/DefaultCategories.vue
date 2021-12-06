@@ -53,11 +53,11 @@ export default {
     deleteCategory(id){
     this.$axios.delete(`defaultCategories/${id}`)
     .then(response =>{
-      alert(`Default Category ${response.data.data.name} removed`);
+      this.$toast.info(`Default Category ${response.data.data.name} removed`);
       this.$router.push({name:'dashboardAdmin'})
     })
     .catch(() => {
-      alert(`Could not delete default category ${id}`);
+       this.$toast.info(`Could not delete default category ${id}`);
     });
     },
   },
