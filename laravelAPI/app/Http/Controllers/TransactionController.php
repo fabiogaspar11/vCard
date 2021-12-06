@@ -101,7 +101,7 @@ class TransactionController extends Controller
 
         $vcard = Vcard::find($request->vcard);
         $balance = $vcard->balance;
-        $value = $Begintransaction->value;
+        $value = number_format($Begintransaction->value,2);
         $difference = 0;
         $roundedValue = 0;
 
