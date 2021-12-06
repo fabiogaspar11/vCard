@@ -18,10 +18,17 @@
       >
         <h1 class="h2">Statistics</h1>
         
-        <line-chart :data="chartData"> </line-chart>
+        
+      </div>
+      <div class="chartLine">     
+        <!-- <line-chart :chartdata="chartData" :options="chartOptions"/>  -->
+        <pie-chart :data="showData"></pie-chart>
       </div>
     </main>
   </div>
+
+
+
 </template>
 <script>
 import Sidebar from "../components/Sidebar.vue";
@@ -35,24 +42,54 @@ export default {
   },
   data() {
     return {
-        chartData: {
-            '2017-05-13': 2,
-            '2017-05-14': 5,
-            '2017-05-15': 4,
-        }
+      transactions: null,
+      phoneNumber : localStorage.getItem('username'),
+      data: [
+        
+      ],
+      showData: null,
     };
   },
-  methods: {
-  },
+  mounted() {
+    /*this.$axios
+    .get(`/vcards/${this.phoneNumber}/transactions`)
+    .then(response =>{
+      this.transactions = response.data.data;
+      this.transactions.filter((row) => {
+        //console.log([`${row.id}`, parseInt(row.value)])
+        this.data.push([`${row.payment_type}`, parseInt(row.value)])
+        return [`${row.id}`, parseInt(row.value)]
+      })
 
-  created(){
+      this.showData = this.data
+      console.log(this.showData)
+    });*/
+
+    this.$axios.get(`/vcards/${this.phoneNumber}/transactionsPaymentType`)
+    .then(response =>{
+      this.transactions = response.data;
+      this.transactions.filter((row) => {
+        this.data.push([`${row.payment_type}`, parseInt(row.count)])
+        return [`${row.id}`, parseInt(row.count)]
+      })
+
+      this.showData = this.data
+      console.log(this.showData)
+    })
+
 
   },
 };
 </script>
 
 
-<style scoped lang="scss">
+<style>
+.chartLine{
+  margin: auto;
+  height: auto;
+  width: 50%;
+}
+
 .center {
   display: block;
   margin-left: auto;

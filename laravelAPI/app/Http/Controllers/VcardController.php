@@ -20,6 +20,7 @@ use App\Http\Resources\VcardResource;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Resources\CategoryResource;
 use App\Http\Resources\TransactionResource;
+use App\Models\Transaction;
 use Illuminate\Validation\ValidationException;
 use Nette\Utils\Json;
 
@@ -225,6 +226,22 @@ class VcardController extends Controller
         return VcardResource::collection($vcards);
     }
 
+    public function getVcardTransactionsPaymentType(Request $request, Vcard $vcard){
+        $transactions = $vcard->transactions->sortByDesc('datetime');
+        if($transactions->isEmpty()){
+            return [
+                "error"=> "This vcard doesn't have any transactions yet"
+            ];
+        }
+
+        $sql = Transaction::select(DB::raw('payment_type, COUNT(payment_type) as count '))
+            	            ->where('vcard', $vcard->phone_number)
+                            ->groupBy('payment_type')
+                            ->get();
+
+
+        return $sql;
+    }
 
     public function piggyBankState(Vcard $vcard){
         return $vcard->custom_data == null ? ["response" => false] : ["response" => true];
