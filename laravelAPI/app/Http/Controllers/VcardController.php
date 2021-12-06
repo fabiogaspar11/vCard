@@ -206,6 +206,15 @@ class VcardController extends Controller
         return CategoryResource::collection($categories);
     }
 
+    public function getVcardCategoriesType(Vcard $vcard){
+        $sql = Category::select(DB::raw('type, COUNT(type) as count '))
+            	            ->where('vcard', $vcard->phone_number)
+                            ->groupBy('type')
+                            ->get();
+        return $sql;
+    }
+
+
     public function filterVcards(Request $request){
 
         $state = $request->has('state') == false ? null : $request->input("state");
@@ -226,22 +235,30 @@ class VcardController extends Controller
         return VcardResource::collection($vcards);
     }
 
-    public function getVcardTransactionsPaymentType(Request $request, Vcard $vcard){
-        $transactions = $vcard->transactions->sortByDesc('datetime');
-        if($transactions->isEmpty()){
-            return [
-                "error"=> "This vcard doesn't have any transactions yet"
-            ];
-        }
-
+    public function getVcardTransactionsPaymentType(Vcard $vcard){
         $sql = Transaction::select(DB::raw('payment_type, COUNT(payment_type) as count '))
             	            ->where('vcard', $vcard->phone_number)
                             ->groupBy('payment_type')
                             ->get();
-
-
         return $sql;
     }
+
+    public function getVcardTransactionType(Vcard $vcard){
+        $sql = Transaction::select(DB::raw('type, COUNT(type) as count '))
+            	            ->where('vcard', $vcard->phone_number)
+                            ->groupBy('type')
+                            ->get();
+        return $sql;
+    }
+
+    public function getVcardCategoriesPaymentTypeValue(Vcard $vcard){
+        $sql = Transaction::select(DB::raw('payment_type, Sum(value) as Value'))
+            	            ->where('vcard', $vcard->phone_number)
+                            ->groupBy('payment_type')
+                            ->get();
+        return $sql;
+    }
+
 
     public function piggyBankState(Vcard $vcard){
         return $vcard->custom_data == null ? ["response" => false] : ["response" => true];

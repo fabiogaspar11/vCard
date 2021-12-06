@@ -105,6 +105,13 @@ Route::middleware(['auth:api'])->group(function (){
 
     Route::get('vcards/{vcard}/transactionsPaymentType', [VcardController::class, 'getVcardTransactionsPaymentType']);
 
+    Route::get('vcards/{vcard}/transactionsType', [VcardController::class, 'getVcardTransactionType']);
+
+    Route::get('vcards/{vcard}/categoriesType', [VcardController::class, 'getVcardCategoriesType']);
+
+    Route::get('vcards/{vcard}/transactionsPaymentTypeValue', [VcardController::class, 'getVcardCategoriesPaymentTypeValue']);
+
+
     /*************************************** Transactions ***************************************/
 
     Route::post('transactions', [TransactionController::class, 'storeTransaction'])->middleware('can:create,App\Models\Transaction');
