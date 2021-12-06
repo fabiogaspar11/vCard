@@ -98,6 +98,8 @@ Route::middleware(['auth:api'])->group(function (){
 
     Route::get('vcards/{vcard}/createPiggyBank',[VcardController::class, 'createPiggyBank'])->middleware('can:update,vcard');
 
+    Route::get('vcards/{vcard}/getPiggyBankBalance',[VcardController::class, 'getPiggyBankBalance'])->middleware('can:view,vcard');
+
     Route::post('vcards/{vcard}/piggyBankOperation',[VcardController::class, 'piggyBankOperation'])->middleware('can:update,vcard');
 
 
