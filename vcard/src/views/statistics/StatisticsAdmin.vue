@@ -121,7 +121,7 @@ export default {
         this.transactions = response.data;
         this.transactions.filter((row) => {
           if (rowTransaction == 'transactionsType') this.data.push([`${row.type}`, parseInt(row.count)])
-          else if (rowTransaction == 'transactionsPaymentType') this.data.push([`${row.type}`, parseInt(row.count)])
+          else if (rowTransaction == 'transactionsPaymentType') this.data.push([`${row.payment_type}`, parseInt(row.count)])
           else this.data.push([`${row.payment_type}`, parseInt(row.Value)])         
         })
         this.showData = this.data
