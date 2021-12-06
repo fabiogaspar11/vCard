@@ -6,9 +6,19 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import axios from "axios";
+import VueSocketIO from 'vue-3-socket.io'
+import Toaster from "@meforma/vue-toaster"
 
+const socketIO = new VueSocketIO({
+    debug: true,
+    connection: 'http://localhost:8080',
+})
+let toastOptions = {
+    position: 'top',
+    timeout: 3000,
+}
 axios.defaults.baseURL = 'http://laravelapi.test/api'
 
 const app = createApp(App)
 app.config.globalProperties.$axios = axios
-app.use(store).use(router).mount('#app')
+app.use(store).use(router).use(Toaster, toastOptions).use(socketIO).mount('#app')

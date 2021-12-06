@@ -77,8 +77,11 @@ export default {
             "Bearer " + response.data.access_token;
           localStorage.setItem("access_token", response.data.access_token);
           localStorage.setItem("username", this.username);
+          return response;
         })
         .then(() => {
+        this.$toast.success('User has logged in on the application.');
+         this.$socket.emit('logged_in', this.username, this.$store.getters.username)        
           this.$router.push({
             name: "dashboard",
           });

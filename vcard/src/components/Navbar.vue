@@ -63,8 +63,8 @@
                   </router-link>
                 </li>
                 <li>
-                  <a class="dropdown-item"
-                    ><i class="bi bi-key-fill"></i>Change password</a
+                  <button class="dropdown-item"
+                    ><i class="bi bi-key-fill"></i>Change password</button
                   >
                 </li>
                 <li>
@@ -96,11 +96,14 @@ export default {
   },
   components: {},
   methods: {
-    logout() {
-      localStorage.removeItem("access_token");
+    logout() { 
       this.$store
         .dispatch("authLogout")
         .then(() => {
+          localStorage.removeItem("access_token");
+          localStorage.removeItem("username");
+          this.$socket.emit('logged_out', this.username);
+          this.$toast.success('User has logged out of the application.');
           delete axios.defaults.headers.common.Authorization;
           this.$router.push({ name: "home" });
         })

@@ -102,7 +102,7 @@
       </div>
     </div>
   </main>
-</template >
+</template>
 
 <script>
 import Navbar from "../../components/Navbar.vue";
@@ -177,7 +177,17 @@ export default {
       let transaction = this.fillTransaction();
       this.$axios
         .post(`/transactions`, transaction)
-        .then(() => {
+        .then((response) => {
+          let destination = null;
+          if(transaction.payment_type == 'VCARD'){
+              destination = transaction.payment_reference;
+          }else if(this.isAdmin){
+              destination = transaction.vcard.toString();
+          }
+          if(transaction.payment_type == 'VCARD' || this.isAdmin){
+            this.$socket.emit('newTransaction', response.data.data, destination);
+          }
+          
           transaction = null;
           this.$router.push({
             name: "dashboard",

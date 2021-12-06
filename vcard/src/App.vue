@@ -21,6 +21,13 @@ export default {
       });
     }
   },
+    sockets: {
+    newTransaction (params) {
+    let transaction = params[0];
+    let origin = transaction.type == 'D' ? transaction.vcard : transaction.payment_reference;
+    this.$toast.show(`Money was transfer to this account! [Amount: ${transaction.value} | From: ${origin}]`, {type:"success",timeout:3000})
+ }
+ }
 };
 </script>
 

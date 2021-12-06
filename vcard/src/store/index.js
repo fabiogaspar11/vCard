@@ -4,19 +4,23 @@ import axios from "axios";
 export default createStore({
   state: {
     username: null,
-    status: false
+    status: false,
+    type:null
   },
   getters: {
-    username: state => state.username
+    username: state => state.username,
+    type: state => state.type
   },
   mutations: {
     mutationAuthOk(state) {
       state.status = true
       state.username = localStorage.getItem('username')
+      state.type = isNaN(parseInt(localStorage.getItem('username'))) ? 'A' : 'V'
     },
     mutationAuthReset(state) {
       state.status = false,
-      state.username = null
+      state.username = null,
+      state.type = null
     },
   },
 
