@@ -80,7 +80,7 @@ Route::middleware(['auth:api'])->group(function (){
 
     Route::put('vcards/{vcard}/alterDebitLimit', [VcardController::class, 'alterDebitLimit'])->middleware('can:update,vcard');
 
-    Route::get('vcards/{vcard}/isVcard', [VcardController::class, 'checkVcard'])->middleware('can:view,vcard');
+    Route::get('vcards/{vcard}/isVcard', [VcardController::class, 'checkVcard']);
 
     Route::put('vcards/{vcard}', [VcardController::class, 'updateVcard'])->middleware('can:update,vcard');
 
@@ -132,5 +132,4 @@ Route::middleware(['auth:api'])->group(function (){
 Route::post('/login', [AuthController::class, 'login']);
 
 /*************************************** Create vcard ***************************************/
-Route::post('vcards', [VcardController::class, 'storeVcard'])->middleware('can:create,App\Models\Vcard');
-
+Route::post('vcards', [VcardController::class, 'storeVcard']);
