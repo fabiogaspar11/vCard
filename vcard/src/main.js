@@ -25,4 +25,4 @@ axios.defaults.baseURL = 'http://laravelapi.test/api'
 
 const app = createApp(App)
 app.config.globalProperties.$axios = axios
-app.use(store).use(router).use(Toaster, toastOptions).use(socketIO).mount('#app')
+app.use(store).use(router).use(Chartkick.use(Chart)).use(Toaster, toastOptions).use(socketIO).mount('#app')
