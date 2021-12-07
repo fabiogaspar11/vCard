@@ -34,16 +34,18 @@ export default {
       let state = params[0] ? "blocked" : "unblocked"
       this.$toast.show(`This vcard account was ${state}`, {type:"info",timeout:3000})
       this.$store.commit('toggleVcardStatus', true)
-      this.$store
-        .dispatch("logOutDeleteUser")
-        .then(() => {
-          localStorage.removeItem("access_token");
-          localStorage.removeItem("username");
-          this.$socket.emit('logged_out', params[1]);
-          this.$toast.success('User has logged out of the application.');
-          delete axios.defaults.headers.common.Authorization;
-          this.$router.push({ name: "home" });
-        })
+      if(params[0]){
+        this.$store
+          .dispatch("logOutDeleteUser")
+          .then(() => {
+            localStorage.removeItem("access_token");
+            localStorage.removeItem("username");
+            this.$socket.emit('logged_out', params[1]);
+            this.$toast.success('User has logged out of the application.');
+            delete axios.defaults.headers.common.Authorization;
+            this.$router.push({ name: "home" });
+          })
+      }
   },
   userDeleted (username) {
       this.$toast.show(`This user ${username} was deleted by an administrator`, {type:"info",timeout:3000})
