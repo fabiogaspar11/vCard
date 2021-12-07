@@ -237,11 +237,14 @@ class VcardController extends Controller
             if($transactionType != null) {
                 $query->where('type','=',$transactionType);
             }
-            if($orderByAmount){
+            if($orderByAmount && !$orderByMostRecent){
                 $query->orderBy('value','asc');
             }
-            if($orderByMostRecent){
-                $query->orderBy('datetime','desc');
+            if($orderByMostRecent && !$orderByAmount){
+                $query->orderBy('date','desc');
+            }
+            if($orderByMostRecent && $orderByAmount){
+                $query->orderBy('date','desc')->orderBy('value','asc');
             }
             $transactions = $query->get();
         }
