@@ -325,10 +325,20 @@ class VcardController extends Controller
         $piggyBank = json_decode($vcard->custom_data);
         $currentBalance = $piggyBank->balance;
 
+        if(!isset($request->amount)){
+            throw ValidationException::withMessages(['amount' => "Value is mandatory"]);
+        }
+        if($request->amount <= 0){
+            throw ValidationException::withMessages(['amount' => "Value must be a positive number"]);
+        }
+        if($currentBalance + $request->amount > $request->balance){
+            throw ValidationException::withMessages(['amount' => "Money value cannot be superior than your balance"]);
+        }
+
         if($request->type == 'C'){
             $newBalance = $currentBalance + $request->amount;
         }
-        if($request->type == 'D'){
+        else if($request->type == 'D'){
             $newBalance = $currentBalance - $request->amount;
         }
 

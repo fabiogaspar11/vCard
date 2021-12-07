@@ -39,6 +39,11 @@ Route::middleware(['auth:api'])->group(function (){
 
     Route::delete('administrators/{admin}', [AdministratorController::class, 'destroyAdministrator'])->middleware('can:delete,admin');
 
+
+
+    
+
+
     /*************************************** PaymentTypes ***************************************/
 
     Route::get('paymentTypes',[PaymentTypeController::class, 'getPaymentsTypes']);
