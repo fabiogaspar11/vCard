@@ -64,7 +64,7 @@
         </li>
         <li class="nav-item">
           <router-link class="btn btn-light" :to="{ name: 'dashboardAdmin' }"
-            >Administrator Dashboard
+            ><i class="bi bi-key"></i>Administrator Dashboard
           </router-link>
         </li>
       </ul>

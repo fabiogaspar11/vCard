@@ -4,11 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\UserResource;
-
-use function PHPUnit\Framework\isNull;
 
 class AuthController extends Controller
 {
@@ -33,7 +29,7 @@ class AuthController extends Controller
                 return response()->json(
                     ['login' => 'User is blocked'], 401);
             }
-            if(isNull($user->deleted_at)){
+            if($user->deleted_at!=null){
                 return response()->json(
                     ['login' => 'User does not exist'], 401);
             }
