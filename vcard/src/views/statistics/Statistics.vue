@@ -24,7 +24,7 @@
         <div class="container-fluid statistics">
           <div class="row">
             <div class="col-5 chartDesign">
-              <h1> Transactions </h1>
+              <h> Transactions </h>
               <div class="row" style="padding-top: 5%;">
                 <div class="col-3">
                   <button type="button" class="btn btn-danger" @click.prevent="showChartTransactions = 0"><i class="bi bi-pie-chart"></i></button>
@@ -60,7 +60,7 @@
            
             </div>
             <div class="col-5 chartDesign">
-              <h1> Categories </h1>
+              <h2> Categories </h2>
               <div class="row" style="padding-top: 5%;">
                 <div class="col-3">
                   <button type="button" class="btn btn-danger" @click.prevent="showChartCategories = 0"><i class="bi bi-pie-chart"></i></button>
@@ -162,7 +162,7 @@ export default {
 </script>
 
 
-<style>
+<style scoped>
 .selectedButton:focus{
   border: 1px black;
   background-color: black;
@@ -202,7 +202,7 @@ export default {
   margin: 0 auto;
 }
 
-#dashboard {
+.color {
   background: #e6e6e6;
   padding-top: 3%;
 }

@@ -1,7 +1,7 @@
 <template>
  <SideBardAdmin></SideBardAdmin>
   <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-    <h1>Vcard Details</h1>
+    <h2>Vcard Details</h2>
 
     <div class="container-md bg-light rounded m-4" v-if="loaded">
       <div class="row">

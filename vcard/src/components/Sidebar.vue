@@ -62,14 +62,11 @@
             Statistics
           </router-link>
         </li>
-         <li class="nav-item">
-           <router-link
-            class="btn btn-light"
-            :to="{ name: 'dashboardAdmin' }"
-          >Administrator Dashboard
+        <li class="nav-item">
+          <router-link class="btn btn-light" :to="{ name: 'dashboardAdmin' }"
+            >Administrator Dashboard
           </router-link>
-
-            </li>
+        </li>
       </ul>
 
       <div class="d-block d-md-none">

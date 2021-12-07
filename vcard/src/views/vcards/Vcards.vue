@@ -28,7 +28,7 @@
         </div>
       </div>
     </div>
-    <h1>Vcards</h1>   
+    <h2>Vcards</h2>   
     <table class="table">
       <thead>
         <tr>

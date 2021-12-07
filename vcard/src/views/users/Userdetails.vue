@@ -21,7 +21,7 @@
         </div>
       </div>
 
-      <div id="dashboard" v-if="this.vcard != null">
+      <div class="color" v-if="this.vcard != null">
         <div class="container-fluid">
           <div class="row">
             <div class="col-lg-3 profileDiv">

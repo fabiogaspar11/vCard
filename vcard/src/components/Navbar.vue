@@ -63,9 +63,13 @@
                   </router-link>
                 </li>
                 <li>
-                  <button class="dropdown-item"
-                    ><i class="bi bi-key-fill"></i>Change password</button
-                  >
+                  <router-link
+                    class="dropdown-item"
+                    :class="{ active: $route.name === 'deleteVcard' }"
+                    :to="{ name: 'deleteVcard' }"
+                    ><i class="bi bi-trash-fill"></i>
+                    Delete Vcard account
+                  </router-link>
                 </li>
                 <li>
                   <hr class="dropdown-divider" />

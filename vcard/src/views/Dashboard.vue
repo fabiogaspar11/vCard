@@ -28,7 +28,7 @@
         </div>
       </div>
       <div id="page" class="row">
-        <div id="dashboard">
+        <div class="color">
           <img class="center" src="../assets/img/logo.png" />
           <h1 style="margin-bottom: 3%">{{ moneyUser }} €</h1>
         </div>
@@ -129,11 +129,7 @@ export default {
     .then(response =>{
       this.vcard = response.data.data
     })
-    .catch(() => {
-      this.$router.push({
-        name: "dashboardAdmin",
-      });
-    });
+ 
   },
 };
 </script>

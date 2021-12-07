@@ -3,7 +3,7 @@
   <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
 
       <div class="container d-flex flex-row justify-content-between">
-      <h1>Default Categories</h1>
+      <h2>Default Categories</h2>
       <router-link class="m-2 btn btn-primary" :to="{name:'defaultCategoriesCreate'}">New Default Category</router-link>
       </div>
       <table class="table">

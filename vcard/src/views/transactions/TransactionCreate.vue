@@ -1,103 +1,109 @@
 <template>
   <div v-if="isAdmin">
-  <SideBardAdmin></SideBardAdmin>
+    <SideBardAdmin></SideBardAdmin>
   </div>
   <div v-else>
-  <Sidebar></Sidebar>
-   <Navbar></Navbar>
+    <Sidebar></Sidebar>
+    <Navbar></Navbar>
   </div>
-
   <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-    <div class="text-center mt-5">
-      <h2>Create Transaction</h2>
-      <div class="container">
-        <div
-          class="form-group"
-          style="display: flex; flex-direction: column"
-          v-show="loadedPaymentTypes"
-        >
-          <label for="selectPaymentType"><b>Payment Type</b></label>
-          <select
-            v-model="payment_type"
-            name="payment_type_id"
-            id="selectPaymentType"
-            class="form-select"
-          >
-            <option
-              v-for="payment in payment_types"
-              :key="payment.code"
-              :value="payment.code"
-            >
-              {{ payment.name }}
-            </option>
-          </select>
-          <div v-show="errors.payment_type != null" class="text-danger">
-            {{ errors.payment_type }}
-          </div>
-        </div>
-        <br />
-        <label for="payment_ref"><b>Payment reference: </b></label>
-        <input
-          type="text"
-          v-model="payment_reference"
-          placeholder="Enter Payment reference"
-          name="payment_ref"
-          required
-        />
-        <div v-show="errors.payment_reference != undefined" class="text-danger">
-          {{ errors.payment_reference }}
-        </div>
-        <div v-show="errors.pair_vcard != undefined" class="text-danger">
-          {{ errors.pair_vcard }}
-        </div>
-        <label  v-if="isAdmin" for="value"><b>Vcard: </b></label>
-        <input  
-          v-if="isAdmin"
-          type="number"
-          v-model="phoneNumber"
-          class="form-control"
-          placeholder="Enter Vcard"
-          name="value"
-          required
-        />
-        <div v-show="errors.vcard != undefined" class="text-danger">
-          {{ errors.vcard }}
-        </div><br>
-        <label for="value"><b>Value: </b></label>
-        <input
-          type="number"
-          v-model="value"
-          class="form-control"
-          placeholder="Enter Value"
-          name="value"
-          required
-        />
-        <div v-show="errors.value != undefined" class="text-danger">
-          {{ errors.value }}
-        </div>
-        <TransactionCreateEdit
-          @updateCategory="updateCategory"
-          @updateDescription="updateDescription"
-          :errors="errors"
-          v-if="!this.isAdmin"
-        ></TransactionCreateEdit>
+    <h2>Transfer Money</h2>
+    <div class="color">
+      <div class="text-center mt-5">
+        <h2>Create Transaction</h2>
         <div class="container">
+          <div
+            class="form-group"
+            style="display: flex; flex-direction: column"
+            v-show="loadedPaymentTypes"
+          >
+            <label for="selectPaymentType"><b>Payment Type</b></label>
+            <select
+              v-model="payment_type"
+              name="payment_type_id"
+              id="selectPaymentType"
+              class="form-select"
+            >
+              <option
+                v-for="payment in payment_types"
+                :key="payment.code"
+                :value="payment.code"
+              >
+                {{ payment.name }}
+              </option>
+            </select>
+            <div v-show="errors.payment_type != null" class="text-danger">
+              {{ errors.payment_type }}
+            </div>
+          </div>
           <br />
-          <button
-            id="buttonRegister"
-            class="btn btn-success"
-            type="submit"
-            @click.prevent="transactionCreate"
+          <label for="payment_ref"><b>Payment reference: </b></label>
+          <input
+            type="text"
+            v-model="payment_reference"
+            placeholder="Enter Payment reference"
+            name="payment_ref"
+            required
+          />
+          <div
+            v-show="errors.payment_reference != undefined"
+            class="text-danger"
           >
-            Confirm
-          </button>
-          <button
-            id="buttonRegister"
-            class="btn btn-danger"
-            @click="$router.push({ name: 'dashboard' })"
-          >
-            Cancel
-          </button>
+            {{ errors.payment_reference }}
+          </div>
+          <div v-show="errors.pair_vcard != undefined" class="text-danger">
+            {{ errors.pair_vcard }}
+          </div>
+          <label v-if="isAdmin" for="value"><b>Vcard: </b></label>
+          <input
+            v-if="isAdmin"
+            type="number"
+            v-model="phoneNumber"
+            class="form-control"
+            placeholder="Enter Vcard"
+            name="value"
+            required
+          />
+          <div v-show="errors.vcard != undefined" class="text-danger">
+            {{ errors.vcard }}
+          </div>
+          <br />
+          <label for="value"><b>Value: </b></label>
+          <input
+            type="number"
+            v-model="value"
+            class="form-control"
+            placeholder="Enter Value"
+            name="value"
+            required
+          />
+          <div v-show="errors.value != undefined" class="text-danger">
+            {{ errors.value }}
+          </div>
+          <TransactionCreateEdit
+            @updateCategory="updateCategory"
+            @updateDescription="updateDescription"
+            :errors="errors"
+            v-if="!this.isAdmin"
+          ></TransactionCreateEdit>
+          <div class="container">
+            <br />
+            <button
+              id="buttonRegister"
+              class="btn btn-success"
+              type="submit"
+              @click.prevent="transactionCreate"
+            >
+              Confirm
+            </button>
+            <button
+              id="buttonRegister"
+              class="btn btn-danger"
+              @click="$router.push({ name: 'dashboard' })"
+            >
+              Cancel
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -108,20 +114,20 @@
 import Navbar from "../../components/Navbar.vue";
 import Sidebar from "../../components/Sidebar.vue";
 import TransactionCreateEdit from "../transactions/TransactionCreateEdit.vue";
-import SideBardAdmin from '../../components/SideBarAdmin.vue';
+import SideBardAdmin from "../../components/SideBarAdmin.vue";
 export default {
   name: "TransactionCreate",
   components: {
     Sidebar,
     Navbar,
     TransactionCreateEdit,
-    SideBardAdmin
+    SideBardAdmin,
   },
-  props:{
-    isAdmin:{
-      type:String,
-      required:false
-    }
+  props: {
+    isAdmin: {
+      type: String,
+      required: false,
+    },
   },
   data() {
     return {
@@ -131,7 +137,9 @@ export default {
       payment_types: [],
       loadedPaymentTypes: false,
       payment_type: null,
-      phoneNumber: this.isAdmin ? null : parseInt(localStorage.getItem("username")),
+      phoneNumber: this.isAdmin
+        ? null
+        : parseInt(localStorage.getItem("username")),
       payment_reference: null,
       category: null,
       description: null,
@@ -147,7 +155,7 @@ export default {
     fillTransaction() {
       let transaction = {};
       transaction.vcard = this.phoneNumber;
-      transaction.type = this.isAdmin ? 'C' : 'D';
+      transaction.type = this.isAdmin ? "C" : "D";
       if (this.payment_type != null) {
         transaction.payment_type = this.payment_type;
       }
@@ -179,15 +187,19 @@ export default {
         .post(`/transactions`, transaction)
         .then((response) => {
           let destination = null;
-          if(transaction.payment_type == 'VCARD'){
-              destination = transaction.payment_reference;
-          }else if(this.isAdmin){
-              destination = transaction.vcard.toString();
+          if (transaction.payment_type == "VCARD") {
+            destination = transaction.payment_reference;
+          } else if (this.isAdmin) {
+            destination = transaction.vcard.toString();
           }
-          if(transaction.payment_type == 'VCARD' || this.isAdmin){
-            this.$socket.emit('newTransaction', response.data.data, destination);
+          if (transaction.payment_type == "VCARD" || this.isAdmin) {
+            this.$socket.emit(
+              "newTransaction",
+              response.data.data,
+              destination
+            );
           }
-          
+
           transaction = null;
           this.$router.push({
             name: "dashboard",
@@ -198,7 +210,7 @@ export default {
           });
         })
         .catch((error) => {
-          console.log(error.response.data.errors)
+          console.log(error.response.data.errors);
           Object.entries(error.response.data.errors).forEach(([key, val]) => {
             this.errors[key] = val[0];
           });
@@ -210,11 +222,11 @@ export default {
       .get(`/paymentTypes`)
       .then((response) => {
         this.payment_types = response.data.data;
-        if(this.isAdmin){
-         for (var i = this.payment_types.length - 1; i >= 0; --i) {
-              if (this.payment_types[i].code == 'VCARD') {
-                  this.payment_types.splice(i,1);
-              }
+        if (this.isAdmin) {
+          for (var i = this.payment_types.length - 1; i >= 0; --i) {
+            if (this.payment_types[i].code == "VCARD") {
+              this.payment_types.splice(i, 1);
+            }
           }
         }
         this.loadedPaymentTypes = true;

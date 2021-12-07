@@ -3,7 +3,7 @@
   <Navbar></Navbar>
   <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
  
-      <h1>Transactions</h1>
+      <h2>Transactions</h2>
 
       <div style="text-align:center;">
         <nav aria-label="Page navigation example" >
@@ -14,7 +14,7 @@
           </ul>
         </nav>
       </div>  
-      <table class="table">
+      <table class="table color">
         <thead>
           <tr>
             <th>Date/Time</th>

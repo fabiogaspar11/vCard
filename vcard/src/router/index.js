@@ -21,6 +21,8 @@ import Statistics from '../views/statistics/Statistics.vue'
 import StatisticsAdmin from '../views/statistics/StatisticsAdmin.vue'
 import Vcards from '../views/vcards/Vcards.vue'
 import UserdetailsAdmin from '../views/users/UserdetailsAdmin.vue'
+import DeleteVcard from '../views/vcards/DeleteVcard.vue'
+
 const routes = [
   {
     path: '/',
@@ -139,6 +141,11 @@ const routes = [
     name: 'userdetailsAdmin',
     component: UserdetailsAdmin,
     props: true
+  },
+  {
+    path: '/deleteVcard',
+    name: 'deleteVcard',
+    component: DeleteVcard,
   }
 ]
 
