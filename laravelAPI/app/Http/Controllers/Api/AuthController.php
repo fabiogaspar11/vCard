@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 
+use function PHPUnit\Framework\isNull;
+
 class AuthController extends Controller
 {
     public function login(Request $request){
@@ -30,6 +32,10 @@ class AuthController extends Controller
             if($user->blocked == 1){
                 return response()->json(
                     ['login' => 'User is blocked'], 401);
+            }
+            if(isNull($user->deleted_at)){
+                return response()->json(
+                    ['login' => 'User does not exist'], 401);
             }
             return json_decode((string) $response->getBody(), true);
         }catch(\GuzzleHttp\Exception\BadResponseException $e){

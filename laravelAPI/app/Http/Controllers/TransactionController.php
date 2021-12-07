@@ -25,7 +25,7 @@ class TransactionController extends Controller
         return TransactionResource::collection($transactions);
     }
 
-    public function getVcardTransactions(Transaction $transaction)
+    public function getTransaction(Transaction $transaction)
     {
         return new TransactionResource($transaction);
     }

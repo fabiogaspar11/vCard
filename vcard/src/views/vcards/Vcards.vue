@@ -101,23 +101,29 @@ export default {
   },
   methods:{
     submitSearch(){
-      let values = {};
       if(this.stateFilter == null && this.nameSearch == null && this.phoneNumberSearch == null){
           this.$toast.error("No filter information provided");
           return;
       }
-      if(this.stateFilter != null){       
-        values.state = this.stateFilter;
+      let queryString= "?";
+      let map = new Map();
+      if(this.stateFilter != null){
+        map.set("state",this.stateFilter)
       }
-      if(this.nameSearch != null){       
-        values.name = this.nameSearch;     
+      if(this.nameSearch != null){
+        map.set("name",this.nameSearch)
       }
-       if(this.phoneNumberSearch != null){       
-         values.phone_number = this.phoneNumberSearch;
+      if(this.phoneNumberSearch != null){
+        map.set("phone_number",this.phoneNumberSearch)
       }
+       map.forEach ((value, key) =>
+      { 
+          queryString += key + "=" + value + "&"
+      })
+     queryString = queryString.substring(0, queryString.length - 1);
  
        this.$axios
-         .get("/vcards/filter", {params:values})
+         .get(`/vcards${queryString}`)
          .then(response =>{
             this.vcards = response.data.data; 
          })
