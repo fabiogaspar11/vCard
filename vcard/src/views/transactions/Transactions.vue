@@ -67,7 +67,6 @@ export default {
   },
    watch: {
       newTransacion() {
-        console.log("shit")
         if(this.$store.getters.newTransacion){
           this.$axios
           .get(`/vcards/${this.phoneNumber}/transactions`)

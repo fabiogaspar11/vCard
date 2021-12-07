@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
 
 class AuthController extends Controller
 {
@@ -24,6 +26,11 @@ class AuthController extends Controller
             $url = 'http://laravelapi.test' . '/oauth/token';
             $http = new \GuzzleHttp\Client;
             $response = $http->post($url, $bodyHttpRequest);
+            $user = User::where('username', '=', $request->username)->firstOrFail();;
+            if($user->blocked == 1){
+                return response()->json(
+                    ['login' => 'User is blocked'], 401);
+            }
             return json_decode((string) $response->getBody(), true);
         }catch(\GuzzleHttp\Exception\BadResponseException $e){
             if ($e->getCode() === 400){

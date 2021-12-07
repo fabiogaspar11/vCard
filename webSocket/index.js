@@ -29,4 +29,12 @@ io.on('connection', function (socket) {
     socket.on('newTransaction', function (transaction, username) {
         io.to(username).emit('newTransaction', transaction, username)
     })
+
+    socket.on('toggleVcardStatus', function (status, username) {
+        io.to(username).emit('toggleVcardStatus', status, username)
+    })
+
+    socket.on('userDeleted', function ( username) {
+        io.to(username).emit('userDeleted', username)
+    })
    })
