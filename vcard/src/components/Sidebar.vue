@@ -63,8 +63,10 @@
           </router-link>
         </li>
         <li class="nav-item">
-          <router-link class="btn btn-light" :to="{ name: 'dashboardAdmin' }"
-            ><i class="bi bi-key"></i>Administrator Dashboard
+          <router-link
+           class="nav-link" :to="{ name: 'dashboardAdmin' }">
+           <i class="bi bi-key"></i>
+           Administrator  
           </router-link>
         </li>
       </ul>
