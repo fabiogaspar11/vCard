@@ -180,12 +180,51 @@ class VcardController extends Controller
         return new TransactionResource($transaction);
     }
 
-    public function getVcardTransactions(Vcard $vcard){
-        $transactions = $vcard->transactions->sortByDesc('datetime');
-        if($transactions->isEmpty()){
-            return [
-                "error"=> "This vcard doesn't have any transactions yet"
-            ];
+    public function getVcardTransactions(Request $request,Vcard $vcard){
+        $beginDate = $request->query('beginDate');
+        $endDate = $request->query('endDate');
+        $transactionType = $request->query('transactionType');
+        $orderByAmount = $request->query('orderByAmount');
+        $orderByMostRecent = $request->query('orderByMostRecent');
+
+        $noQuerString = $beginDate == null && $endDate == null && $transactionType == null && $orderByAmount == null && $orderByMostRecent==null;
+        if($noQuerString){
+            $transactions = $vcard->transactions->sortByDesc('datetime');
+            if($transactions->isEmpty()){
+                return [
+                    "error"=> "This vcard doesn't have any transactions yet"
+                ];
+            }
+        }else{
+            if($beginDate != null && $endDate != null){
+                if(strtotime($beginDate) > strtotime($endDate)){
+                    throw ValidationException::withMessages(['filterOrderBy' => "Begin date cannot be bigger than end date"]);
+                }
+                if(strtotime($beginDate) == strtotime($endDate)){
+                    throw ValidationException::withMessages(['filterOrderBy' => "Begin date cannot be equal to end date"]);
+                }
+            }
+            if($transactionType != null && $transactionType != 'C' && $transactionType != 'D'){
+                throw ValidationException::withMessages(['filterOrderBy' => "Transaction type can only be Credit (C) or Debit (D)"]);
+            }
+            $query = Transaction::query();
+            $query->where("vcard", '=', $vcard->phone_number);
+            if($beginDate != null) {
+                $query->where("date", '>=', $beginDate);
+            }
+            if($endDate != null) {
+                $query->where('date','<=', $endDate);
+            }
+            if($transactionType != null) {
+                $query->where('type','=',$transactionType);
+            }
+            if($orderByAmount){
+                $query->orderBy('value','asc');
+            }
+            if($orderByMostRecent){
+                $query->orderBy('datetime','desc');
+            }
+            $transactions = $query->get();
         }
         return TransactionResource::collection($transactions);
     }

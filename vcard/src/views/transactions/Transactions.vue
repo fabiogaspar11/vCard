@@ -4,7 +4,48 @@
   <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
  
       <h1>Transactions</h1>
-
+   <div class="container d-flex flex-column">
+      <h6 class="w-25">Filter by:</h6>
+      <div class="container d-flex justify-content-between align-items-center" >
+            <div class="w-50 m-2">
+                <label>Begin Date</label>
+                <input type="date"  class="form-control" v-model="beginDate">
+            </div>
+             <div class="w-50 m-2">
+                <label>End Date</label>
+                <input type="date"  class="form-control"  v-model="endDate">
+            </div>
+      </div>
+      <div class="container d-flex justify-content-between align-items-center">
+            <div class="w-100 m-2">
+                <label>Credit Or Debit</label>  
+                <select v-model="typeFilter"  class="form-select" >
+                <option value="C" >Credit</option>
+                <option value="D" >Not Debit</option>
+                </select>  
+                <!--errors-->     
+            </div>
+      </div>
+      <h6 class="w-25">Order by:</h6>
+      <div class="container d-flex justify-content-between align-items-center" >
+        <div class="d-flex justify-content-center  align-items-center">    
+            <label class="m-1">Amount (ASC)</label>   
+            <input class="m-1" type="checkbox" v-model="amount">
+        </div>
+         <div class="d-flex justify-content-center  align-items-center" >    
+            <label class="m-1">Most Recent</label>   
+            <input class="m-1" type="checkbox" v-model="mostRecent">
+        </div>
+        <div class="text-end m-1">
+          <a type="submit" class="btn btn-info">
+            <i class="bi bi-search" style="color:white;margin-right:25%" @click="submitFilterOrderBy"></i>
+          </a>
+        </div>
+      </div>
+      <div v-show="errors.filterOrderBy != undefined" class="text-danger">
+      {{ errors.filterOrderBy }}
+    </div>
+    </div>
       <div style="text-align:center;">
         <nav aria-label="Page navigation example" >
           <ul class="pagination">
@@ -64,10 +105,60 @@ export default {
       phoneNumber : localStorage.getItem('username'),
       elementsPerPage: 10,
       dataPage: [],
-      pageActual: 1
+      pageActual: 1,
+      typeFilter:null,
+      beginDate:null,
+      endDate:null,
+      amount:false,
+      mostRecent:false,
+      errors:{}
     };
   },
   methods: {
+    submitFilterOrderBy(){ 
+      this.errors={};
+      let queryString= "?";
+      let map = new Map();
+      if(this.beginDate != null){
+        map.set("beginDate",this.beginDate)
+      }
+      if(this.endDate != null){
+        map.set("endDate",this.endDate)
+      }
+      if(this.typeFilter != null){
+        map.set("transactionType",this.typeFilter)
+      }
+      if(this.amount){
+        map.set("orderByAmount",this.amount)
+      }
+      if(this.mostRecent){
+        map.set("orderByMostRecent",this.mostRecent)
+      }
+
+    map.forEach ((value, key) =>
+    { 
+        queryString += key + "=" + value + "&"
+    })
+     queryString = queryString.substring(0, queryString.length - 1);
+      
+      this.transactions = this.$axios
+      .get(`/vcards/${this.phoneNumber}/transactions${queryString}`)
+      .then(response =>{
+      this.transactions = response.data.data; 
+      this.loaded = true;
+      this.mostRecent = null;
+      this.amount = null;
+      this.beginDate = null;
+      this.endDate = null;
+      this.typeFilter = null;
+      this.errors={};
+      }).catch((error) => {
+         this.errors ={};
+          Object.entries(error.response.data.errors).forEach(([key, val]) => {
+            this.errors[key] = val[0];
+          });
+      });
+    },
     totalPages(){
       if (!this.transactions) return
       return Math.ceil(this.transactions.length / this.elementsPerPage);

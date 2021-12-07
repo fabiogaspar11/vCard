@@ -118,11 +118,11 @@ Route::middleware(['auth:api'])->group(function (){
 
     Route::get('transactions', [TransactionController::class, 'getTransactions'])->middleware('can:viewAny,App\Models\Transaction');
 
-    Route::get('transactions/{transaction}', [TransactionController::class, 'getVcardTransactions'])->middleware('can:view,transaction');
+    Route::get('transactions/{transaction}', [TransactionController::class, 'getTransaction'])->middleware('can:view,transaction');
 
     Route::put('transactions/{transaction}', [TransactionController::class, 'updateTransaction'])->middleware('can:update,transaction');
 
-    /*************************************** Logout ***************************************/
+   /*************************************** Logout ***************************************/
 
     Route::post('/logout', [AuthController::class, 'logout']);
 });
