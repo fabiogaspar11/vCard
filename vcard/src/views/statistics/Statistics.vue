@@ -119,7 +119,7 @@ export default {
     changeTransactionChartType: function (rowTransaction) {     
       this.data.splice(0);
       this.showData = null
-      this.$axios.get(`/vcards/${this.phoneNumber}/${rowTransaction}`)
+      this.$axios.get(`/statistics/${this.phoneNumber}/${rowTransaction}`)
       .then(response =>{
         this.transactions = response.data;
         this.transactions.filter((row) => {
@@ -133,7 +133,7 @@ export default {
     },
   },
   mounted() {   
-    this.$axios.get(`/vcards/${this.phoneNumber}/transactionsType`)
+    this.$axios.get(`/statistics/${this.phoneNumber}/transactionsType`)
     .then(response =>{
       this.transactions = response.data;
       this.transactions.filter((row) => {
@@ -144,7 +144,7 @@ export default {
       this.showData = this.data
       console.log(this.showDataType)
     })
-    this.$axios.get(`/vcards/${this.phoneNumber}/categoriesType`)
+    this.$axios.get(`/statistics/${this.phoneNumber}/categoriesType`)
     .then(response =>{
       this.categories = response.data;
       this.categories.filter((row) => {

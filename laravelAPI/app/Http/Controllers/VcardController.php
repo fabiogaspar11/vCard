@@ -264,39 +264,6 @@ class VcardController extends Controller
         return CategoryResource::collection($categories);
     }
 
-    public function getVcardCategoriesType(Vcard $vcard){
-        $sql = Category::select(DB::raw('type, COUNT(type) as count '))
-            	            ->where('vcard', $vcard->phone_number)
-                            ->groupBy('type')
-                            ->get();
-        return $sql;
-    }
-
-    public function getVcardTransactionsPaymentType(Vcard $vcard){
-        $sql = Transaction::select(DB::raw('payment_type, COUNT(payment_type) as count '))
-            	            ->where('vcard', $vcard->phone_number)
-                            ->groupBy('payment_type')
-                            ->get();
-        return $sql;
-    }
-
-    public function getVcardTransactionType(Vcard $vcard){
-        $sql = Transaction::select(DB::raw('type, COUNT(type) as count '))
-            	            ->where('vcard', $vcard->phone_number)
-                            ->groupBy('type')
-                            ->get();
-        return $sql;
-    }
-
-    public function getVcardCategoriesPaymentTypeValue(Vcard $vcard){
-        $sql = Transaction::select(DB::raw('payment_type, Sum(value) as Value'))
-            	            ->where('vcard', $vcard->phone_number)
-                            ->groupBy('payment_type')
-                            ->get();
-        return $sql;
-    }
-
-
     public function piggyBankState(Vcard $vcard){
         return $vcard->custom_data == null ? ["response" => false] : ["response" => true];
     }
@@ -304,7 +271,6 @@ class VcardController extends Controller
     public function getPiggyBankBalance(Vcard $vcard){
         return $vcard->custom_data;
     }
-
 
     public function createPiggyBank(Vcard $vcard){
         if($vcard->custom_data != null)

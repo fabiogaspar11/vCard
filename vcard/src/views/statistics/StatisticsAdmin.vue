@@ -103,7 +103,7 @@ export default {
     return {
       transactions: null,
       categories: null,
-      phoneNumber : localStorage.getItem('username'),
+      administrator : 5, //localStorage.getItem('username'),
       data: [],
       dataCategory: [],
       showData: null,
@@ -116,7 +116,7 @@ export default {
     changeTransactionChartType: function (rowTransaction) {
       this.data.splice(0);
       this.showData = null
-      this.$axios.get(`/vcards/${this.phoneNumber}/${rowTransaction}`)
+      this.$axios.get(`/statistics/${this.administrator}/${rowTransaction}`)
       .then(response =>{
         this.transactions = response.data;
         this.transactions.filter((row) => {
@@ -130,7 +130,8 @@ export default {
     },
   },
   mounted() {   
-    this.$axios.get(`/vcards/${this.phoneNumber}/transactionsType`)
+    console.log(this.administrator)
+    this.$axios.get(`/statistics/${this.administrator}/transactionsType`)
     .then(response =>{
       this.transactions = response.data;
       this.transactions.filter((row) => {
@@ -141,7 +142,7 @@ export default {
       this.showData = this.data
       console.log(this.showDataType)
     })
-    this.$axios.get(`/vcards/${this.phoneNumber}/categoriesType`)
+    this.$axios.get(`/statistics/${this.administrator}/categoriesType`)
     .then(response =>{
       this.categories = response.data;
       this.categories.filter((row) => {
