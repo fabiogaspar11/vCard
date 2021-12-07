@@ -69,6 +69,15 @@
            Administrator  
           </router-link>
         </li>
+        <li class="nav-item">
+          <router-link
+            class="nav-link"
+            :class="{ active: $route.name === 'piggyBank' }"
+            :to="{ name: 'piggyBank' }"
+            ><i class="bi bi-piggy-bank"></i>
+            Piggy Bank
+          </router-link>
+        </li>
       </ul>
 
       <div class="d-block d-md-none">

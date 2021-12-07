@@ -22,6 +22,8 @@ import StatisticsAdmin from '../views/statistics/StatisticsAdmin.vue'
 import Vcards from '../views/vcards/Vcards.vue'
 import UserdetailsAdmin from '../views/users/UserdetailsAdmin.vue'
 import DeleteVcard from '../views/vcards/DeleteVcard.vue'
+import PiggyBank from '../views/vcards/PiggyBank.vue'
+
 
 const routes = [
   {
@@ -146,6 +148,11 @@ const routes = [
     path: '/deleteVcard',
     name: 'deleteVcard',
     component: DeleteVcard,
+  },
+  {
+    path: '/piggyBank',
+    name: 'piggyBank',
+    component: PiggyBank,
   }
 ]
 
