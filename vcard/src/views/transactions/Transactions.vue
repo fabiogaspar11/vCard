@@ -174,13 +174,15 @@ export default {
       queryString = queryString.substring(0, queryString.length - 1);
 
       this.transactions = this.$axios
-      .get(`/vcards/${this.phoneNumber}/transactions${queryString}`)
-      .then(response =>{
-      this.transactions = response.data.data; 
-      this.loaded = true;
-      this.errors={};
-      }).catch((error) => {
-         this.errors ={};
+        .get(`/vcards/${this.phoneNumber}/transactions${queryString}`)
+        .then((response) => {
+          this.transactions = response.data.data;
+          this.loaded = true;
+          this.errors = {};
+          this.getDataPage(1);
+        })
+        .catch((error) => {
+          this.errors = {};
           Object.entries(error.response.data.errors).forEach(([key, val]) => {
             this.errors[key] = val[0];
           });
