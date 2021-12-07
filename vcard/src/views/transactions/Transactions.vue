@@ -146,11 +146,6 @@ export default {
       .then(response =>{
       this.transactions = response.data.data; 
       this.loaded = true;
-      this.mostRecent = null;
-      this.amount = null;
-      this.beginDate = null;
-      this.endDate = null;
-      this.typeFilter = null;
       this.errors={};
       }).catch((error) => {
          this.errors ={};
