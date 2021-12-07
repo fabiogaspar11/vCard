@@ -174,8 +174,8 @@ export default {
 }
 .chartDesign{
   padding-top: 2%;
-  background-image: linear-gradient(to bottom right, white, #94b0b7);
   border-radius: 20px;
+  
 }
 
 .center {

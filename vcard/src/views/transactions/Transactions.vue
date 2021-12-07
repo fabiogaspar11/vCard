@@ -4,6 +4,16 @@
   <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
  
       <h1>Transactions</h1>
+
+      <div style="text-align:center;">
+        <nav aria-label="Page navigation example" >
+          <ul class="pagination">
+            <li class="page-item "   @click.prevent="getPreviousPage()"><a class="page-link" href="#">Previous</a></li>
+            <li v-for="page in totalPages()" :key="page" @click.prevent="getDataPage(page)" class="page-item" v-bind:class="isActive(page)"><a class="page-link" href="#">{{page}}</a></li>
+            <li class="page-item" @click.prevent="getNextPage()"><a class="page-link" href="#">Next</a></li>
+          </ul>
+        </nav>
+      </div>  
       <table class="table">
         <thead>
           <tr>
@@ -16,7 +26,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="transaction in transactions" :key="transaction.id">
+          <tr v-for="transaction in dataPage" :key="transaction.id">
             <td>{{ transaction.datetime }}</td>
             <td>{{ transaction.type }}</td>
             <td>{{ transaction.value }}</td>
@@ -35,6 +45,7 @@
           </tr>
         </tbody>
       </table>
+
   </main>
 </template>
 
@@ -50,14 +61,46 @@ export default {
   data() {
     return {
       transactions: null,
-      phoneNumber : localStorage.getItem('username')
+      phoneNumber : localStorage.getItem('username'),
+      elementsPerPage: 10,
+      dataPage: [],
+      pageActual: 1
     };
+  },
+  methods: {
+    totalPages(){
+      if (!this.transactions) return
+      return Math.ceil(this.transactions.length / this.elementsPerPage);
+    },
+    getDataPage(page){
+      this.pageActual = page
+      this.dataPage = []
+      let begin = (page * this.elementsPerPage) - this.elementsPerPage
+      let end = (page * this.elementsPerPage)
+      this.dataPage = this.transactions.slice(begin, end)
+    },
+    getPreviousPage(){
+      if (this.pageActual > 1){
+        this.pageActual--;
+      }
+      this.getDataPage(this.pageActual)
+    },
+    getNextPage(){
+      if (this.pageActual < this.totalPages()){
+        this.pageActual++;
+      }
+      this.getDataPage(this.pageActual)
+    },
+    isActive(page){
+      return page == this.pageActual ? 'active':''
+    }
   },
   mounted() {
      this.$axios
       .get(`/vcards/${this.phoneNumber}/transactions`)
       .then(response =>{
-      this.transactions = response.data.data; 
+        this.transactions = response.data.data; 
+        this.getDataPage(1)
     });
   },
   computed: {

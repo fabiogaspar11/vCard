@@ -46,13 +46,13 @@
 
               <div class="row" style="padding-top: 5%;">
                 <div class="col-4">
-                  <button type="button" class="btn btn-secondary" @click.prevent="changeTransactionChartType('transactionsType')">Type</button>
+                  <button type="button" class="btn btn-secondary selectedButton" @click.prevent="changeTransactionChartType('transactionsType')">Type</button>
                 </div>
                 <div class="col-4">
-                  <button type="button" class="btn btn-secondary" @click.prevent="changeTransactionChartType('transactionsPaymentType')">Payment Type</button>
+                  <button type="button" class="btn btn-secondary selectedButton" @click.prevent="changeTransactionChartType('transactionsPaymentType')">Payment Type</button>
                 </div>        
                 <div class="col-4">
-                  <button type="button" style="font-size: 100%;" class="btn btn-secondary" @click.prevent="changeTransactionChartType('transactionsPaymentTypeValue')">Payment Type Value</button>
+                  <button type="button" style="font-size: 100%; " class="btn btn-secondary selectedButton" @click.prevent="changeTransactionChartType('transactionsPaymentTypeValue')">Payment Type Value</button>
                 </div>   
               </div>
             </div>
@@ -116,7 +116,7 @@ export default {
     };
   },
   methods: {
-    changeTransactionChartType: function (rowTransaction) {
+    changeTransactionChartType: function (rowTransaction) {     
       this.data.splice(0);
       this.showData = null
       this.$axios.get(`/vcards/${this.phoneNumber}/${rowTransaction}`)
@@ -163,6 +163,10 @@ export default {
 
 
 <style>
+.selectedButton:focus{
+  border: 1px black;
+  background-color: black;
+}
 .statistics{
   text-align: center;
 }
@@ -177,7 +181,7 @@ export default {
 }
 .chartDesign{
   padding-top: 2%;
-  background-image: linear-gradient(to bottom right, white, #94b0b7);
+  background-image: #94b0b7;
   border-radius: 20px;
 }
 
