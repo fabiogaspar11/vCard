@@ -11,9 +11,10 @@ import axios from "axios";
 export default {
   mounted() {
     const token = localStorage.getItem("access_token");
-
+    const username = localStorage.getItem("username");
     if (token) {
       axios.defaults.headers.common["Authorization"] = "Bearer " + token;
+      this.$socket.emit('logged_in', username)    
       this.$store.dispatch("changeState").then(() => {
         this.$router.push({
           name: "dashboard",

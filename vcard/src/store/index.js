@@ -5,13 +5,11 @@ export default createStore({
   state: {
     username: null,
     status: false,
-    type:null,
     newTransacion:null,
     vcardStatus:null
   },
   getters: {
     username: state => state.username,
-    type: state => state.type,
     newTransacion : state => state.newTransacion,
     vcardStatus: state => state.vcardStatus,
   },
@@ -25,14 +23,12 @@ export default createStore({
     mutationAuthOk(state) {
       state.status = true
       state.username = localStorage.getItem('username')
-      state.type = isNaN(parseInt(localStorage.getItem('username'))) ? 'A' : 'V'
       state.newTransacion = null
       state.vcardStatus = null
     },
     mutationAuthReset(state) {
       state.status = false,
       state.username = null,
-      state.type = null
       state.newTransacion = null
       state.vcardStatus = null
     },

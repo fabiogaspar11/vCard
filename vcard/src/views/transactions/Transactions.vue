@@ -235,6 +235,7 @@ export default {
           .get(`/vcards/${this.phoneNumber}/transactions`)
           .then((response) => {
             this.transactions = response.data.data;
+             this.getDataPage(1);
           });
       }
     },

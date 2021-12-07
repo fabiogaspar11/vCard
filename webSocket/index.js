@@ -13,12 +13,9 @@ httpServer.listen(8080, function () {
 io.on('connection', function (socket) {
     console.log(`client ${socket.id} has connected`)
 
-    socket.on('logged_in', function (username, type) {
+    socket.on('logged_in', function (username) {
         console.log(`Room User ${username} join`)
         socket.join(username)
-        if (type) {
-            socket.join('administrator')
-        }
     })
     socket.on('logged_out', function (username) {
         console.log(`Room User ${username} leave`)
