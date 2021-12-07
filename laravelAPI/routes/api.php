@@ -72,8 +72,6 @@ Route::middleware(['auth:api'])->group(function (){
 
     Route::get('vcards', [VcardController::class, 'getVcards'])->middleware('can:viewAny,App\Models\Vcard');
 
-    Route::get('vcards/filter', [VcardController::class, 'filterVcards'])->middleware('can:viewAny,App\Models\Vcard');
-
     Route::get('vcards/{vcard}', [VcardController::class, 'getVcard'])->middleware('can:view,vcard');
 
     Route::get('vcards/{vcard}/alterBlock', [VcardController::class, 'alterBlock'])->middleware('can:update,vcard');

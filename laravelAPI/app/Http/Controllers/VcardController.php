@@ -26,10 +26,29 @@ use Nette\Utils\Json;
 
 class VcardController extends Controller
 {
-    public function getVcards()
+    public function getVcards(Request $request)
     {
-        $allVcards = Vcard::all();
-        return VcardResource::collection($allVcards);
+
+        $state = $request->query('state');
+        $phone_number = $request->query('phone_number');
+        $name = $request->query('name');
+        $query = Vcard::query();
+        $noQuerString = $state == null && $phone_number == null && $name == null;
+        if($noQuerString){
+            $vcards = Vcard::all();
+        }else{
+            if($state != null) {
+                $query->where("blocked", '=', $state);
+            }
+            if($phone_number != null) {
+                $query->where('phone_number','=', $phone_number);
+            }
+            if($name != null) {
+                $query->where('name','=',$name);
+            }
+            $vcards = $query->get();
+        }
+        return VcardResource::collection($vcards);
     }
 
     public function checkVcard(int $vcard){
@@ -251,27 +270,6 @@ class VcardController extends Controller
                             ->groupBy('type')
                             ->get();
         return $sql;
-    }
-
-
-    public function filterVcards(Request $request){
-
-        $state = $request->has('state') == false ? null : $request->input("state");
-        $phone_number = $request->has('phone_number') == false ? null : $request->input('phone_number');
-        $name = $request->has('name') == false ? null : $request->input('name');
-        $query = Vcard::query();
-        if($state != null) {
-            $query->where("blocked", '=', $state);
-        }
-        if($phone_number != null) {
-            $query->where('phone_number','=', $phone_number);
-        }
-        if($name != null) {
-            $query->where('name','=',$name);
-        }
-        $vcards = $query->get();
-
-        return VcardResource::collection($vcards);
     }
 
     public function getVcardTransactionsPaymentType(Vcard $vcard){
