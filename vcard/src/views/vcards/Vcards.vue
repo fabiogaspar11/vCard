@@ -128,8 +128,14 @@ export default {
       deleteVcard(phone_number){
          this.$axios
          .delete(`/vcards/${parseInt(phone_number)}`)
-         .then(response =>{
-            this.vcards = response.data.data; 
+         .then(() =>{
+           this.$toast.info(`Vcard ${phone_number} removed`);
+           this.$socket.emit('userDeleted', phone_number);   
+            this.$axios
+            .get(`/vcards`)
+            .then(response =>{
+            this.vcards = response.data.data;
+            })
          })
          .catch((error)=>{
            console.log(error.response.data)
@@ -166,6 +172,7 @@ export default {
          .then(response =>{
             this.vcards = response.data.data; 
             this.$toast.info(`Vcard ${response.data.data.name} was ${response.data.data.blocked == 1 ? 'blocked': 'unblocked'}`);
+            this.$socket.emit('toggleVcardStatus', response.data.data.blocked == 1, phone_number);
             this.$router.push({name:'dashboardAdmin'})
          })
          .catch((error)=>{

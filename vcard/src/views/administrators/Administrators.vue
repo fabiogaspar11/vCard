@@ -22,7 +22,7 @@
              <td>{{ admin.email }}</td>
             <td>
               <div class="container">
-                <a class="btn btn-danger m-1" role="button" aria-pressed="true" @click="deleteAdmin(admin.id)">
+                <a class="btn btn-danger m-1" role="button" aria-pressed="true" @click="deleteAdmin(admin.id, admin.email)">
                   <i class="bi bi-trash" style="color:white;margin-right:25%"></i>
                 </a>
               </div>
@@ -46,11 +46,16 @@ export default {
     };
   },
   methods:{
-    deleteAdmin(id){
+    deleteAdmin(id,username){
     this.$axios.delete(`administrators/${id}`)
     .then(() =>{
       this.$toast.info(`Administrator ${id} removed`);
-      this.$router.push({name:'dashboardAdmin'})
+      this.$socket.emit('userDeleted', username);   
+        this.$axios
+        .get(`/administrators`)
+        .then(response =>{
+        this.administrators = response.data.data; 
+      });
     })
     .catch(() => {
       this.$toast.info(`Could not delete administrator ${id}`);

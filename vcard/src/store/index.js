@@ -6,28 +6,35 @@ export default createStore({
     username: null,
     status: false,
     type:null,
-    newTransacion:null
+    newTransacion:null,
+    vcardStatus:null
   },
   getters: {
     username: state => state.username,
     type: state => state.type,
     newTransacion : state => state.newTransacion,
+    vcardStatus: state => state.vcardStatus,
   },
   mutations: {
     toggleNewTransacion(state, value){
       state.newTransacion = value
     },
+    toggleVcardStatus(state, value){
+      state.vcardStatus = value
+    },
     mutationAuthOk(state) {
       state.status = true
       state.username = localStorage.getItem('username')
       state.type = isNaN(parseInt(localStorage.getItem('username'))) ? 'A' : 'V'
-      state.newTransacion = false
+      state.newTransacion = null
+      state.vcardStatus = null
     },
     mutationAuthReset(state) {
       state.status = false,
       state.username = null,
       state.type = null
       state.newTransacion = null
+      state.vcardStatus = null
     },
   },
 
@@ -35,7 +42,9 @@ export default createStore({
     changeState(context) {
       context.commit('mutationAuthOk')
     },
-
+    logOutDeleteUser(context) {
+      context.commit('mutationAuthReset')
+    },
     authRequest(context, credentials) {
       return new Promise((resolve, reject) => {
         axios.post('/login', {
