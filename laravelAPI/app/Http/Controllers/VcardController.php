@@ -267,39 +267,6 @@ class VcardController extends Controller
         return CategoryResource::collection($categories);
     }
 
-    public function getVcardCategoriesType(Vcard $vcard){
-        $sql = Category::select(DB::raw('type, COUNT(type) as count '))
-            	            ->where('vcard', $vcard->phone_number)
-                            ->groupBy('type')
-                            ->get();
-        return $sql;
-    }
-
-    public function getVcardTransactionsPaymentType(Vcard $vcard){
-        $sql = Transaction::select(DB::raw('payment_type, COUNT(payment_type) as count '))
-            	            ->where('vcard', $vcard->phone_number)
-                            ->groupBy('payment_type')
-                            ->get();
-        return $sql;
-    }
-
-    public function getVcardTransactionType(Vcard $vcard){
-        $sql = Transaction::select(DB::raw('type, COUNT(type) as count '))
-            	            ->where('vcard', $vcard->phone_number)
-                            ->groupBy('type')
-                            ->get();
-        return $sql;
-    }
-
-    public function getVcardCategoriesPaymentTypeValue(Vcard $vcard){
-        $sql = Transaction::select(DB::raw('payment_type, Sum(value) as Value'))
-            	            ->where('vcard', $vcard->phone_number)
-                            ->groupBy('payment_type')
-                            ->get();
-        return $sql;
-    }
-
-
     public function piggyBankState(Vcard $vcard){
         return $vcard->custom_data == null ? ["response" => false] : ["response" => true];
     }
@@ -307,7 +274,6 @@ class VcardController extends Controller
     public function getPiggyBankBalance(Vcard $vcard){
         return $vcard->custom_data;
     }
-
 
     public function createPiggyBank(Vcard $vcard){
         if($vcard->custom_data != null)
@@ -328,10 +294,20 @@ class VcardController extends Controller
         $piggyBank = json_decode($vcard->custom_data);
         $currentBalance = $piggyBank->balance;
 
+        if(!isset($request->amount)){
+            throw ValidationException::withMessages(['amount' => "Value is mandatory"]);
+        }
+        if($request->amount <= 0){
+            throw ValidationException::withMessages(['amount' => "Value must be a positive number"]);
+        }
+        if($currentBalance + $request->amount > $request->balance){
+            throw ValidationException::withMessages(['amount' => "Money value cannot be superior than your balance"]);
+        }
+
         if($request->type == 'C'){
             $newBalance = $currentBalance + $request->amount;
         }
-        if($request->type == 'D'){
+        else if($request->type == 'D'){
             $newBalance = $currentBalance - $request->amount;
         }
 

@@ -9,6 +9,10 @@ use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\AdministratorPost;
 use App\Http\Resources\AdministratorResource;
 
+use Illuminate\Support\Facades\DB;
+use App\Models\Category;
+use App\Models\Transaction;
+
 class AdministratorController extends Controller
 {
     public function getAdministrator(Administrator $admin)
@@ -35,5 +39,35 @@ class AdministratorController extends Controller
     public function destroyAdministrator(Administrator $admin){
         $admin->delete();
         return new AdministratorResource($admin);
+    }
+
+
+
+    public function getAllCategoriesType(){
+        $sql = Category::select(DB::raw('type, COUNT(type) as count '))
+                            ->groupBy('type')
+                            ->get();
+        return $sql;
+    }
+
+    public function getAllTransactionsPaymentType(){
+        $sql = Transaction::select(DB::raw('payment_type, COUNT(payment_type) as count '))
+                            ->groupBy('payment_type')
+                            ->get();
+        return $sql;
+    }
+
+    public function getAllTransactionType(){
+        $sql = Transaction::select(DB::raw('type, COUNT(type) as count '))
+                            ->groupBy('type')
+                            ->get();
+        return $sql;
+    }
+
+    public function getAllCategoriesPaymentTypeValue(){
+        $sql = Transaction::select(DB::raw('payment_type, Sum(value) as Value'))
+                            ->groupBy('payment_type')
+                            ->get();
+        return $sql;
     }
 }

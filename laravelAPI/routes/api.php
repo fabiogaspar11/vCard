@@ -9,6 +9,7 @@ use App\Http\Controllers\PaymentTypeController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\AdministratorController;
 use App\Http\Controllers\DefaultCategoryController;
+use App\Http\Controllers\StatisticController;
 
 /*
 |--------------------------------------------------------------------------
@@ -101,15 +102,6 @@ Route::middleware(['auth:api'])->group(function (){
     Route::post('vcards/{vcard}/piggyBankOperation',[VcardController::class, 'piggyBankOperation'])->middleware('can:update,vcard');
 
 
-    Route::get('vcards/{vcard}/transactionsPaymentType', [VcardController::class, 'getVcardTransactionsPaymentType']);
-
-    Route::get('vcards/{vcard}/transactionsType', [VcardController::class, 'getVcardTransactionType']);
-
-    Route::get('vcards/{vcard}/categoriesType', [VcardController::class, 'getVcardCategoriesType']);
-
-    Route::get('vcards/{vcard}/transactionsPaymentTypeValue', [VcardController::class, 'getVcardCategoriesPaymentTypeValue']);
-
-
     /*************************************** Transactions ***************************************/
 
     Route::post('transactions', [TransactionController::class, 'storeTransaction'])->middleware('can:create,App\Models\Transaction');
@@ -119,6 +111,19 @@ Route::middleware(['auth:api'])->group(function (){
     Route::get('transactions/{transaction}', [TransactionController::class, 'getTransaction'])->middleware('can:view,transaction');
 
     Route::put('transactions/{transaction}', [TransactionController::class, 'updateTransaction'])->middleware('can:update,transaction');
+
+    /*************************************** Transactions ***************************************/
+
+
+    Route::get('statistics/{user}/transactionsPaymentType', [StatisticController::class, 'getTransactionsPaymentType']);
+
+
+    Route::get('statistics/{user}/transactionsType', [StatisticController::class, 'getTransactionType']);
+
+    Route::get('statistics/{user}/categoriesType', [StatisticController::class, 'getCategoriesType']);
+
+    Route::get('statistics/{user}/transactionsPaymentTypeValue', [StatisticController::class, 'getCategoriesPaymentTypeValue']);
+
 
    /*************************************** Logout ***************************************/
 
