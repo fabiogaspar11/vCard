@@ -94,9 +94,12 @@ class TransactionController extends Controller
 
         $Begintransaction = new Transaction();
         $Begintransaction->fill($validated_data);
-        //update new and old balances
 
         $vcard = Vcard::find($request->vcard);
+        if ($vcard->blocked == 1){
+            throw ValidationException::withMessages(['vcard' => 'Recipient vcard is blocked']);
+        }
+        //update new and old balances
         $balance = $vcard->balance;
         $value = number_format($Begintransaction->value,2);
         $difference = 0;
