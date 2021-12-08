@@ -295,17 +295,15 @@ class VcardController extends Controller
         return $piggyBank["balance"];
     }
 
-
-
     public function piggyBankOperation(Vcard $vcard, Request $request){
         $piggyBank = json_decode($vcard->custom_data);
         $currentBalance = $piggyBank->balance;
 
-        if(!str_contains($request->amount, '.')){
-            $request->amount .= ".00";
-        }
-
         $requestAmount = floor($request->amount*100)/100;
+
+        if(!str_contains($requestAmount, '.')){
+            $requestAmount .= ".00";
+        }
 
         if(!isset($requestAmount)){
             throw ValidationException::withMessages(['amount' => "Value is mandatory"]);
