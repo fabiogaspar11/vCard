@@ -301,6 +301,10 @@ class VcardController extends Controller
         $piggyBank = json_decode($vcard->custom_data);
         $currentBalance = $piggyBank->balance;
 
+        if(!str_contains($request->amount, '.')){
+            $request->amount .= ".00";
+        }
+
         $requestAmount = floor($request->amount*100)/100;
 
         if(!isset($requestAmount)){
@@ -313,6 +317,10 @@ class VcardController extends Controller
 
         if($requestAmount <= 0){
             throw ValidationException::withMessages(['amount' => "Value must be a positive number"]);
+        }
+
+        if(strlen(explode('.', $requestAmount)[1]) > 2){
+            throw ValidationException::withMessages(['amount' => "Value must be a two decimal places"]);
         }
 
         if($vcard->balance < $requestAmount && $request->type == 'C'){
