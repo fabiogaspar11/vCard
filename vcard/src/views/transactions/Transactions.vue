@@ -229,16 +229,17 @@ export default {
     },
   },
   watch: {
-    newTransacion() {
-      if (this.$store.getters.newTransacion) {
-        this.$axios
-          .get(`/vcards/${this.phoneNumber}/transactions`)
-          .then((response) => {
-            this.transactions = response.data.data;
-             this.getDataPage(1);
+    newTransacion:{
+      handler() {
+        if(this.$store.getters.newTransacion){
+          this.$axios.get(`/vcards/${this.phoneNumber}/transactions`)
+          .then(response =>{
+            this.vcard = response.data.data
           });
-      }
-    },
+        }
+      },
+      deep:true
+    }
   },
 };
 </script>

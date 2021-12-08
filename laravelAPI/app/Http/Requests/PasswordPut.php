@@ -3,8 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-
-class VcardPut extends FormRequest
+class PasswordPut extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,17 +23,16 @@ class VcardPut extends FormRequest
     public function rules()
     {
         return [
-            'name'               => 'nullable|string|max:50',
-            'email'              => 'nullable|string|max:255|email',
-            'photo_url'          => 'nullable|image|mimes:jpeg,png,jpg|max:8192',
-       ];
+            'old_password' => 'required|string|max:255',
+            'password' => 'required|string|max:255'
+        ];
     }
     public function messages()
     {
         return [
-            'name.max' => 'Name cannot have more than 50 characters',
-            'email.max' => 'Email cannot have more than 255 characters',
-            'photo_url.mimes' => 'The file is not a image',
+            'old_password.required' => 'Old password is mandatory',
+            'password.required' => 'New Password is mandatory'
         ];
     }
+
 }

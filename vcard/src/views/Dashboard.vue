@@ -35,17 +35,8 @@
 
         <div class="container-fluid">
           <div class="row">
-            <div class="col-lg-3 col-6">
-              <div
-                class="small-box buttonUserDetails"
-                @click="$router.push({ name: 'userdetails' })"
-              >
-                <i class="bi bi-person-bounding-box icon"></i>
-                <h4><i class="iconTitle"> User Details </i></h4>
-                <br />
-              </div>
-            </div>
-            <div class="col-lg-3 col-6">
+
+            <div class="col-lg-4 col-6">
               <div
                 class="small-box buttonSendReceive"
                 @click="$router.push({ name: 'transaction' })"
@@ -55,7 +46,7 @@
                 <br />
               </div>
             </div>
-            <div class="col-lg-3 col-6">
+            <div class="col-lg-4 col-6">
               <div
                 class="small-box buttonTransactions"
                 @click="$router.push({ name: 'transactions' })"
@@ -65,7 +56,7 @@
                 <br />
               </div>
             </div>
-            <div class="col-lg-3 col-6">
+            <div class="col-lg-4 col-6">
               <div class="small-box buttonPiggyBank">
                 <i class="bi bi-piggy-bank icon"> </i>
                 <h4 class="title"><i class="iconTitle"> Piggy Bank</i></h4>
@@ -115,13 +106,16 @@ export default {
     },
   },
   watch: {
-  newTransacion() {
-    if(this.$store.getters.newTransacion){
-      this.$axios.get(`/vcards/${this.phoneNumber}`)
-      .then(response =>{
-        this.vcard = response.data.data
-      });
-    }
+  newTransacion:{
+    handler() {
+      if(this.$store.getters.newTransacion){
+        this.$axios.get(`/vcards/${this.phoneNumber}`)
+        .then(response =>{
+          this.vcard = response.data.data
+        });
+      }
+    },
+    deep:true
   }
 },
   created(){

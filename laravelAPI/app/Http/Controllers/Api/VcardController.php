@@ -1,10 +1,10 @@
 <?php
 
 namespace App\Http\Controllers\Api;
-use App\Http\Controllers\Controller;
 use Exception;
 use App\Models\Vcard;
 use App\Models\Category;
+use App\Models\Transaction;
 
 use Illuminate\Support\Str;
 
@@ -12,21 +12,22 @@ use Illuminate\Http\Request;
 use App\Http\Requests\VcardPut;
 use App\Models\DefaultCategory;
 use App\Http\Requests\VcardPost;
+use App\Http\Requests\PasswordPut;
 use App\Http\Requests\VcardDelete;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\ConfirmationCodePut;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Resources\VcardResource;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Resources\CategoryResource;
 use App\Http\Resources\TransactionResource;
-use App\Models\Transaction;
 use Illuminate\Validation\ValidationException;
 
 class VcardController extends Controller
 {
     public function getVcards(Request $request)
     {
-
         $state = $request->query('state');
         $phone_number = $request->query('phone_number');
         $name = $request->query('name');
@@ -97,19 +98,6 @@ class VcardController extends Controller
     public function updateVcard(VcardPut $request, Vcard $vcard)
     {
         $old_photo = $vcard->photo_url;
-        if($request->old_password != null){
-            if(!Hash::check($request->old_password, $vcard->password)){
-                throw ValidationException::withMessages(['password' => "Password is not correct"]);
-            }
-            if($request->old_password == $request->password){
-                throw ValidationException::withMessages(['password' => "Old password and new password must be different"]);
-            }
-        }
-        else if ($request->password != null || $request->confirmation_code != null){
-            throw ValidationException::withMessages(['password' => "You must insert the old password first"]);
-        }
-
-
         $validated_data = $request->validated();
         $vcard->fill($validated_data);
 
@@ -121,11 +109,10 @@ class VcardController extends Controller
             $vcard->photo_url = $filename;
         }
 
-        $vcard->password = Hash::make($vcard->password);
-        $vcard->confirmation_code = Hash::make($vcard->confirmation_code);
         $vcard->save();
         return new VcardResource($vcard);
     }
+
     public function alterBlock(Vcard $vcard){
         $vcard->blocked = $vcard->blocked == 1 ? 0 : 1;
         $vcard->save();
@@ -183,7 +170,6 @@ class VcardController extends Controller
 
         return new VcardResource($vcard);
     }
-
 
     public function getVcardLastTransaction(Vcard $vcard)
     {
@@ -254,15 +240,13 @@ class VcardController extends Controller
     }
 
     public function getVcardPhoto(Vcard $vcard){
-
-        $photo = $vcard->photo_url;
-        return Storage::disk('local')->get('public/fotos/'.$photo);
+        return $vcard->photo_url;
     }
 
     public function getVcardCategories(Vcard $vcard){
         $categories = Category::orderBy('id', 'asc')
-                                ->where('vcard', $vcard->phone_number)
-                                ->paginate(5);
+        ->where('vcard', $vcard->phone_number)
+        ->paginate(5);
         if($categories->isEmpty()){
             return response()->json([
                 'error' => 'This vcard does not have any categories yet'
@@ -271,8 +255,6 @@ class VcardController extends Controller
 
         return CategoryResource::Collection($categories);
     }
-
-
 
     public function piggyBankState(Vcard $vcard){
         return $vcard->custom_data == null ? ["response" => false] : ["response" => true];
@@ -284,7 +266,7 @@ class VcardController extends Controller
 
     public function createPiggyBank(Vcard $vcard){
         if($vcard->custom_data != null)
-            return "Vcard already has a piggy bank";
+        return "Vcard already has a piggy bank";
 
         $piggyBank = array();
         $piggyBank["balance"] = 0;
@@ -294,8 +276,6 @@ class VcardController extends Controller
         $vcard->save();
         return $piggyBank["balance"];
     }
-
-
 
     public function piggyBankOperation(Vcard $vcard, Request $request){
         $piggyBank = json_decode($vcard->custom_data);
@@ -340,5 +320,30 @@ class VcardController extends Controller
         return $newBalance;
     }
 
+    public function changePassword(Vcard $vcard, PasswordPut $request){
 
+        if(!Hash::check($request->old_password, $vcard->password)){
+            throw ValidationException::withMessages(['password' => "Confirmation of password failed"]);
+        }
+        if($request->old_password == $request->password){
+            throw ValidationException::withMessages(['password' => "Old password and new password cannot be equal"]);
+        }
+        $vcard->password = Hash::make($request->password);
+        $vcard->save();
+        return $vcard;
+    }
+
+    public function changeConfirmationCode(Vcard $vcard, ConfirmationCodePut $request){
+
+        if(!Hash::check($request->old_password, $vcard->password)){
+            throw ValidationException::withMessages(['password' => "Confirmation of password failed"]);
+        }
+
+        if(Hash::check($request->confirmation_code, $vcard->confirmation_code)){
+            throw ValidationException::withMessages(['confirmation_code' => "Old confirmation code and new confirmation code cannot be equal"]);
+        }
+        $vcard->confirmation_code = Hash::make($request->confirmation_code);
+        $vcard->save();
+        return $vcard;
+    }
 }

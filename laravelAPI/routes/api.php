@@ -81,6 +81,10 @@ Route::middleware(['auth:api','not.blocked'])->group(function (){
 
     Route::get('vcards/{vcard}/isVcard', [VcardController::class, 'checkVcard']);
 
+    Route::put('vcards/{vcard}/password/change', [VcardController::class, 'changePassword'])->middleware('can:update,vcard');
+
+    Route::put('vcards/{vcard}/confirmationCode/change', [VcardController::class, 'changeConfirmationCode'])->middleware('can:update,vcard');
+
     Route::put('vcards/{vcard}', [VcardController::class, 'updateVcard'])->middleware('can:update,vcard');
 
     Route::delete('vcards/{vcard}', [VcardController::class, 'destroyVcard'])->middleware('can:delete,vcard');
