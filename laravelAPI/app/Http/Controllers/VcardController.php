@@ -304,15 +304,22 @@ class VcardController extends Controller
         if($request->amount <= 0){
             throw ValidationException::withMessages(['amount' => "Value must be a positive number"]);
         }
-        if($currentBalance + $request->amount > $request->balance){
+
+        if($vcard->balance < $request->amount && $request->type == 'C'){
             throw ValidationException::withMessages(['amount' => "Money value cannot be superior than your balance"]);
+        }
+
+        if($currentBalance < $request->amount && $request->type == 'D'){
+            throw ValidationException::withMessages(['amount' => "Money value cannot be superior than your piggy bank balance"]);
         }
 
         if($request->type == 'C'){
             $newBalance = $currentBalance + $request->amount;
+            $vcard->balance -= $request->amount;
         }
         else if($request->type == 'D'){
             $newBalance = $currentBalance - $request->amount;
+            $vcard->balance += $request->amount;
         }
 
         $newPiggyBank = array();
