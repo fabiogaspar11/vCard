@@ -223,6 +223,10 @@ class VcardController extends Controller
                     throw ValidationException::withMessages(['filterOrderBy' => "Begin date cannot be equal to end date"]);
                 }
             }
+            if(($beginDate != null &&  $endDate == null) || ($endDate != null &&  $beginDate == null)){
+                throw ValidationException::withMessages(['filterOrderBy' => "Begin Date or End Date is missing"]);
+
+            }
             if($transactionType != null && $transactionType != 'C' && $transactionType != 'D'){
                 throw ValidationException::withMessages(['filterOrderBy' => "Transaction type can only be Credit (C) or Debit (D)"]);
             }
