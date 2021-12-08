@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Http\Controllers;
-
-use Image;
+namespace App\Http\Controllers\Api;
+use App\Http\Controllers\Controller;
 use Exception;
 use App\Models\Vcard;
 use App\Models\Category;
@@ -22,7 +21,6 @@ use App\Http\Resources\CategoryResource;
 use App\Http\Resources\TransactionResource;
 use App\Models\Transaction;
 use Illuminate\Validation\ValidationException;
-use Nette\Utils\Json;
 
 class VcardController extends Controller
 {

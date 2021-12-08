@@ -1,19 +1,15 @@
 <?php
 
-namespace App\Http\Controllers;
-
+namespace App\Http\Controllers\Api;
+use App\Http\Controllers\Controller;
 use Exception;
 use App\Models\Vcard;
 use App\Models\Category;
 use App\Models\Transaction;
 use App\Models\PaymentType;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\TransactionPut;
 use App\Http\Requests\TransactionPost;
-
-use function PHPUnit\Framework\isNull;
-use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\TransactionResource;
 use Illuminate\Validation\ValidationException;
 
