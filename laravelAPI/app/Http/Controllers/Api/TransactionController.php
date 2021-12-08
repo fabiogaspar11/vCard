@@ -91,6 +91,7 @@ class TransactionController extends Controller
         if($request->pair_vcard == $request->vcard){
             throw ValidationException::withMessages(['pair_vcard' => 'Recipient vcard cannot be the same as the sender vcard']);
         }
+
         $Begintransaction = new Transaction();
         $Begintransaction->fill($validated_data);
         //update new and old balances
@@ -138,6 +139,9 @@ class TransactionController extends Controller
             $Endtransaction->type = $Begintransaction->type == 'C' ? 'D' : 'C';
             //update new and old balances
             $pairVcard = Vcard::find($request->pair_vcard);
+            if ($pairVcard->blocked == 1){
+                throw ValidationException::withMessages(['pair_vcard' => 'Recipient vcard is blocked']);
+            }
             $balancePairVcard = $pairVcard->balance;
             $this->updateNewOldBalance($value, $balancePairVcard, $Endtransaction);
             //Update vcard balance
