@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
-
+namespace App\Http\Controllers\Api;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\DefaultCategoryPost;
 use App\Http\Requests\DefaultCategoryPut;
 use App\Http\Resources\DefaultCategoryResource;
 use App\Models\DefaultCategory;
-use Illuminate\Http\Request;
 
 class DefaultCategoryController extends Controller
 {

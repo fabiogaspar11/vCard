@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
-
+namespace App\Http\Controllers\Api;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Str;
-use Illuminate\Http\Request;
 use App\Models\Administrator;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\AdministratorPost;
