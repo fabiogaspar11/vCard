@@ -298,9 +298,14 @@ class VcardController extends Controller
         $piggyBank = json_decode($vcard->custom_data);
         $currentBalance = $piggyBank->balance;
 
+        if(!is_numeric($request->amount)){
+            throw ValidationException::withMessages(['amount' => "Value must be a number"]);
+        }
+
         if(!isset($request->amount)){
             throw ValidationException::withMessages(['amount' => "Value is mandatory"]);
         }
+
         if($request->amount <= 0){
             throw ValidationException::withMessages(['amount' => "Value must be a positive number"]);
         }
