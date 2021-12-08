@@ -301,33 +301,35 @@ class VcardController extends Controller
         $piggyBank = json_decode($vcard->custom_data);
         $currentBalance = $piggyBank->balance;
 
-        if(!isset($request->amount)){
+        $requestAmount = floor($request->amount*100)/100;
+
+        if(!isset($requestAmount)){
             throw ValidationException::withMessages(['amount' => "Value is mandatory"]);
         }
 
-        if(!is_numeric($request->amount)){
+        if(!is_numeric($requestAmount)){
             throw ValidationException::withMessages(['amount' => "Value must be a number"]);
         }
 
-        if($request->amount <= 0){
+        if($requestAmount <= 0){
             throw ValidationException::withMessages(['amount' => "Value must be a positive number"]);
         }
 
-        if($vcard->balance < $request->amount && $request->type == 'C'){
+        if($vcard->balance < $requestAmount && $request->type == 'C'){
             throw ValidationException::withMessages(['amount' => "Money value cannot be superior than your balance"]);
         }
 
-        if($currentBalance < $request->amount && $request->type == 'D'){
+        if($currentBalance < $requestAmount && $request->type == 'D'){
             throw ValidationException::withMessages(['amount' => "Money value cannot be superior than your piggy bank balance"]);
         }
 
         if($request->type == 'C'){
-            $newBalance = $currentBalance + $request->amount;
-            $vcard->balance -= $request->amount;
+            $newBalance = $currentBalance + $requestAmount;
+            $vcard->balance -= $requestAmount;
         }
         else if($request->type == 'D'){
-            $newBalance = $currentBalance - $request->amount;
-            $vcard->balance += $request->amount;
+            $newBalance = $currentBalance - $requestAmount;
+            $vcard->balance += $requestAmount;
         }
 
         $newPiggyBank = array();
