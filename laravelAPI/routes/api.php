@@ -102,6 +102,9 @@ Route::middleware(['auth:api'])->group(function (){
     Route::post('vcards/{vcard}/piggyBankOperation',[VcardController::class, 'piggyBankOperation'])->middleware('can:update,vcard');
 
 
+
+    Route::get('vcards/{vcard}/categoriesPerPage', [VcardController::class, 'getVcardCategoriesPerPage']);
+
     /*************************************** Transactions ***************************************/
 
     Route::post('transactions', [TransactionController::class, 'storeTransaction'])->middleware('can:create,App\Models\Transaction');
@@ -112,7 +115,7 @@ Route::middleware(['auth:api'])->group(function (){
 
     Route::put('transactions/{transaction}', [TransactionController::class, 'updateTransaction'])->middleware('can:update,transaction');
 
-    /*************************************** Transactions ***************************************/
+    /*************************************** Statistics ***************************************/
 
 
     Route::get('statistics/{user}/transactionsPaymentType', [StatisticController::class, 'getTransactionsPaymentType']);

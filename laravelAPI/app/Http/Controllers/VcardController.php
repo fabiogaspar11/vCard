@@ -271,6 +271,18 @@ class VcardController extends Controller
         return CategoryResource::collection($categories);
     }
 
+    public function getVcardCategoriesPerPage(Vcard $vcard){
+        $categories = $vcard->categories;
+        if($categories->isEmpty()){
+            return response()->json([
+                'error' => 'This vcard does not have any categories yet'
+            ], 404);
+        }
+
+
+        return CategoryResource::collection($categories);
+    }
+
     public function piggyBankState(Vcard $vcard){
         return $vcard->custom_data == null ? ["response" => false] : ["response" => true];
     }
