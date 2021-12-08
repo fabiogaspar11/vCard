@@ -26,7 +26,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::middleware(['auth:api'])->group(function (){
+Route::middleware(['auth:api','not.blocked'])->group(function (){
 
     /*************************************** Users ***************************************/
 
@@ -118,14 +118,13 @@ Route::middleware(['auth:api'])->group(function (){
     /*************************************** Statistics ***************************************/
 
 
-    Route::get('statistics/{user}/transactionsPaymentType', [StatisticController::class, 'getTransactionsPaymentType']);
+    Route::get('statistics/transactionsPaymentType', [StatisticController::class, 'getTransactionsPaymentType']);
 
+    Route::get('statistics/transactionsType', [StatisticController::class, 'getTransactionType']);
 
-    Route::get('statistics/{user}/transactionsType', [StatisticController::class, 'getTransactionType']);
+    Route::get('statistics/categoriesType', [StatisticController::class, 'getCategoriesType']);
 
-    Route::get('statistics/{user}/categoriesType', [StatisticController::class, 'getCategoriesType']);
-
-    Route::get('statistics/{user}/transactionsPaymentTypeValue', [StatisticController::class, 'getCategoriesPaymentTypeValue']);
+    Route::get('statistics/transactionsPaymentTypeValue', [StatisticController::class, 'getCategoriesPaymentTypeValue']);
 
 
    /*************************************** Logout ***************************************/
