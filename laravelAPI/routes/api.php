@@ -2,14 +2,14 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\VcardController;
+use App\Http\Controllers\Api\VcardController;
 use App\Http\Controllers\Api\AuthController;
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\PaymentTypeController;
-use App\Http\Controllers\TransactionController;
-use App\Http\Controllers\AdministratorController;
-use App\Http\Controllers\DefaultCategoryController;
-use App\Http\Controllers\StatisticController;
+use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\PaymentTypeController;
+use App\Http\Controllers\Api\TransactionController;
+use App\Http\Controllers\Api\AdministratorController;
+use App\Http\Controllers\Api\DefaultCategoryController;
+use App\Http\Controllers\Api\StatisticController;
 
 /*
 |--------------------------------------------------------------------------
