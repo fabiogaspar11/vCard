@@ -72,6 +72,15 @@
         </tr>
       </tbody>
     </table>
+    <nav aria-label="Page navigation example">
+      <ul class="pagination">
+        <li class="page-item"><a class="page-link" href="#" @click.prevent="getPreviousPage()">Previous</a></li>
+        <li class="page-item"><a class="page-link" href="#">{{ this.pageActual }}</a></li>
+        <li class="page-item"><a class="page-link" href="#" @click.prevent="getNextPage()">Next</a></li>
+      </ul>
+    </nav>
+
+  
   </main>
 </template>
 
@@ -89,6 +98,8 @@ export default {
       vcard: null,
       categories: null,
       phone_number: localStorage.getItem("username") || null,
+      pageActual: 1,
+      lastPage: null,
     };
   },
   methods: {
@@ -102,6 +113,27 @@ export default {
           this.$toast.info(`Could not delete category ${id}`);
         });
     },
+    getPreviousPage(){
+      if (this.pageActual > 1){
+        this.pageActual--;
+        this.getCategories()
+      }
+    },
+    getNextPage(){
+      if (this.pageActual < this.lastPage){
+        this.pageActual++;
+        this.getCategories()
+      }
+ 
+    },
+    getCategories(){
+      this.$axios
+        .get(`/vcards/${this.phone_number}/categories?page=${this.pageActual}`)
+        .then((response) => {
+          this.categories = response.data.data;
+          this.lastPage = response.data.meta.last_page;       
+        });
+    }
   },
   mounted() {},
   created() {
@@ -109,11 +141,7 @@ export default {
       .get(`/vcards/${this.phone_number}`)
       .then((response) => {
         this.vcard = response.data.data;
-        this.$axios
-          .get(`/vcards/${this.phone_number}/categories`)
-          .then((response) => {
-            this.categories = response.data.data;
-          });
+        this.getCategories()
       })
       .catch((error) => {
         console.log(error);

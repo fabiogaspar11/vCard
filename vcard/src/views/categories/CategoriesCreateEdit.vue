@@ -62,7 +62,7 @@ export default {
     }
   },
   created(){
-   this.$axios.get(`/vcards/${this.$store.getters.phoneNumber}`)
+   this.$axios.get(`/vcards/${this.$store.getters.username}`)
     .then(response =>{
       this.vcard = response.data.data
       this.getVcard()

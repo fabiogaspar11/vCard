@@ -260,26 +260,19 @@ class VcardController extends Controller
     }
 
     public function getVcardCategories(Vcard $vcard){
-        $categories = $vcard->categories;
-        if($categories->isEmpty()){
-            return response()->json([
-                'error' => 'This vcard does not have any categories yet'
-            ], 404);
-        }
-        return CategoryResource::collection($categories);
-    }
-
-    public function getVcardCategoriesPerPage(Vcard $vcard){
-        $categories = $vcard->categories;
+        $categories = Category::orderBy('id', 'asc')
+                                ->where('vcard', $vcard->phone_number)
+                                ->paginate(5);
         if($categories->isEmpty()){
             return response()->json([
                 'error' => 'This vcard does not have any categories yet'
             ], 404);
         }
 
-
-        return CategoryResource::collection($categories);
+        return CategoryResource::Collection($categories);
     }
+
+
 
     public function piggyBankState(Vcard $vcard){
         return $vcard->custom_data == null ? ["response" => false] : ["response" => true];

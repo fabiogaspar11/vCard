@@ -17,6 +17,7 @@
     },
     "dependencies": {
         "chart.js": "^3.6.1",
+        "tailwindcss": "^2.2.19",
         "vue-chartjs": "^3.5.1"
     }
 }
