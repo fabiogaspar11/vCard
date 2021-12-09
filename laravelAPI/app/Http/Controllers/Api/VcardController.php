@@ -194,7 +194,7 @@ class VcardController extends Controller
             //$transactions = $vcard->transactions->sortByDesc('datetime');
             $transactions = Transaction::orderBy('datetime', 'desc')
             ->where('vcard', $vcard->phone_number)
-            ->paginate(5);
+            ->paginate(10);
 
             if($transactions->isEmpty()){
                 return [
@@ -238,7 +238,7 @@ class VcardController extends Controller
                 $query->orderBy('date','desc')->orderBy('value','asc');
             }
 
-            $transactions = $query->paginate(5);
+            $transactions = $query->paginate(10);
             //$transactions = $query->get();
         }
 
