@@ -110,7 +110,7 @@ class TransactionController extends Controller
             $roundedValue = ceil($value);
         }
 
-        if($request->type == 'D' && $balance < $value && $balance < $roundedValue){
+        if($request->type == 'D' && $balance < $value){
             throw ValidationException::withMessages(['value' => 'Balance is insufficient']);
         }
         if($request->type == 'D' && $request->value > $vcard->max_debit){
@@ -122,7 +122,8 @@ class TransactionController extends Controller
         //Update vcard balance
         $vcard->balance = $Begintransaction->new_balance;
 
-        if($difference>0){
+        if($difference>0 && $balance > $roundedValue){
+            $vcard->balance -= $difference;
             $piggyBank = json_decode($vcard->custom_data);
             $currentBalance = $piggyBank->balance;
             $piggyBank = array();
@@ -162,7 +163,6 @@ class TransactionController extends Controller
             $Endtransaction->date = $date;
             $Endtransaction->datetime = $datetime;
         }
-
 
         try {
           DB::beginTransaction();

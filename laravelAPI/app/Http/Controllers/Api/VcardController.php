@@ -279,11 +279,15 @@ class VcardController extends Controller
     public function piggyBankOperation(Vcard $vcard, Request $request){
         $piggyBank = json_decode($vcard->custom_data);
         $currentBalance = $piggyBank->balance;
-
-        $requestAmount = floor($request->amount*100)/100;
+        $requestAmount = $request->amount;
 
         if(!str_contains($requestAmount, '.')){
             $requestAmount .= ".00";
+        }else{
+            $requestAmount = floor($request->amount*100)/100;
+            if(!str_contains($requestAmount, '.')) {
+                $requestAmount .= ".00";
+            }
         }
 
         if(!isset($requestAmount)){
@@ -298,7 +302,14 @@ class VcardController extends Controller
             throw ValidationException::withMessages(['amount' => "Value must be a positive number"]);
         }
 
-        if(strlen(explode('.', $requestAmount)[1]) > 2){
+        $stringSplited = "";
+        try{
+            $stringSplited = explode('.', $request->amount)[1];
+        }catch(Exception $e){
+
+        }
+
+        if(strlen($stringSplited) > 2){
             throw ValidationException::withMessages(['amount' => "Value must be a two decimal places"]);
         }
 
@@ -311,16 +322,16 @@ class VcardController extends Controller
         }
 
         if($request->type == 'C'){
-            $newBalance = $currentBalance + $requestAmount;
-            $vcard->balance -= $requestAmount;
+            $newBalance = $currentBalance + number_format($requestAmount,2);
+            $vcard->balance -= number_format($requestAmount,2);
         }
         else if($request->type == 'D'){
-            $newBalance = $currentBalance - $requestAmount;
-            $vcard->balance += $requestAmount;
+            $newBalance = $currentBalance - number_format($requestAmount,2);
+            $vcard->balance += number_format($requestAmount,2);
         }
 
         $newPiggyBank = array();
-        $newPiggyBank["balance"] = $newBalance;
+        $newPiggyBank["balance"] = number_format($newBalance,2);
 
         $json = json_encode($newPiggyBank);
         $vcard->custom_data = $json;
