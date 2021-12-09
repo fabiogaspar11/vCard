@@ -23,7 +23,10 @@ class TransactionPost extends FormRequest
      */
     public function rules()
     {
-
+        $confirmationCodeRule = 'nullable';
+        if(auth()->user()->user_type == 'V'){
+            $confirmationCodeRule = 'required';
+        }
         return [
             'vcard' => ['required','integer','exists:vcards,phone_number','digits:9','regex:/^(9[0-9])([0-9]{7})?$/'],
             'type' => ['required', 'string', 'in:C,D'],
@@ -33,7 +36,7 @@ class TransactionPost extends FormRequest
             'pair_vcard' => ['nullable','integer','digits:9','regex:/^(9[0-9])([0-9]{7})?$/','exists:vcards,phone_number'],
             'category_id' => 'nullable|integer','exists:categories,id',
             'description' => 'nullable|string|max:255',
-            'confirmation_code'  => 'required|integer|digits:4',
+            'confirmation_code'  => $confirmationCodeRule.'|integer|digits:4',
         ];
     }
 

@@ -172,9 +172,6 @@ import store from '../store'
 router.beforeEach((to, from, next) => {
   var user_type = store.state.userType;
   var isAuthenticated = store.state.status;
-  console.log("sss")
-  console.log(user_type)
-  console.log(isAuthenticated)
   if ((to.name == 'login') || (to.name == 'home') || (to.name == 'register')) {
     next()
     return

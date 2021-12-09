@@ -194,6 +194,7 @@ export default {
       this.$axios
         .post(`/transactions`, transaction)
         .then((response) => {
+          this.$toast.success('Transactions done successfully');
           let destination = null;
           if (transaction.payment_type == "VCARD") {
             destination = transaction.payment_reference;
@@ -207,7 +208,6 @@ export default {
               destination
             );
           }
-
           transaction = null;
           this.$router.push({
             name: "dashboard",
@@ -219,7 +219,7 @@ export default {
         })
         .catch((error) => {
           this.errors={};
-          console.log(error.response.data.errors);
+          console.log(error.response.data);
           Object.entries(error.response.data.errors).forEach(([key, val]) => {
             this.errors[key] = val[0];
           });
