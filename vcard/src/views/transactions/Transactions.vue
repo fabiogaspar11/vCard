@@ -35,12 +35,18 @@
           <label class="m-1">Most Recent</label>
           <input class="m-1" type="checkbox" v-model="mostRecent" />
         </div>
+        
         <div class="text-end m-1">
           <a type="submit" class="btn btn-info" @click="submitFilterOrderBy">
             <i
               class="bi bi-search"
               style="color: white; margin-right: 25%"
             ></i>
+          </a>
+        </div>
+        <div class="text-end m-1">
+          <a type="submit" class="btn btn-secondary" @click="clearFilters">
+            Clear
           </a>
         </div>
       </div>
@@ -138,13 +144,45 @@ export default {
   },
   methods: {
     submitFilterOrderBy() {
-      console.log(this.beginDate);
-      this.errors = {};
+      this.pageActual = 1;
+      this.getTransactionsWithFilter();
+    },
+    getPreviousPage(){
+      if (this.pageActual > 1){
+        this.pageActual--;
+        if (this.queryString != null){
+          this.getTransactionsWithFilter()
+        }
+        else{
+          this.getTransactions()
+        }
 
-      if (this.queryString == null) {
-        this.pageActual = 1;
       }
+    },
+    getNextPage(){
+      if (this.pageActual < this.lastPage){
+        this.pageActual++;
+         if (this.queryString != null){
+          this.getTransactionsWithFilter()
+        }
+        else{
+          this.getTransactions()
+        }
+      }
+    },
+    getTransactions(){
+      this.$axios
+      .get(`/vcards/${this.phoneNumber}/transactions?page=${this.pageActual}`)
+      .then((response) => {
+        this.transactions = response.data.data;
+        this.lastPage = response.data.meta.last_page;      
+        console.log(this.transactions)
+      });
+    },
+    getTransactionsWithFilter(){
+      this.errors = {};
       this.queryString = "?";
+
       let map = new Map();
       if (this.beginDate != null) {
         map.set("beginDate", this.beginDate);
@@ -161,7 +199,11 @@ export default {
       if (this.mostRecent) {
         map.set("orderByMostRecent", this.mostRecent);
       }
-
+      
+      if (this.beginDate == null && this.endDate == null && this.typeFilter == null && !this.amount && !this.mostRecent){
+        return this.getTransactions();
+      }
+      console.log(this.queryString)
       map.forEach((value, key) => {
         this.queryString += key + "=" + value + "&";
       });
@@ -183,37 +225,12 @@ export default {
           });
         });
     },
-    getPreviousPage(){
-      if (this.pageActual > 1){
-        this.pageActual--;
-        if (this.queryString != null){
-          this.submitFilterOrderBy()
-        }
-        else{
-          this.getTransactions()
-        }
-
-      }
-    },
-    getNextPage(){
-      if (this.pageActual < this.lastPage){
-        this.pageActual++;
-         if (this.queryString != null){
-          this.submitFilterOrderBy()
-        }
-        else{
-          this.getTransactions()
-        }
-      }
-    },
-    getTransactions(){
-      this.$axios
-      .get(`/vcards/${this.phoneNumber}/transactions?page=${this.pageActual}`)
-      .then((response) => {
-        this.transactions = response.data.data;
-        this.lastPage = response.data.meta.last_page;      
-        console.log(this.transactions)
-      });
+    clearFilters(){
+      this.typeFilter = null
+      this.beginDate = null
+      this.endDate = null
+      this.amount = null
+      this.mostRecent = null
     }
   },
   mounted() {
