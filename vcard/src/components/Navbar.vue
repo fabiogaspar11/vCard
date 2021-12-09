@@ -43,7 +43,7 @@
                 aria-expanded="false"
               >
                 <img
-                  src="../assets/img/logo.png"
+                  :src="photo"
                   class="rounded-circle z-depth-0 avatar-img"
                   alt="avatar image"
                 />
@@ -56,15 +56,6 @@
                 <li>
                   <router-link
                     class="dropdown-item"
-                    :class="{ active: $route.name === 'userdetails' }"
-                    :to="{ name: 'userdetails' }"
-                    ><i class="bi bi-person-square"></i>
-                    User Details
-                  </router-link>
-                </li>
-                <li>
-                  <router-link
-                    class="dropdown-item"
                     :class="{ active: $route.name === 'deleteVcard' }"
                     :to="{ name: 'deleteVcard' }"
                     ><i class="bi bi-trash-fill"></i>
@@ -72,6 +63,30 @@
                   </router-link>
                 </li>
                 <li>
+                  <hr class="dropdown-divider" />
+                </li>
+                 <li>
+                  <router-link
+                    class="dropdown-item"
+                    :class="{ active: $route.name === 'deleteVcard' }"
+                    :to="{ name: 'changeSecretValue', params:{isUpdatePassword:1,fieldUpdate:'New Pasword'} }"
+                    ><i class="bi bi-key-fill"></i>
+                   Change Password
+                  </router-link>
+                </li>
+                  <li>
+                  <hr class="dropdown-divider" />
+                </li>
+                <li>
+                     <router-link
+                    class="dropdown-item"
+                    :class="{ active: $route.name === 'deleteVcard' }"
+                    :to="{ name: 'changeSecretValue', params:{isUpdatePassword:0,fieldUpdate:'Confirmation Code'} }"
+                    ><i class="bi bi-key-fill"></i>
+                   Change Confirmation Code
+                  </router-link>
+                </li>
+                  <li>
                   <hr class="dropdown-divider" />
                 </li>
                 <li>
@@ -96,9 +111,15 @@ export default {
     return {
       username: this.$store.getters.username || null,
       password: "",
+      photo:''
     };
   },
-  components: {},
+  created(){
+        this.$axios.get(`/vcards/storage/${this.username}`)
+        .then((response)=>{
+            this.photo = "http://laravelapi.test/storage/fotos/" + response.data;
+        });
+    },
   methods: {
     logout() { 
       this.$store
@@ -135,7 +156,7 @@ export default {
 }
 .avatar-text {
   line-height: 2.2rem;
-  margin: 1rem 0.5rem -2rem 0;
+  margin: 1px 4px;
   padding-top: 1rem;
 }
 

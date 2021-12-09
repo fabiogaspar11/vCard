@@ -10,7 +10,7 @@ export default createStore({
   },
   getters: {
     username: state => state.username,
-    newTransacion : state => state.newTransacion,
+    newTransacion: state => state.newTransacion,
     vcardStatus: state => state.vcardStatus,
   },
   mutations: {

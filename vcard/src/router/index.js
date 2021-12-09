@@ -23,7 +23,7 @@ import Vcards from '../views/vcards/Vcards.vue'
 import UserdetailsAdmin from '../views/users/UserdetailsAdmin.vue'
 import DeleteVcard from '../views/vcards/DeleteVcard.vue'
 import PiggyBank from '../views/vcards/PiggyBank.vue'
-
+import ChangeSecretValue from '../views/vcards/ChangeSecretValue.vue'
 
 const routes = [
   {
@@ -153,6 +153,12 @@ const routes = [
     path: '/piggyBank',
     name: 'piggyBank',
     component: PiggyBank,
+  },
+  {
+    path: '/ChangeSecretValue',
+    name: 'changeSecretValue',
+    component: ChangeSecretValue,
+    props: true
   }
 ]
 

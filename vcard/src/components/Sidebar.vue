@@ -14,17 +14,6 @@
             Dashboard
           </router-link>
         </li>
-
-        <li class="nav-item">
-          <router-link
-            class="nav-link"
-            :class="{ active: $route.name === 'transaction' }"
-            :to="{ name: 'transaction' }"
-            ><i class="bi bi-currency-euro"></i>
-            Transfer Money
-          </router-link>
-        </li>
-
         <li class="nav-item">
           <router-link
             class="nav-link"
@@ -47,105 +36,14 @@
         <li class="nav-item">
           <router-link
             class="nav-link"
-            :class="{ active: $route.name === 'transactions' }"
-            :to="{ name: 'transactions' }"
-            ><i class="bi bi-list-columns"></i>
-            Transactions
-          </router-link>
-        </li>
-        <li class="nav-item">
-          <router-link
-            class="nav-link"
             :class="{ active: $route.name === 'statistics' }"
             :to="{ name: 'statistics' }"
             ><i class="bi bi-bar-chart-line-fill"></i>
             Statistics
           </router-link>
         </li>
-        <li class="nav-item">
-          <router-link
-           class="nav-link" :to="{ name: 'dashboardAdmin' }">
-           <i class="bi bi-key"></i>
-           Administrator  
-          </router-link>
-        </li>
-        <li class="nav-item">
-          <router-link
-            class="nav-link"
-            :class="{ active: $route.name === 'piggyBank' }"
-            :to="{ name: 'piggyBank' }"
-            ><i class="bi bi-piggy-bank"></i>
-            Piggy Bank
-          </router-link>
-        </li>
-      </ul>
 
-      <div class="d-block d-md-none">
-        <h6
-          class="
-            sidebar-heading
-            d-flex
-            justify-content-between
-            align-items-center
-            px-3
-            mt-4
-            mb-1
-            text-muted
-          "
-        >
-          <span>User</span>
-        </h6>
-        <ul class="nav flex-column mb-2">
-          <li class="nav-item">
-            <a class="nav-link"
-              ><i class="bi bi-person-check-fill"></i>
-              Register
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link">
-              <i class="bi bi-box-arrow-in-right"></i>
-              Login
-            </a>
-          </li>
-          <li class="nav-item dropdown">
-            <a
-              class="nav-link dropdown-toggle"
-              id="navbarDropdownMenuLink2"
-              role="button"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-            >
-              <img
-                src="../assets/img/avatar-exemplo-1.jpg"
-                class="rounded-circle z-depth-0 avatar-img"
-                alt="avatar image"
-              />
-              <span class="avatar-text">User Name</span>
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink2">
-              <li>
-                <a class="dropdown-item"
-                  ><i class="bi bi-person-square"></i>Profile</a
-                >
-              </li>
-              <li>
-                <a class="dropdown-item">
-                  ><i class="bi bi-key-fill"></i>Change password</a
-                >
-              </li>
-              <li>
-                <hr class="dropdown-divider" />
-              </li>
-              <li>
-                <a class="dropdown-item"
-                  ><i class="bi bi-arrow-right"></i>Logout</a
-                >
-              </li>
-            </ul>
-          </li>
-        </ul>
-      </div>
+      </ul>
     </div>
   </nav>
 </template >
