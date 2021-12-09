@@ -1,13 +1,14 @@
 <?php
 
 namespace App\Http\Controllers\Api;
-use App\Http\Controllers\Controller;
 use Exception;
 use App\Models\Vcard;
 use App\Models\Category;
-use App\Models\Transaction;
 use App\Models\PaymentType;
+use App\Models\Transaction;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\TransactionPut;
 use App\Http\Requests\TransactionPost;
 use App\Http\Resources\TransactionResource;
@@ -35,7 +36,7 @@ class TransactionController extends Controller
              $transaction->new_balance = $transaction->old_balance + $value;
          }
     }
-    private function verifyCategoryBelongsToVcard(TransactionPost $request){
+    private function verifyCategoryToVcard(TransactionPost $request){
         if(isset($request->category_id)){
             $category = Category::find($request->category_id);
             if($category == null){
@@ -43,6 +44,9 @@ class TransactionController extends Controller
             }
             if($category->vcard != $request->vcard){
                 throw ValidationException::withMessages(['category' => "This category doesn't belong to the vcard"]);
+            }
+            if($category->type != $request->type){
+                throw ValidationException::withMessages(['category' => "This category type doesnt match the transaction type"]);
             }
         }
     }
@@ -55,13 +59,16 @@ class TransactionController extends Controller
             if($category->vcard != $vcard->phone_number){
                 return 0;
             }
+            if($category->type != $transaction->type){
+                return -1;
+            }
         }
         return 1;
     }
 
     public function storeTransaction(TransactionPost $request)
     {
-        $this->verifyCategoryBelongsToVcard($request);
+        $this->verifyCategoryToVcard($request);
         $paymentTypeFound = PaymentType::find($request->payment_type);
         $rule = json_decode($paymentTypeFound->validation_rules)->validation;
         if($request->payment_type == 'VCARD'){
@@ -99,18 +106,23 @@ class TransactionController extends Controller
         if ($vcard->blocked == 1){
             throw ValidationException::withMessages(['vcard' => 'Recipient vcard is blocked']);
         }
+        if(!Hash::check($request->confirmation_code, $vcard->confirmation_code)){
+            throw ValidationException::withMessages(['confirmation_code' => "Confirmation code is invalid"]);
+        }
         //update new and old balances
         $balance = $vcard->balance;
         $value = number_format($Begintransaction->value,2);
         $difference = 0;
         $roundedValue = 0;
-
         if($vcard->custom_data != null){
             $difference = ceil($value) - $Begintransaction->value;
             $roundedValue = ceil($value);
         }
+        if(auth()->user()->user_type=='V' && $request->type == 'C'){
+            throw ValidationException::withMessages(['value' => 'Vcard cannot make credit transactions']);
+        }
 
-        if($request->type == 'D' && $balance < $value && $balance < $roundedValue){
+        if($request->type == 'D' && $balance < $value){
             throw ValidationException::withMessages(['value' => 'Balance is insufficient']);
         }
         if($request->type == 'D' && $request->value > $vcard->max_debit){
@@ -122,7 +134,8 @@ class TransactionController extends Controller
         //Update vcard balance
         $vcard->balance = $Begintransaction->new_balance;
 
-        if($difference>0){
+        if($difference>0 && $balance > $roundedValue){
+            $vcard->balance -= $difference;
             $piggyBank = json_decode($vcard->custom_data);
             $currentBalance = $piggyBank->balance;
             $piggyBank = array();
@@ -163,7 +176,6 @@ class TransactionController extends Controller
             $Endtransaction->datetime = $datetime;
         }
 
-
         try {
           DB::beginTransaction();
 
@@ -190,9 +202,13 @@ class TransactionController extends Controller
     }
 
     public function updateTransaction(TransactionPut $request, Transaction $transaction){
-
-        if($this->verifyCategoryBelongsToVcardPUT($request, $transaction) == 0){
+        $result  =$this->verifyCategoryBelongsToVcardPUT($request, $transaction);
+        if($result == 0){
             throw ValidationException::withMessages(['category_id' => "This category doesn't belong to the vcard"]);
+        }
+
+        if($result = -1){
+            throw ValidationException::withMessages(['category' => "This category type doesnt match the transaction type"]);
         }
         $validated_data = $request->validated();
         $transaction->fill($validated_data);

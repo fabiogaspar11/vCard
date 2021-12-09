@@ -21,7 +21,7 @@
         </div>
       </div>
 
-      <div class="color" v-if="this.vcard != null">
+  <div class="color" v-if="this.vcard != null">
         <div class="container-fluid m-5">
           <div class="row">
             <div class="col-lg-3 profileDiv">
@@ -78,7 +78,7 @@ import Navbar from "../../components/Navbar.vue";
 
 
 export default {
-  name: "Userdetails",
+  name: "VcardDetails",
   components: {
     Sidebar,
     Navbar,
@@ -91,35 +91,31 @@ export default {
       name: null,
       email: null,
       photo_url : null,
-      photo : "",
       loaded: false,
       errors: [],
-
+      photo:'',
       config : {
         header : {
-          'Content-Type' : 'multipart/form-data',
-          'Authorization' : "Bearer " + localStorage.getItem("access_token")
+          'Content-Type' : 'multipart/form-data'
         }
       }
     };
   },
   methods: {
-    onFileChange(e) {
+     onFileChange(e) {
       var files = e.target.files;
       if (!files.length){
         return;
       }     
-
       var reader = new FileReader();
-
       reader.onload = (e) => {
         this.photo = e.target.result;
       }
       this.photo_url = files[0]
       reader.readAsDataURL(files[0]);
-    },
-    
+    }, 
     save(){
+      this.$store.commit('toggleUpdatedPhoto', false)
       let formData = new FormData();
       if (this.name != null) {
         formData.append('name', this.name);
@@ -130,12 +126,13 @@ export default {
       if(this.photo_url != null){
         formData.append('photo_url', this.photo_url);
       }
-      
-      formData.append('_method', 'PUT')
+      formData.append('_method', 'PUT');
       this.errors = [];
       this.$axios.post(`/vcards/${this.$store.getters.username}`, formData, this.config)
         .then(response =>{
+          this.$toast.success("User information was saved");
           this.vcard = response.data.data
+           this.$store.commit('toggleUpdatedPhoto', true)
         })
         .catch((error) => {
           this.errors = [];

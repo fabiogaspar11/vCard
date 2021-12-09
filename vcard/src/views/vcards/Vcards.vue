@@ -48,7 +48,7 @@
           <td>{{vcard.blocked == 1 ? 'Yes' : 'No'}}</td>
           <td class="w-25">
             <div class="container w-75">
-                <a class="btn btn-info m-1 btn-sm" role="button" aria-pressed="true"  @click="$router.push({ name: 'userdetailsAdmin', params:{phone_number : vcard.phone_number }})">
+                <a class="btn btn-info m-1 btn-sm" role="button" aria-pressed="true"  @click="$router.push({ name: 'vcardDetailsAdmin', params:{phone_number : vcard.phone_number }})">
                 <i class="bi bi-arrows-fullscreen" style="color:white;margin-right:25%"></i>
               </a>
               <a class="btn btn-danger m-1 btn-sm" role="button" aria-pressed="true"  @click="deleteVcard(vcard.phone_number)">
@@ -144,7 +144,10 @@ export default {
             })
          })
          .catch((error)=>{
-           console.log(error.response.data)
+            if(error.response.status == 404){
+                this.$toast.error("This vcard could not be found");
+                this.$router.push({name: "dashboardAdmin"});
+          }
          });
       },
       selectVcard(vcard) {
@@ -169,7 +172,10 @@ export default {
             this.$router.push({name:'dashboardAdmin'})
          })
          .catch((error)=>{
-            this.$toast.info("Error updating the debit limit "+error.response.data.max_debit);
+            if(error.response.status == 404){
+                  this.$toast.error("This vcard could not be found");
+                  this.$router.push({name: "dashboardAdmin"});
+            }
          });
       },
       toggleStatusBlock(phone_number){
@@ -182,7 +188,10 @@ export default {
             this.$router.push({name:'dashboardAdmin'})
          })
          .catch((error)=>{
-           console.log(error.response.data)
+             if(error.response.status == 404){
+                  this.$toast.error("This vcard could not be found");
+                  this.$router.push({name: "dashboardAdmin"});
+            }
          });
       }     
   },

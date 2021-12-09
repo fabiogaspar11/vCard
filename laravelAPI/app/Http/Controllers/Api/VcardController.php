@@ -67,7 +67,7 @@ class VcardController extends Controller
         $filename = $vcard->phone_number . "_" . Str::random(6) . '.jpg';
 
         if ($request->hasFile('photo_url')) {
-            $request->file('photo_url')->storeAs('fotos', $filename);
+            $request->file('photo_url')->storeAs('public/fotos', $filename);
             $vcard->photo_url = $filename;
         }
 
@@ -102,10 +102,9 @@ class VcardController extends Controller
         $vcard->fill($validated_data);
 
         $filename = $vcard->phone_number . "_" . Str::random(6) . '.jpg';
-
         if ($request->hasFile('photo_url')) {
             Storage::disk('local')->delete('public/fotos/'. $old_photo);
-            $request->file('photo_url')->storeAs('fotos', $filename);
+            $request->file('photo_url')->storeAs('public/fotos', $filename);
             $vcard->photo_url = $filename;
         }
 
@@ -246,10 +245,19 @@ class VcardController extends Controller
         return TransactionResource::collection($transactions);
     }
 
-    public function getVcardCategories(Vcard $vcard){
-        $categories = Category::orderBy('id', 'asc')
-                            ->where('vcard', $vcard->phone_number)
-                            ->paginate(5);
+    public function getVcardCategories(Request $request,Vcard $vcard){
+        $type = $request->query('type');
+        if($type != null){
+            $query = Category::query();
+            $query->where("vcard", '=', $vcard->phone_number);
+            $query->where("type", '=', $type);
+            $query->orderBy('id','desc');
+            $categories = $query->get();
+        }else{
+            $categories = Category::orderBy('id', 'asc')
+            ->where('vcard', $vcard->phone_number)
+            ->paginate(5);
+        }
         if($categories->isEmpty()){
             return response()->json([
                 'error' => 'This vcard does not have any categories yet'
@@ -287,11 +295,15 @@ class VcardController extends Controller
     public function piggyBankOperation(Vcard $vcard, Request $request){
         $piggyBank = json_decode($vcard->custom_data);
         $currentBalance = $piggyBank->balance;
-
-        $requestAmount = floor($request->amount*100)/100;
+        $requestAmount = $request->amount;
 
         if(!str_contains($requestAmount, '.')){
             $requestAmount .= ".00";
+        }else{
+            $requestAmount = floor($request->amount*100)/100;
+            if(!str_contains($requestAmount, '.')) {
+                $requestAmount .= ".00";
+            }
         }
 
         if(!isset($requestAmount)){
@@ -306,7 +318,14 @@ class VcardController extends Controller
             throw ValidationException::withMessages(['amount' => "Value must be a positive number"]);
         }
 
-        if(strlen(explode('.', $requestAmount)[1]) > 2){
+        $stringSplited = "";
+        try{
+            $stringSplited = explode('.', $request->amount)[1];
+        }catch(Exception $e){
+
+        }
+
+        if(strlen($stringSplited) > 2){
             throw ValidationException::withMessages(['amount' => "Value must be a two decimal places"]);
         }
 
@@ -319,16 +338,16 @@ class VcardController extends Controller
         }
 
         if($request->type == 'C'){
-            $newBalance = $currentBalance + $requestAmount;
-            $vcard->balance -= $requestAmount;
+            $newBalance = $currentBalance + number_format($requestAmount,2);
+            $vcard->balance -= number_format($requestAmount,2);
         }
         else if($request->type == 'D'){
-            $newBalance = $currentBalance - $requestAmount;
-            $vcard->balance += $requestAmount;
+            $newBalance = $currentBalance - number_format($requestAmount,2);
+            $vcard->balance += number_format($requestAmount,2);
         }
 
         $newPiggyBank = array();
-        $newPiggyBank["balance"] = $newBalance;
+        $newPiggyBank["balance"] = number_format($newBalance,2);
 
         $json = json_encode($newPiggyBank);
         $vcard->custom_data = $json;

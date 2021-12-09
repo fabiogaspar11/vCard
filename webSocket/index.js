@@ -20,7 +20,6 @@ io.on('connection', function (socket) {
     socket.on('logged_out', function (username) {
         console.log(`Room User ${username} leave`)
         socket.leave(username)
-        socket.leave('administrator')
     })   
     
     socket.on('newTransaction', function (transaction, username) {

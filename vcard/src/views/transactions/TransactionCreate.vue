@@ -83,6 +83,7 @@
           <TransactionCreateEdit
             @updateCategory="updateCategory"
             @updateDescription="updateDescription"
+            @updateConfirmationCode="updateConfirmationCode"
             :errors="errors"
             v-if="!this.isAdmin"
           ></TransactionCreateEdit>
@@ -143,9 +144,13 @@ export default {
       payment_reference: null,
       category: null,
       description: null,
+      confirmationCode:null
     };
   },
   methods: {
+    updateConfirmationCode(confirmationCode){
+      this.confirmationCode = confirmationCode;
+    },
     updateCategory(category) {
       this.category = category;
     },
@@ -177,6 +182,9 @@ export default {
       }
       if (this.value != null) {
         transaction.value = this.value;
+      }
+      if(this.confirmationCode != null){
+        transaction.confirmation_code = this.confirmationCode;
       }
       return transaction;
     },
@@ -210,6 +218,7 @@ export default {
           });
         })
         .catch((error) => {
+          this.errors={};
           console.log(error.response.data.errors);
           Object.entries(error.response.data.errors).forEach(([key, val]) => {
             this.errors[key] = val[0];

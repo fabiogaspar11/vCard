@@ -10,7 +10,7 @@ import TransactionEdit from '../views/transactions/TransactionEdit.vue'
 import Categories from '../views/categories/Categories.vue'
 import CategoriesCreate from '../views/categories/CategoriesCreate.vue'
 import CategoriesEdit from '../views/categories/CategoriesEdit.vue'
-import Userdetails from '../views/users/Userdetails.vue'
+import VcardDetails from '../views/vcards/VcardDetails.vue'
 import Administrators from '../views/administrators/Administrators.vue'
 import DashboardAdmin from '../views/DashboardAdmin.vue'
 import AdministratorCreate from '../views/administrators/AdministratorCreate.vue'
@@ -20,7 +20,7 @@ import DefaultCategoriesEdit from '../views/defaultCategories/DefaultCategoriesE
 import Statistics from '../views/statistics/Statistics.vue'
 import StatisticsAdmin from '../views/statistics/StatisticsAdmin.vue'
 import Vcards from '../views/vcards/Vcards.vue'
-import UserdetailsAdmin from '../views/users/UserdetailsAdmin.vue'
+import VcardDetailsAdmin from '../views/vcards/VcardDetailsAdmin.vue'
 import DeleteVcard from '../views/vcards/DeleteVcard.vue'
 import PiggyBank from '../views/vcards/PiggyBank.vue'
 import ChangeSecretValue from '../views/vcards/ChangeSecretValue.vue'
@@ -59,9 +59,9 @@ const routes = [
     props: true
   },
   {
-    path: '/userdetails',
-    name: 'userdetails',
-    component: Userdetails
+    path: '/vcardDetails',
+    name: 'vcardDetails',
+    component: VcardDetails
   },
   {
     path: '/transaction',
@@ -139,9 +139,9 @@ const routes = [
     component: StatisticsAdmin
   },
   {
-    path: '/userdetailsAdmin',
-    name: 'userdetailsAdmin',
-    component: UserdetailsAdmin,
+    path: '/vcardDetails',
+    name: 'vcardDetailsAdmin',
+    component: VcardDetailsAdmin,
     props: true
   },
   {
@@ -170,6 +170,7 @@ const router = createRouter({
 import store from '../store'
 
 router.beforeEach((to, from, next) => {
+ // usar local storage
   if (((to.name == 'home') || (to.name == 'login') || (to.name == 'register'))) {
     next()
     return

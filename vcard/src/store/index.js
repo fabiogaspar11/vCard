@@ -6,14 +6,19 @@ export default createStore({
     username: null,
     status: false,
     newTransacion:null,
-    vcardStatus:null
+    vcardStatus:null,
+    updatedPhoto:null
   },
   getters: {
     username: state => state.username,
     newTransacion: state => state.newTransacion,
     vcardStatus: state => state.vcardStatus,
+    updatedPhoto: state => state.updatedPhoto,
   },
   mutations: {
+    toggleUpdatedPhoto(state, value){
+      state.updatedPhoto = value
+    },
     toggleNewTransacion(state, value){
       state.newTransacion = value
     },
@@ -48,6 +53,10 @@ export default createStore({
           password: credentials.password
         })
           .then(response => {
+            axios.defaults.headers.common.Authorization =
+            "Bearer " + response.data.access_token;
+            localStorage.setItem("access_token", response.data.access_token);
+            localStorage.setItem("username",  credentials.username);
             context.commit('mutationAuthOk')
             resolve(response)
           })

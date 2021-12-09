@@ -32,7 +32,8 @@ class TransactionPost extends FormRequest
             'payment_reference' => ['nullable','max:255'],
             'pair_vcard' => ['nullable','integer','digits:9','regex:/^(9[0-9])([0-9]{7})?$/','exists:vcards,phone_number'],
             'category_id' => 'nullable|integer','exists:categories,id',
-            'description' => 'nullable|string|max:255'
+            'description' => 'nullable|string|max:255',
+            'confirmation_code'  => 'required|integer|digits:4',
         ];
     }
 
@@ -70,6 +71,10 @@ class TransactionPost extends FormRequest
 
             'description.string' => 'Description must be a string',
             'description.max' => 'Payment reference cannot have more than 255 characters',
+
+            'confirmation_code.required' => 'PIN is mandatory',
+            'confirmation_code.integer' => 'PIN can only have numbers',
+            'confirmation_code.digits' => 'PIN must have 4 digits',
         ];
     }
 }
