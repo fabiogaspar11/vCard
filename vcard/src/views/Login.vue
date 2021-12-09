@@ -76,7 +76,6 @@ export default {
           return response;
         })
         .then(() => {
-       // localStorage.setItem("type", this.username);
         this.$toast.success('User has logged in on the application.');
          this.$socket.emit('logged_in', this.username)        
           this.$router.push({

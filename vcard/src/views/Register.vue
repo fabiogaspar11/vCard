@@ -150,8 +150,6 @@ export default {
               });
             })
             .catch((error) => {
-              localStorage.removeItem("access_token");
-              localStorage.removeItem("phone_number");
               delete axios.defaults.headers.common.Authorization;
               this.errors = error.response.data;
             });

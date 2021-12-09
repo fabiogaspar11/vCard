@@ -49,7 +49,7 @@
             <div class="col-lg-4 col-6">
               <div
                 class="small-box buttonTransactions"
-                @click="$router.push({ name: 'transactions' })"
+                @click="$router.push({ name: 'transactions' ,  params:{isAdmin:user_type=='A'}})"
               >
                 <i class="bi bi-list-columns icon" style="color: white"></i>
                 <h4><i class="iconTitle"> Transactions </i></h4>

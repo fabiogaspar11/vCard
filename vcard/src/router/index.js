@@ -170,17 +170,32 @@ const router = createRouter({
 import store from '../store'
 
 router.beforeEach((to, from, next) => {
- // usar local storage
-  if (((to.name == 'home') || (to.name == 'login') || (to.name == 'register'))) {
+  var user_type = store.state.userType;
+  var isAuthenticated = store.state.status;
+  console.log("sss")
+  console.log(user_type)
+  console.log(isAuthenticated)
+  if ((to.name == 'login') || (to.name == 'home') || (to.name == 'register')) {
     next()
     return
   }
-
-  if (store.state.status == false){
-    next({name : 'login'})
+  if (!isAuthenticated) {
+    next({ name: 'login' })
     return
   }
-  next() 
+  if (to.name == 'dashboardAdmin') {
+    if (user_type != 'A') {
+      next({ name: 'dashboard' })
+      return
+    }
+  }
+  if (to.name == 'dashboard') {
+    if (user_type != 'V') {
+      next({ name: 'dashboardAdmin' })
+      return
+    }
+  }
+  next()
 });
 
 export default router

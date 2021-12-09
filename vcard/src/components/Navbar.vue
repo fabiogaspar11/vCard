@@ -144,8 +144,6 @@ export default {
       this.$store
         .dispatch("authLogout")
         .then(() => {
-          localStorage.removeItem("access_token");
-          localStorage.removeItem("username");
           this.$socket.emit('logged_out', this.username);
           this.$toast.success('User has logged out of the application.');
           delete axios.defaults.headers.common.Authorization;

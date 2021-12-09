@@ -12,7 +12,7 @@
                 </a>
             </li>
              <li class="nav-item">
-              <a class="btn btn-light" role="button" aria-pressed="true" @click="$router.push({name:'transaction', params:{isAdmin:true}})">
+              <a class="btn btn-light" role="button" aria-pressed="true" @click="$router.push({name:'transaction', params:{isAdmin:user_type=='A'}})">
                    Credit Transactions
                 </a>
             </li>
@@ -109,6 +109,11 @@ export default {
   name: "SideBarAdmin",
   components: {
     Navbar
+  },
+  data() {
+    return {
+      user_type: this.$store.getters.userType
+    };
   }
 }
 </script>

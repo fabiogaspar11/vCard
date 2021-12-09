@@ -7,13 +7,15 @@ export default createStore({
     status: false,
     newTransacion:null,
     vcardStatus:null,
-    updatedPhoto:null
+    updatedPhoto:null,
+    userType:null
   },
   getters: {
     username: state => state.username,
     newTransacion: state => state.newTransacion,
     vcardStatus: state => state.vcardStatus,
     updatedPhoto: state => state.updatedPhoto,
+    userType: state =>state.userType
   },
   mutations: {
     toggleUpdatedPhoto(state, value){
@@ -27,20 +29,22 @@ export default createStore({
     },
     mutationAuthOk(state) {
       state.status = true
-      state.username = localStorage.getItem('username')
+      state.username = localStorage.getItem("username")
       state.newTransacion = null
       state.vcardStatus = null
+      state.userType =  localStorage.getItem("user_type")
     },
     mutationAuthReset(state) {
       state.status = false,
       state.username = null,
       state.newTransacion = null
       state.vcardStatus = null
-    },
+      state.userType = null
+    }
   },
 
   actions: {
-    changeState(context) {
+    fillStore(context) {
       context.commit('mutationAuthOk')
     },
     logOutDeleteUser(context) {
@@ -55,9 +59,10 @@ export default createStore({
           .then(response => {
             axios.defaults.headers.common.Authorization =
             "Bearer " + response.data.access_token;
-            localStorage.setItem("access_token", response.data.access_token);
-            localStorage.setItem("username",  credentials.username);
-            context.commit('mutationAuthOk')
+            localStorage.setItem("access_token", response.data.access_token);    
+            localStorage.setItem("username",  credentials.username);  
+            localStorage.setItem("user_type", response.data.user_type);       
+            context.commit('mutationAuthOk', response.data)
             resolve(response)
           })
           .catch(error => {
@@ -71,6 +76,9 @@ export default createStore({
       return new Promise((resolve, reject) => {
         axios.post('/logout')
           .then(response => {
+            localStorage.removeItem("access_token");
+            localStorage.removeItem("username");
+            localStorage.removeItem("user_type");
             context.commit('mutationAuthReset')
             resolve(response)
           })

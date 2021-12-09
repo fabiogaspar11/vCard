@@ -25,13 +25,6 @@
         </li>
         <li class="nav-item">
           <router-link
-           class="nav-link" :to="{ name: 'dashboardAdmin' }">
-           <i class="bi bi-key"></i>
-           Administrator  
-          </router-link>
-        </li>
-        <li class="nav-item">
-          <router-link
             class="nav-link"
             :class="{ active: $route.name === 'vcardDetails' }"
             :to="{ name: 'vcardDetails' }"

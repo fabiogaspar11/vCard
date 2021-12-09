@@ -15,7 +15,7 @@ export default {
     if (token) {
       axios.defaults.headers.common["Authorization"] = "Bearer " + token;
       this.$socket.emit('logged_in', username)    
-      this.$store.dispatch("changeState").then(() => {
+      this.$store.dispatch("fillStore").then(() => {
         this.$router.push({
           name: "dashboard",
         });
