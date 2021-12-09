@@ -192,7 +192,11 @@ class VcardController extends Controller
 
         $noQuerString = $beginDate == null && $endDate == null && $transactionType == null && $orderByAmount == null && $orderByMostRecent==null;
         if($noQuerString){
-            $transactions = $vcard->transactions->sortByDesc('datetime');
+            //$transactions = $vcard->transactions->sortByDesc('datetime');
+            $transactions = Transaction::orderBy('datetime', 'desc')
+            ->where('vcard', $vcard->phone_number)
+            ->paginate(5);
+
             if($transactions->isEmpty()){
                 return [
                     "error"=> "This vcard doesn't have any transactions yet"
@@ -234,19 +238,18 @@ class VcardController extends Controller
             if($orderByMostRecent && $orderByAmount){
                 $query->orderBy('date','desc')->orderBy('value','asc');
             }
-            $transactions = $query->get();
-        }
-        return TransactionResource::collection($transactions);
-    }
 
-    public function getVcardPhoto(Vcard $vcard){
-        return $vcard->photo_url;
+            $transactions = $query->paginate(5);
+            //$transactions = $query->get();
+        }
+
+        return TransactionResource::collection($transactions);
     }
 
     public function getVcardCategories(Vcard $vcard){
         $categories = Category::orderBy('id', 'asc')
-        ->where('vcard', $vcard->phone_number)
-        ->paginate(5);
+                            ->where('vcard', $vcard->phone_number)
+                            ->paginate(5);
         if($categories->isEmpty()){
             return response()->json([
                 'error' => 'This vcard does not have any categories yet'
@@ -254,6 +257,10 @@ class VcardController extends Controller
         }
 
         return CategoryResource::Collection($categories);
+    }
+
+    public function getVcardPhoto(Vcard $vcard){
+        return $vcard->photo_url;
     }
 
     public function piggyBankState(Vcard $vcard){

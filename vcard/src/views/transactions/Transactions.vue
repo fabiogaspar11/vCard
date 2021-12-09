@@ -36,11 +36,10 @@
           <input class="m-1" type="checkbox" v-model="mostRecent" />
         </div>
         <div class="text-end m-1">
-          <a type="submit" class="btn btn-info">
+          <a type="submit" class="btn btn-info" @click="submitFilterOrderBy">
             <i
               class="bi bi-search"
               style="color: white; margin-right: 25%"
-              @click="submitFilterOrderBy"
             ></i>
           </a>
         </div>
@@ -50,17 +49,10 @@
       </div>
     </div>
     <nav aria-label="Page navigation example">
-      <ul class="pagination" max-size="10">
-        <li class="page-item" @click.prevent="getPreviousPage()">
-          <a class="page-link">Previous</a>
-        </li>
-        <li class="page-item">
-          <a class="page-link" href="#">{{ this.pageActual }}</a>
-        </li>
-
-        <li class="page-item" @click.prevent="getNextPage()">
-          <a class="page-link">Next</a>
-        </li>
+      <ul class="pagination">
+        <li class="page-item"><a class="page-link" href="#" @click.prevent="getPreviousPage()">Previous</a></li>
+        <li class="page-item"><a class="page-link" href="#">{{ this.pageActual }}</a></li>
+        <li class="page-item"><a class="page-link" href="#" @click.prevent="getNextPage()">Next</a></li>
       </ul>
     </nav>
 
@@ -76,7 +68,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="transaction in dataPage" :key="transaction.id">
+        <tr v-for="transaction in transactions" :key="transaction.id">
           <td>{{ transaction.datetime }}</td>
           <td>{{ transaction.type }}</td>
           <td>{{ transaction.value }}</td>
@@ -135,14 +127,12 @@ export default {
     return {
       transactions: null,
       phoneNumber: localStorage.getItem("username"),
-      elementsPerPage: 10,
-      dataPage: [],
       pageActual: 1,
+      lastPage: null,
       typeFilter: null,
-      beginDate: null,
-      endDate: null,
       amount: false,
       mostRecent: false,
+      $queryString: null,
       errors: {},
     };
   },
@@ -150,7 +140,11 @@ export default {
     submitFilterOrderBy() {
       console.log(this.beginDate);
       this.errors = {};
-      let queryString = "?";
+
+      if (this.queryString == null) {
+        this.pageActual = 1;
+      }
+      this.queryString = "?";
       let map = new Map();
       if (this.beginDate != null) {
         map.set("beginDate", this.beginDate);
@@ -169,59 +163,61 @@ export default {
       }
 
       map.forEach((value, key) => {
-        queryString += key + "=" + value + "&";
+        this.queryString += key + "=" + value + "&";
       });
-      queryString = queryString.substring(0, queryString.length - 1);
+      this.queryString = this.queryString.substring(0, this.queryString.length - 1);
 
       this.transactions = this.$axios
-        .get(`/vcards/${this.phoneNumber}/transactions${queryString}`)
+        .get(`/vcards/${this.phoneNumber}/transactions${this.queryString}&page=${this.pageActual}`)
         .then((response) => {
           this.transactions = response.data.data;
           this.loaded = true;
           this.errors = {};
-          this.getDataPage(1);
+          this.lastPage = response.data.meta.last_page;
         })
         .catch((error) => {
           this.errors = {};
           Object.entries(error.response.data.errors).forEach(([key, val]) => {
             this.errors[key] = val[0];
+            this.queryString = null;
           });
         });
     },
-    totalPages() {
-      if (!this.transactions) return;
-      return Math.ceil(this.transactions.length / this.elementsPerPage);
-    },
-    getDataPage(page) {
-      this.pageActual = page;
-      this.dataPage = [];
-      let begin = page * this.elementsPerPage - this.elementsPerPage;
-      let end = page * this.elementsPerPage;
-      this.dataPage = this.transactions.slice(begin, end);
-    },
-    getPreviousPage() {
-      if (this.pageActual > 1) {
+    getPreviousPage(){
+      if (this.pageActual > 1){
         this.pageActual--;
+        if (this.queryString != null){
+          this.submitFilterOrderBy()
+        }
+        else{
+          this.getTransactions()
+        }
+
       }
-      this.getDataPage(this.pageActual);
     },
-    getNextPage() {
-      if (this.pageActual < this.totalPages()) {
+    getNextPage(){
+      if (this.pageActual < this.lastPage){
         this.pageActual++;
+         if (this.queryString != null){
+          this.submitFilterOrderBy()
+        }
+        else{
+          this.getTransactions()
+        }
       }
-      this.getDataPage(this.pageActual);
     },
-    isActive(page) {
-      return page == this.pageActual ? "active" : "";
-    },
-  },
-  mounted() {
-    this.$axios
-      .get(`/vcards/${this.phoneNumber}/transactions`)
+    getTransactions(){
+      this.$axios
+      .get(`/vcards/${this.phoneNumber}/transactions?page=${this.pageActual}`)
       .then((response) => {
         this.transactions = response.data.data;
-        this.getDataPage(1);
+        this.lastPage = response.data.meta.last_page;      
+        console.log(this.transactions)
       });
+    }
+  },
+  mounted() {
+    this.getTransactions()
   },
   computed: {
     newTransacion() {
