@@ -4,11 +4,25 @@
     <Navbar></Navbar>
 
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-     <br>
-      <div class="imgCenter">
-        <img id="logo" :src="photo" style="max-width: 50%" />
+      <br />
+      <div class="imgCenter color">
+        <img :src="photo" style="max-width: 50%; max-height: 270px" />
       </div>
-      <br>
+      <div class="form-group">
+        <input
+          type="file"
+          v-on:change="onFileChange"
+          class="form-control"
+          name="imagem_url"
+          id="inputFoto"
+          style="height: auto"
+        />
+      </div>
+
+      <div v-show="errors.photo_url != undefined" class="text-danger">
+        {{ errors.photo_url }}
+      </div>
+      <br />
       <div class="container color" v-if="this.vcard != null">
         <label for="name"><b>Name:</b></label>
         <input
@@ -33,32 +47,17 @@
           {{ errors.email }}
         </div>
 
-      <br> 
-      <div class="form-group">
-        <input
-          type="file"
-          v-on:change="onFileChange"
-          class="form-control"
-          name="imagem_url"
-          id="inputFoto"
-          style="height: auto"
-        />
+        <button type="button" class="btn btn-primary" @click.prevent="save">
+          Save
+        </button>
+        <div
+          @click="closeSuccessMesage"
+          v-if="showMessage"
+          class="alert alert-danger alert-dismissible"
+        >
+          To Save changes you first need to edit your information
+        </div>
       </div>
-        
-        <div v-show="errors.photo_url != undefined" class="text-danger">
-        {{ errors.photo_url }}
-      </div>
-
-        <br />
-        <button
-                  type="button"
-                  class="btn btn-primary"
-                  @click.prevent="save"
-                >
-                  Save
-                </button>
-      </div>
-        
     </main>
   </div>
 </template>
@@ -94,6 +93,9 @@ export default {
     };
   },
   methods: {
+    closeSuccessMesage: function () {
+      this.showMessage = false;
+    },
     onFileChange(e) {
       var files = e.target.files;
       if (!files.length) {
@@ -107,38 +109,51 @@ export default {
       reader.readAsDataURL(files[0]);
     },
     save() {
+ 
       this.$store.commit("toggleUpdatedPhoto", false);
       let formData = new FormData();
       if (this.name != null && this.name != this.name_old) {
         formData.append("name", this.name);
-        this.name_old = this.name
       }
       if (this.email != null && this.email != this.email_old) {
         formData.append("email", this.email);
-        this.email_old = this.email
       }
       if (this.photo_url != null && this.photo_url != this.photo_url_old) {
         formData.append("photo_url", this.photo_url);
-        this.photo_url_old = this.photo_url
       }
 
-      console.log(...formData)
+      if (
+        this.name != this.name_old ||
+        this.email != this.email_old ||
+        this.photo_url != this.photo_url_old
+      ) {
+        this.name_old = this.name;
 
-      formData.append("_method", "PUT");
-      this.errors = [];
-      this.$axios
-        .post(`/vcards/${this.$store.getters.username}`, formData, this.config)
-        .then((response) => {
-          this.$toast.success("User information was saved");
-          this.vcard = response.data.data;
-          this.$store.commit("toggleUpdatedPhoto", true);
-        })
-        .catch((error) => {
-          this.errors = [];
-          Object.entries(error.response.data.errors).forEach(([key, val]) => {
-            this.errors[key] = val[0];
+        this.email_old = this.email;
+        this.photo_url_old = this.photo_url;
+
+        formData.append("_method", "PUT");
+        this.errors = [];
+        this.$axios
+          .post(
+            `/vcards/${this.$store.getters.username}`,
+            formData,
+            this.config
+          )
+          .then((response) => {
+            this.$toast.success("User information was saved");
+            this.vcard = response.data.data;
+            this.$store.commit("toggleUpdatedPhoto", true);
+          })
+          .catch((error) => {
+            this.errors = [];
+            Object.entries(error.response.data.errors).forEach(([key, val]) => {
+              this.errors[key] = val[0];
+            });
           });
-        });
+      } else {
+        this.showMessage = true;
+      }
     },
   },
   created() {
