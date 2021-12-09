@@ -109,7 +109,7 @@ export default {
   name: "Navbar",
   data() {
     return {
-      username: this.$store.getters.username || null,
+      username: null,
       password: "",
       photo:''
     };
@@ -126,7 +126,6 @@ export default {
           this.$axios.get(`/vcards/storage/${this.username}`)
           .then((response)=>{
               this.photo = "http://laravelapi.test/storage/fotos/" + response.data;
-              console.log("some shit")
           });
         }
       },
@@ -134,6 +133,7 @@ export default {
     }
   },
   created(){
+    this.username =  this.$store.getters.username;
         this.$axios.get(`/vcards/storage/${this.username}`)
         .then((response)=>{
             this.photo = "http://laravelapi.test/storage/fotos/" + response.data;

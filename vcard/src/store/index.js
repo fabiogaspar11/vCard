@@ -53,6 +53,10 @@ export default createStore({
           password: credentials.password
         })
           .then(response => {
+            axios.defaults.headers.common.Authorization =
+            "Bearer " + response.data.access_token;
+            localStorage.setItem("access_token", response.data.access_token);
+            localStorage.setItem("username",  credentials.username);
             context.commit('mutationAuthOk')
             resolve(response)
           })

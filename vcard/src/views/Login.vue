@@ -73,10 +73,6 @@ export default {
           password: this.password,
         })
         .then((response) => {
-          axios.defaults.headers.common.Authorization =
-            "Bearer " + response.data.access_token;
-          localStorage.setItem("access_token", response.data.access_token);
-          localStorage.setItem("username", this.username);
           return response;
         })
         .then(() => {
