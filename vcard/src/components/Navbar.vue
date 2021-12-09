@@ -114,6 +114,25 @@ export default {
       photo:''
     };
   },
+  computed: {
+    updatedPhoto() {
+      return this.$store.getters.updatedPhoto;
+    },
+  },
+  watch: {
+    updatedPhoto:{
+      handler() {
+          if(this.$store.getters.updatedPhoto){
+          this.$axios.get(`/vcards/storage/${this.username}`)
+          .then((response)=>{
+              this.photo = "http://laravelapi.test/storage/fotos/" + response.data;
+              console.log("some shit")
+          });
+        }
+      },
+      deep:true
+    }
+  },
   created(){
         this.$axios.get(`/vcards/storage/${this.username}`)
         .then((response)=>{

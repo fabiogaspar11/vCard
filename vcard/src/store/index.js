@@ -6,14 +6,19 @@ export default createStore({
     username: null,
     status: false,
     newTransacion:null,
-    vcardStatus:null
+    vcardStatus:null,
+    updatedPhoto:null
   },
   getters: {
     username: state => state.username,
     newTransacion: state => state.newTransacion,
     vcardStatus: state => state.vcardStatus,
+    updatedPhoto: state => state.updatedPhoto,
   },
   mutations: {
+    toggleUpdatedPhoto(state, value){
+      state.updatedPhoto = value
+    },
     toggleNewTransacion(state, value){
       state.newTransacion = value
     },

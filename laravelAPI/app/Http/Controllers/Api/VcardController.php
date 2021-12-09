@@ -67,7 +67,7 @@ class VcardController extends Controller
         $filename = $vcard->phone_number . "_" . Str::random(6) . '.jpg';
 
         if ($request->hasFile('photo_url')) {
-            $request->file('photo_url')->storeAs('fotos', $filename);
+            $request->file('photo_url')->storeAs('public/fotos', $filename);
             $vcard->photo_url = $filename;
         }
 
@@ -102,10 +102,9 @@ class VcardController extends Controller
         $vcard->fill($validated_data);
 
         $filename = $vcard->phone_number . "_" . Str::random(6) . '.jpg';
-
         if ($request->hasFile('photo_url')) {
             Storage::disk('local')->delete('public/fotos/'. $old_photo);
-            $request->file('photo_url')->storeAs('fotos', $filename);
+            $request->file('photo_url')->storeAs('public/fotos', $filename);
             $vcard->photo_url = $filename;
         }
 
