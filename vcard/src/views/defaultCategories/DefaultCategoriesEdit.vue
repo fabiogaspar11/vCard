@@ -83,6 +83,10 @@ data() {
             this.$router.push({name: "dashboardAdmin"});
         })
         .catch((error) => {
+          if(error.response.status == 404){
+                this.$toast.error("This default category was deleted");
+                this.$router.push({name: "dashboardAdmin"});
+          }
           this.errors = [];
           Object.entries(error.response.data.errors).forEach(([key, val]) => {
             this.errors[key] = val[0];

@@ -57,8 +57,11 @@ export default {
         this.administrators = response.data.data; 
       });
     })
-    .catch(() => {
-      this.$toast.info(`Could not delete administrator ${id}`);
+    .catch((error) => {
+        if(error.response.status == 404){
+                this.$toast.error("This administrator could not be found");
+                this.$router.push({name: "dashboardAdmin"});
+          }
     });
     }
   },

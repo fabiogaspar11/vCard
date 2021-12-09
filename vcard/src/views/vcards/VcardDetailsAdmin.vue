@@ -42,7 +42,7 @@
 <script>
 import SideBardAdmin from "../../components/SideBarAdmin.vue";
 export default {
-  name: "UserdetailsAdmin",
+  name: "VcardDetailsAdmin",
   components: {
     SideBardAdmin
   },
@@ -63,7 +63,10 @@ export default {
         this.loaded = true;
       })
       .catch((error) => {
-        console.log(error)
+         if(error.response.status == 404){
+                this.$toast.error("This vcard could not be found");
+                this.$router.push({name: "dashboardAdmin"});
+        }
       });
   },
 };

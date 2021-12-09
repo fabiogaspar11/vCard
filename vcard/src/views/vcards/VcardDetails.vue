@@ -78,7 +78,7 @@ import Navbar from "../../components/Navbar.vue";
 
 
 export default {
-  name: "Userdetails",
+  name: "VcardDetails",
   components: {
     Sidebar,
     Navbar,

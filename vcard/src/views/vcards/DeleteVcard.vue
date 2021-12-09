@@ -154,8 +154,6 @@ export default {
 
       formData.append("_method", "DELETE");
 
-      console.log(...formData.entries());
-
       this.errors = [];
 
       this.$axios
@@ -177,9 +175,6 @@ export default {
 </script>
 
 <style scoped lang="css">
-hr {
-  margin: auto auto 5% auto;
-}
 
 .piggy {
   width: 50px;
@@ -191,18 +186,6 @@ hr {
   border-radius: 10px;
 }
 
-.navi {
-  background-color: #e6e6e6;
-}
-
-.title {
-  text-align: center;
-  margin-top: 10%;
-}
-
-.routerLink {
-  text-decoration: none;
-}
 .center {
   display: block;
   margin-left: auto;
@@ -210,75 +193,11 @@ hr {
   width: 30%;
 }
 
-.align {
-  display: flex;
-  justify-content: right;
-}
 
 #page {
   text-align: center;
   margin: 0 auto;
   padding-bottom: 20%;
-}
-
-.icon {
-  color: white;
-  font-size: 1.2rem;
-}
-
-.iconTitle {
-  color: white;
-}
-
-.icon_error {
-  color: red;
-  font-size: 5rem;
-}
-
-.buttonUserDetails {
-  background: #17a2b8;
-}
-.buttonUserDetails:hover {
-  background: #0e6471;
-  transition-duration: 0.5s;
-}
-
-.buttonSend {
-  background: #198754;
-  color: #198754;
-}
-.buttonSend:hover {
-  background: #105635;
-  transition-duration: 0.5s;
-}
-
-.buttonSendReceive {
-  background: #198754;
-}
-.buttonSendReceive:hover {
-  background: #105635;
-  transition-duration: 0.5s;
-}
-
-.buttonTransactions {
-  background: #ffc107;
-}
-.buttonTransactions:hover {
-  background: #b38600;
-  transition-duration: 0.5s;
-}
-
-.buttonPiggyBank {
-  background: #dc3545;
-}
-.buttonPiggyBank:hover {
-  background: #981b27;
-  transition-duration: 0.5s;
-}
-
-.small-box {
-  border-radius: 5px;
-  cursor: pointer;
 }
 
 .loading_vcard {
@@ -295,11 +214,4 @@ hr {
   transition-duration: 0.5s;
 }
 
-.inputdetails {
-  height: 60%;
-}
-
-.details {
-  margin-top: 5%;
-}
 </style>
