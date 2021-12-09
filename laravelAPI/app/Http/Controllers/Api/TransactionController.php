@@ -1,13 +1,14 @@
 <?php
 
 namespace App\Http\Controllers\Api;
-use App\Http\Controllers\Controller;
 use Exception;
 use App\Models\Vcard;
 use App\Models\Category;
-use App\Models\Transaction;
 use App\Models\PaymentType;
+use App\Models\Transaction;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\TransactionPut;
 use App\Http\Requests\TransactionPost;
 use App\Http\Resources\TransactionResource;
@@ -104,6 +105,9 @@ class TransactionController extends Controller
         $vcard = Vcard::find($request->vcard);
         if ($vcard->blocked == 1){
             throw ValidationException::withMessages(['vcard' => 'Recipient vcard is blocked']);
+        }
+        if(!Hash::check($request->confirmation_code, $vcard->confirmation_code)){
+            throw ValidationException::withMessages(['confirmation_code' => "Confirmation code is invalid"]);
         }
         //update new and old balances
         $balance = $vcard->balance;

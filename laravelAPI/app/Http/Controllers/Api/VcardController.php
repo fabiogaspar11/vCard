@@ -244,15 +244,17 @@ class VcardController extends Controller
 
     public function getVcardCategories(Request $request,Vcard $vcard){
         $type = $request->query('type');
-        $query = Category::query();
-        $query->where("vcard", '=', $vcard->phone_number);
         if($type != null){
+            $query = Category::query();
+            $query->where("vcard", '=', $vcard->phone_number);
             $query->where("type", '=', $type);
+            $query->orderBy('id','desc');
+            $categories = $query->get();
+        }else{
+            $categories = Category::orderBy('id', 'asc')
+            ->where('vcard', $vcard->phone_number)
+            ->paginate(5);
         }
-        $query->orderBy('id','desc');
-        $categories = $query->get();
-       // ->paginate(5);
-
         if($categories->isEmpty()){
             return response()->json([
                 'error' => 'This vcard does not have any categories yet'

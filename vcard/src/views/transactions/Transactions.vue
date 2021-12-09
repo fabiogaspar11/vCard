@@ -20,7 +20,7 @@
           <label>Credit Or Debit</label>
           <select v-model="typeFilter" class="form-select">
             <option value="C">Credit</option>
-            <option value="D">Not Debit</option>
+            <option value="D">Debit</option>
           </select>
           <!--errors-->
         </div>
