@@ -109,7 +109,7 @@ class TransactionController extends Controller
             throw ValidationException::withMessages(['vcard' => 'Recipient vcard is blocked']);
         }
         if(isset($request->confirmation_code) && !Hash::check($request->confirmation_code, $vcard->confirmation_code)){
-            throw ValidationException::withMessages(['confirmation_code' => "Confirmation code is invalid"]);
+            throw ValidationException::withMessages(['confirmation_code' => "PIN is invalid"]);
         }
         //update new and old balances
         $balance = $vcard->balance;
