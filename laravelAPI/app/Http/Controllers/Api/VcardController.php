@@ -297,6 +297,10 @@ class VcardController extends Controller
         $currentBalance = $piggyBank->balance;
         $requestAmount = $request->amount;
 
+        if(!isset($requestAmount)){
+            throw ValidationException::withMessages(['amount' => "Value is mandatory"]);
+        }
+
         if(!str_contains($requestAmount, '.')){
             $requestAmount .= ".00";
         }else{
@@ -304,10 +308,6 @@ class VcardController extends Controller
             if(!str_contains($requestAmount, '.')) {
                 $requestAmount .= ".00";
             }
-        }
-
-        if(!isset($requestAmount)){
-            throw ValidationException::withMessages(['amount' => "Value is mandatory"]);
         }
 
         if(!is_numeric($requestAmount)){
