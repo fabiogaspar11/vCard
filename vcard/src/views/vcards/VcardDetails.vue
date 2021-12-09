@@ -4,78 +4,67 @@
     <Navbar></Navbar>
 
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-      <div
-        class="
-          d-flex
-          justify-content-between
-          flex-wrap flex-md-nowrap
-          align-items-center
-          pt-3
-          pb-2
-          mb-3
-          border-bottom
-        "
-      >
-        <h1 class="h2"> User Details</h1>
-        <div class="align">
+     <br>
+      <div class="imgCenter">
+        <img id="logo" :src="photo" style="max-width: 50%" />
+      </div>
+      <br>
+      <div class="container color" v-if="this.vcard != null">
+        <label for="name"><b>Name:</b></label>
+        <input
+          type="text"
+          class="form-control inputdetails"
+          placeholder="Name"
+          v-model="this.name"
+        />
+        <div v-show="errors.name != undefined" class="text-danger">
+          {{ errors.name }}
         </div>
+        <br />
+
+        <label for="email"><b>Email:</b></label>
+        <input
+          type="text"
+          class="form-control inputdetails"
+          placeholder="Email"
+          v-model="this.email"
+        />
+        <div v-show="errors.email != undefined" class="text-danger">
+          {{ errors.email }}
+        </div>
+
+      <br> 
+      <div class="form-group">
+        <input
+          type="file"
+          v-on:change="onFileChange"
+          class="form-control"
+          name="imagem_url"
+          id="inputFoto"
+          style="height: auto"
+        />
+      </div>
+        
+        <div v-show="errors.photo_url != undefined" class="text-danger">
+        {{ errors.photo_url }}
       </div>
 
-  <div class="color" v-if="this.vcard != null">
-        <div class="container-fluid m-5">
-          <div class="row">
-            <div class="col-lg-3 profileDiv">
-              <img class="profile" :src="photo" />
-  
-              <div v-show="errors.photo_url != undefined" class="text-danger">{{errors.photo_url}}</div>
-              <div class="form-group">
-                <input type="file" v-on:change="onFileChange" class="form-control" name="imagem_url" id="inputFoto" style="height: auto" >
-              </div>
-            </div>
-
-            <div class="col-lg-8">
-              <div class="row">
-                <div class="col-4 details">
-                  <h5>Name:</h5>
-                </div>
-                <div class="col-8">
-                  <input type="text" class="form-control inputdetails" placeholder="Name" v-model="this.name" />
-                  <div v-show="errors.name != undefined" class="text-danger">{{errors.name}}</div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-4 details">
-                  <h5>Email:</h5>
-                </div>
-                <div class="col-8">
-                  <input type="text" class="form-control inputdetails" placeholder="Email" v-model="this.email" />
-                  <div v-show="errors.email != undefined" class="text-danger">{{errors.email}}</div>
-                </div>
-              </div>
-              <div class="right">
-              <button type="button" class="btn btn-primary" @click.prevent="save">Save</button>
-              </div>
-            </div>
-          </div>
-        </div>
+        <br />
+        <button
+                  type="button"
+                  class="btn btn-primary"
+                  @click.prevent="save"
+                >
+                  Save
+                </button>
       </div>
-
-      <div style="text-align: center;">
-        <div
-          class="spinner-border text-primary loading_vcard"
-          role="status"
-          v-show="!this.loaded"
-        >
-          <span class="sr-only"></span>
-        </div>
-      </div>
+        
     </main>
   </div>
 </template>
 <script>
 import Sidebar from "../../components/Sidebar.vue";
 import Navbar from "../../components/Navbar.vue";
-
 
 export default {
   name: "VcardDetails",
@@ -90,49 +79,50 @@ export default {
       vcard: null,
       name: null,
       email: null,
-      photo_url : null,
+      photo_url: null,
       loaded: false,
       errors: [],
-      photo:'',
-      config : {
-        header : {
-          'Content-Type' : 'multipart/form-data'
-        }
-      }
+      photo: "",
+      config: {
+        header: {
+          "Content-Type": "multipart/form-data",
+        },
+      },
     };
   },
   methods: {
-     onFileChange(e) {
+    onFileChange(e) {
       var files = e.target.files;
-      if (!files.length){
+      if (!files.length) {
         return;
-      }     
+      }
       var reader = new FileReader();
       reader.onload = (e) => {
         this.photo = e.target.result;
-      }
-      this.photo_url = files[0]
+      };
+      this.photo_url = files[0];
       reader.readAsDataURL(files[0]);
-    }, 
-    save(){
-      this.$store.commit('toggleUpdatedPhoto', false)
+    },
+    save() {
+      this.$store.commit("toggleUpdatedPhoto", false);
       let formData = new FormData();
       if (this.name != null) {
-        formData.append('name', this.name);
+        formData.append("name", this.name);
       }
-      if(this.email != null){
-        formData.append('email', this.email);
+      if (this.email != null) {
+        formData.append("email", this.email);
       }
-      if(this.photo_url != null){
-        formData.append('photo_url', this.photo_url);
+      if (this.photo_url != null) {
+        formData.append("photo_url", this.photo_url);
       }
-      formData.append('_method', 'PUT');
+      formData.append("_method", "PUT");
       this.errors = [];
-      this.$axios.post(`/vcards/${this.$store.getters.username}`, formData, this.config)
-        .then(response =>{
+      this.$axios
+        .post(`/vcards/${this.$store.getters.username}`, formData, this.config)
+        .then((response) => {
           this.$toast.success("User information was saved");
-          this.vcard = response.data.data
-           this.$store.commit('toggleUpdatedPhoto', true)
+          this.vcard = response.data.data;
+          this.$store.commit("toggleUpdatedPhoto", true);
         })
         .catch((error) => {
           this.errors = [];
@@ -143,14 +133,15 @@ export default {
     },
   },
   created() {
-    this.$axios.get(`/vcards/${this.$store.getters.username}`)
+    this.$axios
+      .get(`/vcards/${this.$store.getters.username}`)
       .then((response) => {
         this.vcard = response.data.data;
         this.name = this.vcard.name;
         this.email = this.vcard.email;
         this.photo_url = this.vcard.photo_url;
-        this.photo = "http://laravelapi.test/storage/fotos/" + this.photo_url,
-        this.loaded = true;
+        (this.photo = "http://laravelapi.test/storage/fotos/" + this.photo_url),
+          (this.loaded = true);
       })
       .catch(() => {
         this.$router.push({
@@ -180,15 +171,12 @@ export default {
   justify-content: right;
 }
 
-
 #userdetails {
   background: #e6e6e6;
 }
 
 .profile {
-  border-radius: 30px;
-  width: 100%;
-  height: 85%;
+  border-radius: 30%;
 }
 
 .profileDiv {
@@ -217,5 +205,4 @@ export default {
   width: 10rem;
   height: 10rem;
 }
-
 </style>
