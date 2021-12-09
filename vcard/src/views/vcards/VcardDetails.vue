@@ -78,8 +78,11 @@ export default {
       phoneNumber: localStorage.getItem("username"),
       vcard: null,
       name: null,
+      name_old: null,
       email: null,
+      email_old: null,
       photo_url: null,
+      photo_url_old: null,
       loaded: false,
       errors: [],
       photo: "",
@@ -106,15 +109,21 @@ export default {
     save() {
       this.$store.commit("toggleUpdatedPhoto", false);
       let formData = new FormData();
-      if (this.name != null) {
+      if (this.name != null && this.name != this.name_old) {
         formData.append("name", this.name);
+        this.name_old = this.name
       }
-      if (this.email != null) {
+      if (this.email != null && this.email != this.email_old) {
         formData.append("email", this.email);
+        this.email_old = this.email
       }
-      if (this.photo_url != null) {
+      if (this.photo_url != null && this.photo_url != this.photo_url_old) {
         formData.append("photo_url", this.photo_url);
+        this.photo_url_old = this.photo_url
       }
+
+      console.log(...formData)
+
       formData.append("_method", "PUT");
       this.errors = [];
       this.$axios
@@ -137,9 +146,9 @@ export default {
       .get(`/vcards/${this.$store.getters.username}`)
       .then((response) => {
         this.vcard = response.data.data;
-        this.name = this.vcard.name;
-        this.email = this.vcard.email;
-        this.photo_url = this.vcard.photo_url;
+        this.name = this.name_old = this.vcard.name;
+        this.email = this.email_old = this.vcard.email;
+        this.photo_url = this.photo_url_old = this.vcard.photo_url;
         (this.photo = "http://laravelapi.test/storage/fotos/" + this.photo_url),
           (this.loaded = true);
       })
