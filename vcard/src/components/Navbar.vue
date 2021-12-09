@@ -125,7 +125,7 @@ export default {
           if(this.$store.getters.updatedPhoto){
           this.$axios.get(`/vcards/storage/${this.username}`)
           .then((response)=>{
-              this.photo = "http://laravelapi.test/storage/fotos/" + response.data;
+              this.photo = this.$serverURL + "/storage/fotos/" + response.data;
           });
         }
       },
@@ -136,7 +136,7 @@ export default {
     this.username =  this.$store.getters.username;
         this.$axios.get(`/vcards/storage/${this.username}`)
         .then((response)=>{
-            this.photo = "http://laravelapi.test/storage/fotos/" + response.data;
+            this.photo = this.$serverURL + "/storage/fotos/" + response.data;
         });
     },
   methods: {

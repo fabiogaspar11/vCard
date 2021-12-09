@@ -20,7 +20,7 @@ class AuthController extends Controller
                 ],
                 'exceptions' => false,
             ];
-            $url = 'http://laravelapi.test' . '/oauth/token';
+            $url = env("URL") . '/oauth/token';
             $http = new \GuzzleHttp\Client;
             $response = $http->post($url, $bodyHttpRequest);
             $user = User::where('username', '=', $request->username)->firstOrFail();;

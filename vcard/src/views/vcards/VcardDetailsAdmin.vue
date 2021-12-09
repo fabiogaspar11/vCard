@@ -22,7 +22,7 @@
           <p><b>Debit limit: </b>{{ vcard.max_debit }}</p>
         </div>
        <div class="col-sm d-flex align-items-center m-2">
-            <img  class="m-2" :src="'http://laravelapi.test/storage/fotos/'+vcard.photo_url" alt="Vcard user photo">
+            <img  class="m-2" :src=" $serverURL + '/storage/fotos/'+vcard.photo_url" alt="Vcard user photo">
        </div>
       </div>
       <div class="row">
