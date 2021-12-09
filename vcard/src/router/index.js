@@ -170,6 +170,7 @@ const router = createRouter({
 import store from '../store'
 
 router.beforeEach((to, from, next) => {
+ // usar local storage
   if (((to.name == 'home') || (to.name == 'login') || (to.name == 'register'))) {
     next()
     return

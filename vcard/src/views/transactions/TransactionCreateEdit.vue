@@ -52,7 +52,7 @@ export default {
   },
   created(){
     this.$axios
-      .get(`/vcards/${this.phoneNumber}/categories`)
+      .get(`/vcards/${this.phoneNumber}/categories?type=D`)
       .then(response =>{
       this.categories = response.data.data; 
       this.loadedCategories = true;
