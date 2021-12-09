@@ -18,8 +18,14 @@
         </button>
       </div>
     </div>
-          <br />
-
+    <br />
+    <nav aria-label="Page navigation example">
+      <ul class="pagination">
+        <li class="page-item"><a class="page-link" href="#" @click.prevent="getPreviousPage()">Previous</a></li>
+        <li class="page-item"><a class="page-link" href="#">{{ this.pageActual }}</a></li>
+        <li class="page-item"><a class="page-link" href="#" @click.prevent="getNextPage()">Next</a></li>
+      </ul>
+    </nav>
     <table class="table color">
       <thead>
         <tr>
@@ -72,15 +78,6 @@
         </tr>
       </tbody>
     </table>
-    <nav aria-label="Page navigation example">
-      <ul class="pagination">
-        <li class="page-item"><a class="page-link" href="#" @click.prevent="getPreviousPage()">Previous</a></li>
-        <li class="page-item"><a class="page-link" href="#">{{ this.pageActual }}</a></li>
-        <li class="page-item"><a class="page-link" href="#" @click.prevent="getNextPage()">Next</a></li>
-      </ul>
-    </nav>
-
-  
   </main>
 </template>
 

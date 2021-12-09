@@ -6,6 +6,13 @@
       <h2>Administrators</h2>
       <router-link class="m-2 btn btn-primary" :to="{name:'administratorCreate'}">New Administrator</router-link>
       </div>
+      <nav aria-label="Page navigation example">
+        <ul class="pagination">
+          <li class="page-item"><a class="page-link" href="#" @click.prevent="getPreviousPage()">Previous</a></li>
+          <li class="page-item"><a class="page-link" href="#">{{ this.pageActual }}</a></li>
+          <li class="page-item"><a class="page-link" href="#" @click.prevent="getNextPage()">Next</a></li>
+        </ul>
+      </nav>
       <table class="table">
         <thead>
           <tr>
@@ -42,35 +49,54 @@ export default {
   },
   data() {
     return {
-      administrators: null
+      administrators: null,
+      pageActual: 1,
+      lastPage: null,
     };
   },
   methods:{
     deleteAdmin(id,username){
-    this.$axios.delete(`administrators/${id}`)
-    .then(() =>{
-      this.$toast.info(`Administrator ${id} removed`);
-      this.$socket.emit('userDeleted', username);   
-        this.$axios
-        .get(`/administrators`)
-        .then(response =>{
-        this.administrators = response.data.data; 
+      this.$axios.delete(`administrators/${id}`)
+      .then(() =>{
+        this.$toast.info(`Administrator ${id} removed`);
+        this.$socket.emit('userDeleted', username);   
+          this.$axios
+          .get(`/administrators`)
+          .then(response =>{
+          this.administrators = response.data.data; 
+        });
+      })
+      .catch((error) => {
+          if(error.response.status == 404){
+                  this.$toast.error("This administrator could not be found");
+                  this.$router.push({name: "dashboardAdmin"});
+            }
       });
-    })
-    .catch((error) => {
-        if(error.response.status == 404){
-                this.$toast.error("This administrator could not be found");
-                this.$router.push({name: "dashboardAdmin"});
-          }
-    });
+    },
+    getPreviousPage(){
+      if (this.pageActual > 1){
+        this.pageActual--;
+        this.getAdministrators()
+      }
+    },
+    getNextPage(){
+      if (this.pageActual < this.lastPage){
+        this.pageActual++;
+        this.getAdministrators()
+      }
+ 
+    },
+    getAdministrators(){
+      this.$axios
+      .get(`/administrators?page=${this.pageActual}`)
+      .then(response =>{
+        this.administrators = response.data.data; 
+        this.lastPage = response.data.meta.last_page;     
+      });
     }
   },
   mounted() {
-     this.$axios
-      .get(`/administrators`)
-      .then(response =>{
-      this.administrators = response.data.data; 
-    });
+    this.getAdministrators()
   },
 };
 </script>

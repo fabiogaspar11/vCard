@@ -34,7 +34,10 @@ class VcardController extends Controller
         $query = Vcard::query();
         $noQuerString = $state == null && $phone_number == null && $name == null;
         if($noQuerString){
-            $vcards = Vcard::all();
+            $vcards = Vcard::paginate(3);
+
+
+
         }else{
             if($state != null) {
                 $query->where("blocked", '=', $state);
@@ -45,9 +48,11 @@ class VcardController extends Controller
             if($name != null) {
                 $query->where('name','=',$name);
             }
-            $vcards = $query->get();
+            //$vcards = $query->get();
+            $vcards = $query->paginate(3);
         }
         return VcardResource::collection($vcards);
+
     }
 
     public function checkVcard(int $vcard){

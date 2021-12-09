@@ -22,13 +22,25 @@
             <input type="text" class="form-control" v-model="nameSearch">
         </div>
         <div class="text-end m-2">
-          <a type="submit" class="btn btn-info">
-            <i class="bi bi-search" style="color:white;margin-right:25%" @click="submitSearch"></i>
+          <a type="submit" class="btn btn-info" @click="submitSearch">
+            <i class="bi bi-search" style="color:white;margin-right:25%"></i>
+          </a>
+        </div>
+        <div class="text-end m-1">
+          <a type="submit" class="btn btn-secondary" @click="clearFilters">
+            Clear
           </a>
         </div>
       </div>
     </div>
     <h2>Vcards</h2>   
+    <nav aria-label="Page navigation example">
+      <ul class="pagination">
+        <li class="page-item"><a class="page-link" href="#" @click.prevent="getPreviousPage()">Previous</a></li>
+        <li class="page-item"><a class="page-link" href="#">{{ this.pageActual }}</a></li>
+        <li class="page-item"><a class="page-link" href="#" @click.prevent="getNextPage()">Next</a></li>
+      </ul>
+    </nav>
     <table class="table">
       <thead>
         <tr>
@@ -73,6 +85,7 @@
         </tr>
       </tbody>
     </table>
+
   </main>
 </template>
 
@@ -92,44 +105,20 @@ export default {
       phoneNumberSearch:null,
       nameSearch:null,
       stateFilter:null,
+      queryString: null,
+      pageActual: 1,
+      lastPage: null,
        config : {
         header : {
           'Content-Type' : 'application/json'
         }
-     }
+     },
     };
   },
   methods:{
     submitSearch(){
-      if(this.stateFilter == null && this.nameSearch == null && this.phoneNumberSearch == null){
-          this.$toast.error("No filter information provided");
-          return;
-      }
-      let queryString= "?";
-      let map = new Map();
-      if(this.stateFilter != null){
-        map.set("state",this.stateFilter)
-      }
-      if(this.nameSearch != null){
-        map.set("name",this.nameSearch)
-      }
-      if(this.phoneNumberSearch != null){
-        map.set("phone_number",this.phoneNumberSearch)
-      }
-       map.forEach ((value, key) =>
-      { 
-          queryString += key + "=" + value + "&"
-      })
-     queryString = queryString.substring(0, queryString.length - 1);
- 
-       this.$axios
-         .get(`/vcards${queryString}`)
-         .then(response =>{
-            this.vcards = response.data.data; 
-         })
-         .catch((error)=>{
-           console.log(error.response.data)
-         });
+      this.pageActual = 1;
+      this.getVcardsWithFilter();
     },
       deleteVcard(phone_number){
          this.$axios
@@ -193,14 +182,80 @@ export default {
                   this.$router.push({name: "dashboardAdmin"});
             }
          });
-      }     
+      },
+    getPreviousPage(){
+      if (this.pageActual > 1){
+        this.pageActual--;
+        if (this.queryString != null){
+          this.getVcardsWithFilter()
+        }
+        else{
+          this.getVcards()
+        }
+      }
+    },
+    getNextPage(){
+      if (this.pageActual < this.lastPage){
+        this.pageActual++;
+         if (this.queryString != null){
+          this.getVcardsWithFilter()
+        }
+        else{
+          this.getVcards()
+        }
+      }
+    },
+    getVcards(){
+      this.$axios
+        .get(`/vcards?page=${this.pageActual}`)
+        .then(response =>{
+          this.vcards = response.data.data; 
+          this.lastPage = response.data.meta.last_page;    
+      });
+    },
+    getVcardsWithFilter(){
+      if(this.stateFilter == null && this.nameSearch == null && this.phoneNumberSearch == null){
+          this.$toast.error("No filter information provided");
+          return;
+      }
+      this.queryString= "?";
+      let map = new Map();
+      if(this.stateFilter != null){
+        map.set("state",this.stateFilter)
+      }
+      if(this.nameSearch != null){
+        map.set("name",this.nameSearch)
+      }
+      if(this.phoneNumberSearch != null){
+        map.set("phone_number",this.phoneNumberSearch)
+      }
+       map.forEach ((value, key) =>
+      { 
+          this.queryString += key + "=" + value + "&"
+      })
+      this.queryString = this.queryString.substring(0, this.queryString.length - 1);
+ 
+      this.$axios
+        .get(`/vcards${this.queryString}&page=${this.pageActual}`)
+        .then(response =>{
+          this.vcards = response.data.data; 
+          this.lastPage = response.data.meta.last_page;
+        })
+        .catch((error)=>{
+          console.log(error.response.data)
+          this.queryString = null;
+        });
+    },
+    clearFilters(){
+      this.stateFilter = null
+      this.nameSearch = null
+      this.phoneNumberSearch = null
+      this.getVcards()
+    }
+ 
   },
   mounted() {
-     this.$axios
-      .get(`/vcards`)
-      .then(response =>{
-      this.vcards = response.data.data; 
-    });
+     this.getVcards()
   },
 };
 </script>

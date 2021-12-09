@@ -21,7 +21,9 @@ class AdministratorController extends Controller
 
     public function getAdministrators()
     {
-        $allAdministrators = Administrator::all()->except(auth()->user()->id);
+        $allAdministrators = Administrator::orderBy('id', 'asc')
+            ->where('id','!=', auth()->user()->id)
+            ->paginate(10);
         return AdministratorResource::collection($allAdministrators);
     }
 

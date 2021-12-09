@@ -6,6 +6,13 @@
       <h2>Default Categories</h2>
       <router-link class="m-2 btn btn-primary" :to="{name:'defaultCategoriesCreate'}">New Default Category</router-link>
       </div>
+      <nav aria-label="Page navigation example">
+        <ul class="pagination">
+          <li class="page-item"><a class="page-link" href="#" @click.prevent="getPreviousPage()">Previous</a></li>
+          <li class="page-item"><a class="page-link" href="#">{{ this.pageActual }}</a></li>
+          <li class="page-item"><a class="page-link" href="#" @click.prevent="getNextPage()">Next</a></li>
+        </ul>
+      </nav>
       <table class="table">
         <thead>
           <tr>
@@ -46,27 +53,46 @@ export default {
   },
   data() {
     return {
-      defaultCategories: null
+      defaultCategories: null,
+      pageActual: 1,
+      lastPage: null,
     };
   },
   methods:{
     deleteCategory(id){
-    this.$axios.delete(`defaultCategories/${id}`)
-    .then(response =>{
-      this.$toast.info(`Default Category ${response.data.data.name} removed`);
-      this.$router.push({name:'dashboardAdmin'})
-    })
-    .catch(() => {
-       this.$toast.info(`Could not delete default category ${id}`);
-    });
+      this.$axios.delete(`defaultCategories/${id}`)
+      .then(response =>{
+        this.$toast.info(`Default Category ${response.data.data.name} removed`);
+        this.$router.push({name:'dashboardAdmin'})
+      })
+      .catch(() => {
+        this.$toast.info(`Could not delete default category ${id}`);
+      });
     },
+    getPreviousPage(){
+      if (this.pageActual > 1){
+        this.pageActual--;
+        this.getDefaultCategories()
+      }
+    },
+    getNextPage(){
+      if (this.pageActual < this.lastPage){
+        this.pageActual++;
+        this.getDefaultCategories()
+      }
+ 
+    },
+    getDefaultCategories(){
+      this.$axios
+        .get(`/defaultCategories?page=${this.pageActual}`)
+        .then(response =>{
+          this.defaultCategories = response.data.data; 
+          this.lastPage = response.data.meta.last_page;       
+        });
+    }
   },
   mounted() {
-     this.$axios
-      .get(`/defaultCategories`)
-      .then(response =>{
-      this.defaultCategories = response.data.data; 
-    });
+     this.getDefaultCategories()
   },
 };
 </script>

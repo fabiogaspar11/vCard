@@ -11,7 +11,9 @@ class DefaultCategoryController extends Controller
 {
 
     public function getDefaultCategories(){
-        $allDefaultCategory = DefaultCategory::all();
+        $allDefaultCategory = DefaultCategory::orderBy('id', 'asc')
+            ->paginate(10);
+
         return DefaultCategoryResource::collection($allDefaultCategory);
     }
 

@@ -156,7 +156,6 @@ export default {
         else{
           this.getTransactions()
         }
-
       }
     },
     getNextPage(){
