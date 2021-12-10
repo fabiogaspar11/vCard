@@ -59,20 +59,37 @@ class StatisticController extends Controller
         return $sql;
     }
 
+    public function getTransactionsPaymentTypeValue(User $user){
+        $userLogged = auth()->user();
+        if ($userLogged->user_type == 'V'){
+            $sql = Transaction::select(DB::raw('payment_type, Sum(value) as Value'))
+                                ->groupBy('payment_type')
+                                ->get();
+        }
+        else{
+            $sql = Transaction::select(DB::raw('payment_type, Sum(value) as Value'))
+                                ->where('vcard', $userLogged->username)
+                                ->groupBy('payment_type')
+                                ->get();
+        }
+        return $sql;
+    }
+
+
     public function getCategoriesTransactions(User $user){
         $userLogged = auth()->user();
         if ($userLogged->user_type == 'V'){
             $sql = Category::select('categories.name', DB::raw('count(*) as Value'))
-            ->leftJoin('transactions', 'transactions.category_id', '=', 'categories.id')
-            ->where('categories.vcard', $userLogged->username)
-            ->groupBy('categories.id')
-            ->get();
+                                ->leftJoin('transactions', 'transactions.category_id', '=', 'categories.id')
+                                ->where('categories.vcard', $userLogged->username)
+                                ->groupBy('categories.id')
+                                ->get();
         }
         else{
             $sql = Category::select('categories.name', DB::raw('count(*) as Value'))
-            ->leftJoin('transactions', 'transactions.category_id', '=', 'categories.id')
-            ->groupBy('categories.id')
-            ->get();
+                                ->leftJoin('transactions', 'transactions.category_id', '=', 'categories.id')
+                                ->groupBy('categories.id')
+                                ->get();
         }
         return $sql;
     }

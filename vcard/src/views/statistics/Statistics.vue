@@ -24,7 +24,7 @@
         <div class="container-fluid statistics">
           <div class="row">
             <div class="col-5 chartDesign">
-              <h> Transactions </h>
+              <h1> Transactions </h1>
               <div class="row" style="padding-top: 5%;">
                 <div class="col-3">
                   <button type="button" class="btn btn-danger" @click.prevent="showChartTransactions = 0"><i class="bi bi-pie-chart"></i></button>
@@ -80,6 +80,14 @@
               <bar-chart v-else-if="showChartCategories == 2" class="chart" :data="showDataCategory" ></bar-chart>
               <area-chart v-else class="chart" :data="showDataCategory" ></area-chart>
               
+              <div class="row" style="padding-top: 5%;">
+                <div class="col-6">
+                  <button type="button" class="btn btn-secondary selectedButton" @click.prevent="changeCategoryChartType('categoriesType')">Type</button>
+                </div>
+                <div class="col-6">
+                  <button type="button" class="btn btn-secondary selectedButton" @click.prevent="changeCategoryChartType('categoriesTransactions')">Transactions</button>
+                </div>          
+              </div>
             </div>
           </div>
         </div>
@@ -129,6 +137,20 @@ export default {
         })
         this.showData = this.data
         console.log(this.showData)
+      })      
+    },
+    changeCategoryChartType: function (rowCategory) {     
+      this.data.splice(0);
+      this.showDataCategory = null
+      this.$axios.get(`/statistics/${rowCategory}`)
+      .then(response =>{
+        this.categories = response.data;
+        this.categories.filter((row) => {
+          if (rowCategory == 'categoriesType') this.data.push([`${row.type}`, parseInt(row.count)])
+          else this.data.push([`${row.name}`, parseInt(row.Value)])         
+        })
+        this.showDataCategory = this.data
+        console.log(this.showDataCategory)
       })      
     },
   },

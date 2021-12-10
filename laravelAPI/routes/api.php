@@ -123,9 +123,11 @@ Route::middleware(['auth:api','not.blocked'])->group(function (){
 
     Route::get('statistics/transactionsType', [StatisticController::class, 'getTransactionType']);
 
+    Route::get('statistics/transactionsPaymentTypeValue', [StatisticController::class, 'getTransactionsPaymentTypeValue']);
+
     Route::get('statistics/categoriesType', [StatisticController::class, 'getCategoriesType']);
 
-    Route::get('statistics/transactionsPaymentTypeValue', [StatisticController::class, 'getCategoriesTransactions']);
+    Route::get('statistics/categoriesTransactions', [StatisticController::class, 'getCategoriesTransactions']);
 
 
    /*************************************** Logout ***************************************/
