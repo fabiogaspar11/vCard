@@ -43,7 +43,7 @@
                 aria-expanded="false"
               >
                 <img v-if="photo!=null"
-                  :src='this.photo != null'
+                  :src='this.photo'
                   class="rounded-circle z-depth-0 avatar-img"
                   alt="avatar image"
                 />
@@ -132,6 +132,8 @@ export default {
           .then((response)=>{
             if(response.data.length != 0){
               this.photo = this.$serverURL + "/storage/fotos/" + response.data;
+            }else{
+              this.photo = null
             }
           });
         }
@@ -145,6 +147,9 @@ export default {
         .then((response)=>{
             if(response.data.length != 0){
               this.photo = this.$serverURL + "/storage/fotos/" + response.data;
+            }
+            else{
+              this.photo = null
             }
         });
     },
