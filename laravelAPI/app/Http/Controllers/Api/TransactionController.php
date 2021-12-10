@@ -112,8 +112,12 @@ class TransactionController extends Controller
             throw ValidationException::withMessages(['confirmation_code' => "Confirmation code is invalid"]);
         }
         //update new and old balances
+
+
         $balance = $vcard->balance;
-        $value = number_format($Begintransaction->value,2);
+        $value = number_format($Begintransaction->value,2, '.', '');
+
+
         $difference = 0;
         $roundedValue = 0;
         if($vcard->custom_data != null){
@@ -141,11 +145,10 @@ class TransactionController extends Controller
             $piggyBank = json_decode($vcard->custom_data);
             $currentBalance = $piggyBank->balance;
             $piggyBank = array();
-            $piggyBank["balance"] = number_format($currentBalance + $difference,2);
+            $piggyBank["balance"] = number_format($currentBalance + $difference,2, '.', '');
             $json = json_encode($piggyBank);
             $vcard->custom_data =  $json;
         }
-
         $isVCARDTransaction = $Begintransaction->payment_type == "VCARD";
         if($isVCARDTransaction){
             $Endtransaction = new Transaction();
