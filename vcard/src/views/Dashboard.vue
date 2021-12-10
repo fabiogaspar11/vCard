@@ -31,6 +31,10 @@
         <div class="color">
           <img class="center" src="../assets/img/logo.png" />
           <h1 style="margin-bottom: 3%">{{ moneyUser }} €</h1>
+          <div v-show="this.piggyBalance != null">
+            <img class="piggy" src="../assets/img/piggyBank.png" />
+            <h3 class="vcard">{{ this.piggyBalance }} €</h3>
+          </div>
         </div>
 
         <div class="container-fluid">
@@ -57,11 +61,14 @@
               </div>
             </div>
             <div class="col-lg-4 col-6">
-              <div class="small-box buttonPiggyBank">
-                <i class="bi bi-piggy-bank icon"> </i>
-                <h4 class="title"><i class="iconTitle"> Piggy Bank</i></h4>
-                <br />
-              </div>
+            <div
+              class="small-box buttonPiggyBank"
+              @click="$router.push({ name: 'piggyBank' })"
+            >
+              <i class="bi bi-piggy-bank icon"> </i>
+              <h4><i class="iconTitle"> Piggy Bank </i></h4>
+              <br />
+            </div>
             </div>
           </div>
         </div>
@@ -90,6 +97,7 @@ export default {
       showMessage: this.successMessage != null ? true : false,
       vcard: '',
       phoneNumber: localStorage.getItem("username"),
+      piggyBalance: null
     };
   },
   computed: {
@@ -118,12 +126,18 @@ export default {
     deep:true
   }
 },
-  created(){
-   this.$axios.get(`/vcards/${this.phoneNumber}`)
+ async created(){
+   await this.$axios.get(`/vcards/${this.phoneNumber}`)
     .then(response =>{
       this.vcard = response.data.data
     })
- 
+     await this.$axios
+      .get(`/vcards/${this.$store.getters.phoneNumber}/getPiggyBankBalance`)
+      .then((response) => {
+        if (response.data.balance != null) {
+          this.piggyBalance = response.data.balance;
+        }
+      });
   },
 };
 </script>
@@ -197,5 +211,8 @@ export default {
   cursor: pointer;
   margin-bottom: 10%;
   margin-top: 10%;
+}
+.piggy {
+  width: 50px;
 }
 </style>

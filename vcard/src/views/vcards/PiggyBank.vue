@@ -1,48 +1,86 @@
 <template>
   <Navbar></Navbar>
   <Sidebar></Sidebar>
-      <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
 
-  <div class="container">
-    <h1>Piggy Bank</h1>
-    <div class="d-flex justify-content-center">
-      <img class="center w-25 p-3" src="../../assets/img/piggyBank.png" />
-    </div>
+      <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+      <div
+        class="
+          d-flex
+          justify-content-between
+          flex-wrap flex-md-nowrap
+          align-items-center
+          pt-3
+          pb-2
+          mb-3
+          border-bottom
+        "
+      >
+        <h1 class="h2">Piggy Bank</h1>
+        <div class="align">
+          <div
+            @click="closeSuccessMesage"
+            v-if="showMessage"
+            class="alert alert-success alert-dismissible"
+          >
+            {{ successMessage }}
+          </div>
+        </div>
+      </div>
+
+      <div id="page" class="row">
+        <div>
+          <img class="center" src="../../assets/img/piggyBank.png" />       
+          <h3 v-if="this.isCreated">{{ this.piggyBalance }} €</h3>
+        </div>
+      </div>     
     <br />
     <div v-if="this.loaded" class="space">
-      <div v-if="this.isCreated == true && this.piggyBalance != null">
-        <div v-if="this.balance > 0">
-          <br />
-          <h2>{{ this.piggyBalance + " €" }}</h2>
-          <br />
+      <div v-if="this.isCreated">
+        <br />
+        <div v-if="this.piggyBalance > 0 || this.balance > 0">
           <label><b>Value:</b></label>
           <input
-            type="number"
+            type="text"
             class="form-control"
             placeholder="Enter value"
             name="uname"
+            v-model="this.amount"
+            pattern="[0-9]+"
             required
           />
+
+          </div>
           <br />
-          <div></div>
-          <button class="btn btn-success" type="submit">Insert Money</button>
+      <div id="value" v-show="errors.amount != undefined" class="text-danger">
+        {{ errors.amount }}
+      </div>
+          <div v-if="this.balance > 0">
+            <button
+              class="btn btn-success"
+              type="submit"
+              @click.prevent="send_takeMoney('C')"
+            >
+              Insert Money
+            </button>
+          </div>
+          <div id="noBalance" v-else>
+              <i class="bi bi-x-circle icon_error"></i>
+              <h5>No balance to save in the piggy bank</h5>
+          </div>
+
           <div v-if="this.piggyBalance > 0" class="space">
-            <button v-show="this.piggyBalance > 0" class="btn btn-danger">
+            <button
+              class="btn btn-danger"
+              type="submit"
+              @click.prevent="send_takeMoney('D')"
+            >
               Take Money
             </button>
           </div>
-          <div v-else>
-            <i class="bi bi-x-circle icon_error" style="font-size: 6rem"></i>
+          <div id="noPiggyBankBalance" v-else>
+            <i class="bi bi-x-circle icon_error"></i>
             <h5>No money in the piggy bank to take</h5>
           </div>
-        </div>
-
-        <div v-else>
-          <div v-show="this.loaded">
-            <i class="bi bi-x-circle icon_error" style="font-size: 6rem"></i>
-            <h5>No balance to save in the piggy bank</h5>
-          </div>
-        </div>
       </div>
       <div v-else>
         <button
@@ -53,7 +91,7 @@
           Create a piggy bank
         </button>
       </div>
-      <br>
+      <br />
     </div>
     <div v-else>
       <div
@@ -62,19 +100,17 @@
         v-show="!this.loaded"
       ></div>
     </div>
-  </div>
-      </main>
+</main>
 </template>
 
 <script>
 import Navbar from "../../components/Navbar.vue";
 import Sidebar from "../../components/Sidebar.vue";
-
 export default {
   name: "Piggy Bank",
   components: {
     Navbar,
-    Sidebar,
+    Sidebar
   },
   data() {
     return {
@@ -82,23 +118,33 @@ export default {
       piggyBalance: null,
       loaded: false,
       balance: null,
+      amount: null,
+      successMessage: null,
+      showMessage: this.successMessage != null ? true : false,
+      errors: [],
+      header: {
+        "Content-Type": "multipart/form-data",
+        Accept: "application/json",
+        Authorization: "Bearer " + localStorage.getItem("access_token"),
+      },
+      phoneNumber: this.$store.getters.username
     };
   },
   async created() {
     await this.$axios
-      .get(`/vcards/${this.$store.getters.username}/piggyBankState`)
+      .get(`/vcards/${this.phoneNumber}/piggyBankState`)
       .then((response) => {
         this.isCreated = response.data.response;
         if (this.isCreated) {
           this.$axios
             .get(
-              `/vcards/${this.$store.getters.username}/getPiggyBankBalance`
+              `/vcards/${this.phoneNumber}/getPiggyBankBalance`
             )
             .then((response) => {
               this.piggyBalance = response.data.balance;
             });
           this.$axios
-            .get(`/vcards/${this.$store.getters.username}`)
+            .get(`/vcards/${this.phoneNumber}`)
             .then((response) => {
               this.balance = response.data.data.balance;
               this.loaded = true;
@@ -109,21 +155,59 @@ export default {
       });
   },
   methods: {
+    closeSuccessMesage: function () {
+      this.showMessage = false;
+    },
     async createPiggyBank() {
       await this.$axios
-        .get(`/vcards/${this.$store.getters.username}/createPiggyBank`)
+        .get(`/vcards/${this.phoneNumber}/createPiggyBank`)
         .then((response) => {
           this.piggyBalance = response.data;
         });
       await this.$axios
-        .get(`/vcards/${this.$store.getters.username}/piggyBankState`)
+        .get(`/vcards/${this.phoneNumber}/piggyBankState`)
         .then((response) => {
           this.isCreated = response.data.response;
         });
       await this.$axios
-        .get(`/vcards/${this.$store.getters.username}`)
+        .get(`/vcards/${this.phoneNumber}`)
         .then((response) => {
           this.balance = response.data.data.balance;
+        });
+    },
+
+    async send_takeMoney(type) {
+      this.errors = [];
+      let moneyToSend = {};
+      moneyToSend.amount = this.amount;
+      moneyToSend.type = type;
+      moneyToSend.balance = this.balance;
+
+      this.$axios
+        .post(
+          `/vcards/${this.phoneNumber}/piggyBankOperation`,
+          moneyToSend,
+          this.config
+        )
+        .then((response) => {
+          this.piggyBalance = response.data;
+          this.showMessage = true;
+          if (type === "C")
+            this.successMessage = "Money was saved in the piggy bank";
+          if (type === "D")
+            this.successMessage = "Money was withdrawn from the piggy bank";
+          this.$toast.success(this.successMessage);
+          this.$axios
+          .get(`/vcards/${this.phoneNumber}`)
+          .then((response) => {
+            this.balance = response.data.data.balance;
+          });
+        })
+        .catch((error) => {
+          this.errors = [];
+          Object.entries(error.response.data.errors).forEach(([key, val]) => {
+            this.errors[key] = val[0];
+          });
         });
     },
   },
@@ -139,5 +223,16 @@ export default {
 
 .space {
   padding-bottom: 25%;
+}
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 25%;
+}
+
+#page {
+  text-align: center;
+  margin: 0 auto;
 }
 </style>

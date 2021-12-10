@@ -61,21 +61,6 @@
                 </a>
               </li>
               <li class="nav-item dropdown">
-                <a
-                  class="nav-link dropdown-toggle"
-                  
-                  id="navbarDropdownMenuLink2"
-                  role="button"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  <img
-                    src="../assets/img/avatar-exemplo-1.jpg"
-                    class="rounded-circle z-depth-0 avatar-img"
-                    alt="avatar image"
-                  >
-                  <span class="avatar-text">User Name</span>
-                </a>
                 <ul
                   class="dropdown-menu"
                   aria-labelledby="navbarDropdownMenuLink2"

@@ -10,7 +10,7 @@
       "
     >
       <div class="container-fluid position-sticky">
-        <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3"
+        <router-link to="/dashboard" class="navbar-brand col-md-3 col-lg-2 me-0 px-3"
           ><img
             src="../assets/img/logo.png"
             alt=""
@@ -18,7 +18,7 @@
             height="24"
             class="d-inline-block align-text-top"
           />
-          Vcard</a
+          Vcard</router-link
         >
         <button
           class="navbar-toggler"
@@ -42,9 +42,14 @@
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                <img
-                  :src="photo"
+                <img v-if="photo!=null"
+                  :src='this.photo != null'
                   class="rounded-circle z-depth-0 avatar-img"
+                  alt="avatar image"
+                />
+                <img v-else 
+                  class="rounded-circle z-depth-0 avatar-img"
+                  src="../assets/img/avatar-none.png"
                   alt="avatar image"
                 />
                 <span class="avatar-text">{{ username }}</span>
@@ -111,7 +116,7 @@ export default {
     return {
       username: null,
       password: "",
-      photo:''
+      photo:null
     };
   },
   computed: {
@@ -125,7 +130,9 @@ export default {
           if(this.$store.getters.updatedPhoto){
           this.$axios.get(`/vcards/storage/${this.username}`)
           .then((response)=>{
+            if(response.data.length != 0){
               this.photo = this.$serverURL + "/storage/fotos/" + response.data;
+            }
           });
         }
       },
@@ -136,7 +143,9 @@ export default {
     this.username =  this.$store.getters.username;
         this.$axios.get(`/vcards/storage/${this.username}`)
         .then((response)=>{
-            this.photo = this.$serverURL + "/storage/fotos/" + response.data;
+            if(response.data.length != 0){
+              this.photo = this.$serverURL + "/storage/fotos/" + response.data;
+            }
         });
     },
   methods: {
