@@ -3,6 +3,8 @@ const io = require("socket.io")(httpServer, {
  allowEIO3: true,
  cors: {
  origin: "http://localhost:8081",
+ //TAES
+ //origin: "https://fabiogaspar11.github.io",
  methods: ["GET", "POST"],
  credentials: true
  }
