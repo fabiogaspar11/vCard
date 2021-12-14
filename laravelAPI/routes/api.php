@@ -106,6 +106,8 @@ Route::middleware(['auth:api','not.blocked'])->group(function (){
     Route::post('vcards/{vcard}/piggyBankOperation',[VcardController::class, 'piggyBankOperation'])->middleware('can:update,vcard');
 
 
+
+
     /*************************************** Transactions ***************************************/
 
     Route::post('transactions', [TransactionController::class, 'storeTransaction'])->middleware('can:create,App\Models\Transaction');
@@ -141,3 +143,13 @@ Route::post('/login', [AuthController::class, 'login']);
 
 /*************************************** Create vcard ***************************************/
 Route::post('vcards', [VcardController::class, 'storeVcard']);
+
+Route::get('vcards/{vcard}/notifications',[VcardController::class, 'getNotifications']);
+
+Route::get('vcards/{vcard}/notificationsState',[VcardController::class, 'notificationsState']);
+
+Route::post('vcards/{vcard}/newNotification',[VcardController::class, 'newNotification']);
+
+
+
+
