@@ -144,11 +144,19 @@ Route::post('/login', [AuthController::class, 'login']);
 /*************************************** Create vcard ***************************************/
 Route::post('vcards', [VcardController::class, 'storeVcard']);
 
-Route::get('vcards/{vcard}/notifications',[VcardController::class, 'getNotifications']);
+Route::get('vcards/{vcard}/notifications',[VcardController::class, 'getNotifications'])->middleware('can:view,vcard');
 
-Route::get('vcards/{vcard}/notificationsState',[VcardController::class, 'notificationsState']);
+Route::get('vcards/{vcard}/changeNotificationState',[VcardController::class, 'changeNotificationState'])->middleware('can:view,vcard');
 
-Route::post('vcards/{vcard}/newNotification',[VcardController::class, 'newNotification']);
+Route::get('vcards/{vcard}/notificationsState',[VcardController::class, 'notificationsState'])->middleware('can:view,vcard');
+
+Route::post('vcards/{vcard}/newNotification',[VcardController::class, 'newNotification'])->middleware('can:view,vcard');
+
+Route::post('vcards/{vcard}/createNotificationCamp',[VcardController::class, 'createNotificationCamp'])->middleware('can:view,vcard');
+
+Route::put('vcards/{vcard}/readNotification',[VcardController::class, 'readNotification'])->middleware('can:view,vcard');
+
+
 
 
 
