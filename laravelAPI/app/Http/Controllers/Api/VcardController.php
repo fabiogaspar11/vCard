@@ -406,10 +406,9 @@ class VcardController extends Controller
     public function changeNotificationState(Vcard $vcard)
     {
         $notifications =  json_decode($vcard->custom_options);
-        if($notifications->notificationState=="false"){
+        if ($notifications->notificationState == "false") {
             $notifications->notificationState = "true";
-        }
-        else{
+        } else {
             $notifications->notificationState = "false";
         }
         $json = json_encode($notifications);
@@ -420,10 +419,11 @@ class VcardController extends Controller
     }
 
 
-    public function createNotificationCamp(Vcard $vcard){
+    public function createNotificationCamp(Vcard $vcard)
+    {
         $notifications = array();
         $notifications["notificationList"] = array();
-        $notifications["notificationState"] = "true";
+        $notifications["notificationState"] = true;
 
         $json = json_encode($notifications);
         $vcard->custom_options = $json;
@@ -435,7 +435,7 @@ class VcardController extends Controller
     public function notificationsState(Vcard $vcard)
     {
         if ($vcard->custom_options == null) {
-            return "false";
+            return false;
         }
         $notifications =  json_decode($vcard->custom_options);
         return $notifications->notificationState;
@@ -443,20 +443,29 @@ class VcardController extends Controller
 
     public function newNotification(Vcard $vcard, Request $request)
     {
+        if ($vcard->custom_options == null) {
+            $notifications = array();
+            $notifications["notificationList"] = array();
+            $notifications["notificationState"] = true;
+            $json = json_encode($notifications);
+            $vcard->custom_options = $json;
+            $vcard->save();
+        }
+
         $notifications =  json_decode($vcard->custom_options);
         if ($notifications->notificationList == null) {
             $id = 0;
-        }
-        else{
+        } else {
             $id = count($notifications->notificationList);
         }
 
         $newNotification = array();
         $newNotification["id"] = $id;
         $newNotification["message"] = $request->message;
-        $newNotification["readed"] = "false";
+        $newNotification["readed"] = false;
+        $newNotification["date"] = date("Y/m/d H:i:s");
 
-        array_push($notifications->notificationList,$newNotification);
+        array_push($notifications->notificationList, $newNotification);
 
         $json = json_encode($notifications);
         $vcard->custom_options = $json;
@@ -466,18 +475,18 @@ class VcardController extends Controller
     }
 
 
-    public function readNotification(Vcard $vcard, Request $request){
+    public function readNotification(Vcard $vcard, Request $request)
+    {
         $notifications =  json_decode($vcard->custom_options);
         if ($notifications->notificationList == null) {
             throw ValidationException::withMessages(['notifications' => "There are no notifications"]);
         }
         $id = $request->id;
 
-        if($notifications->notificationList[$id]->readed == "false"){
-            $notifications->notificationList[$id]->readed = "true";
-        }
-        else{
-            $notifications->notificationList[$id]->readed = "false";
+        if ($notifications->notificationList[$id]->readed == false) {
+            $notifications->notificationList[$id]->readed = true;
+        } else {
+            $notifications->notificationList[$id]->readed = false;
         }
 
         $json = json_encode($notifications);
