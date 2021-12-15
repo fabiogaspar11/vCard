@@ -63,12 +63,12 @@ class StatisticController extends Controller
         $userLogged = auth()->user();
         if ($userLogged->user_type == 'V'){
             $sql = Transaction::select(DB::raw('payment_type, Sum(value) as Value'))
+                                ->where('vcard', $userLogged->username)
                                 ->groupBy('payment_type')
                                 ->get();
         }
         else{
             $sql = Transaction::select(DB::raw('payment_type, Sum(value) as Value'))
-                                ->where('vcard', $userLogged->username)
                                 ->groupBy('payment_type')
                                 ->get();
         }

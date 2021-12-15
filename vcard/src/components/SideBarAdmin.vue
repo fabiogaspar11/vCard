@@ -32,7 +32,7 @@
                 </a>
             </li>
             <li class="nav-item">
-              <a class="btn btn-light" role="button" aria-pressed="true" >
+              <a class="btn btn-light" role="button" aria-pressed="true" @click="$router.push({name:'statisticsAdmin'})">
                    Statistics
                 </a>
             </li>

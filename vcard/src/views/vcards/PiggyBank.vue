@@ -27,60 +27,60 @@
         </div>
       </div>
 
-      <div id="page" class="row">
+
+    <br />
+    <div v-if="this.loaded">
+      <div id="page">
         <div>
           <img class="center" src="../../assets/img/piggyBank.png" />       
           <h3 v-if="this.isCreated">{{ this.piggyBalance }} €</h3>
         </div>
       </div>     
-    <br />
-    <div v-if="this.loaded" class="space">
-      <div v-if="this.isCreated">
+      <div class="details" v-if="this.isCreated" style="width: 50%; text-align:center; margin: auto"> 
+        <label style="padding-top: 2%;"><b>Value:</b></label>
         <br />
         <div v-if="this.piggyBalance > 0 || this.balance > 0">
-          <label><b>Value:</b></label>
-          <input
-            type="text"
-            class="form-control"
-            placeholder="Enter value"
-            name="uname"
-            v-model="this.amount"
-            pattern="[0-9]+"
-            required
-          />
-
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-2 chartDesign">
+                <i class="bi bi-piggy-bank-fill" style="font-size: 300%;"></i>
+              </div>
+              <div class="col-10 chartDesign">
+                  <input type="text" class="form-control" placeholder="Enter value" name="uname" v-model="this.amount" pattern="[0-9]+" required />
+              </div>
+            </div>
           </div>
-          <br />
+        </div>
+        <br />
       <div id="value" v-show="errors.amount != undefined" class="text-danger">
         {{ errors.amount }}
       </div>
-          <div v-if="this.balance > 0">
-            <button
-              class="btn btn-success"
-              type="submit"
-              @click.prevent="send_takeMoney('C')"
-            >
-              Insert Money
-            </button>
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-6 ">
+              <div v-if="this.balance > 0">
+                <button class="btn btn-success" type="submit" @click.prevent="send_takeMoney('C')">
+                  Insert Money
+                </button>
+              </div>
+              <div id="noBalance" v-else>
+                <i class="bi bi-x-circle icon_error"></i>
+                <h5>No balance to save in the piggy bank</h5>
+              </div>
+            </div>
+            <div class="col-6">
+              <div v-if="this.piggyBalance > 0" class="space">
+                <button class="btn btn-danger" type="submit" @click.prevent="send_takeMoney('D')">
+                  Take Money
+                </button>
+              </div>
+              <div id="noPiggyBankBalance" v-else>
+                <i class="bi bi-x-circle icon_error"></i>
+                <h5>No money in the piggy bank to take</h5>
+              </div>
+            </div>
           </div>
-          <div id="noBalance" v-else>
-              <i class="bi bi-x-circle icon_error"></i>
-              <h5>No balance to save in the piggy bank</h5>
-          </div>
-
-          <div v-if="this.piggyBalance > 0" class="space">
-            <button
-              class="btn btn-danger"
-              type="submit"
-              @click.prevent="send_takeMoney('D')"
-            >
-              Take Money
-            </button>
-          </div>
-          <div id="noPiggyBankBalance" v-else>
-            <i class="bi bi-x-circle icon_error"></i>
-            <h5>No money in the piggy bank to take</h5>
-          </div>
+        </div>   
       </div>
       <div v-else>
         <button
@@ -93,7 +93,7 @@
       </div>
       <br />
     </div>
-    <div v-else>
+    <div v-else style="text-align:center">
       <div
         class="spinner-border text-primary loading_vcard"
         role="status"
@@ -215,15 +215,12 @@ export default {
 </script>
 
 <style>
-.loading_vcard {
-  margin: 50% auto auto auto;
-  width: 150px;
-  height: 150px;
+.loading_vcard { 
+  margin-top: 20%;
+  width: 300px;
+  height: 300px;
 }
 
-.space {
-  padding-bottom: 25%;
-}
 .center {
   display: block;
   margin-left: auto;
@@ -234,5 +231,13 @@ export default {
 #page {
   text-align: center;
   margin: 0 auto;
+}
+
+.details{
+  background-color: #e6e6e6;
+  border-radius: 10px;
+  box-shadow: 0 7px 2px -2px gray;
+  padding-left: 2em;
+  padding-right: 2em;
 }
 </style>
