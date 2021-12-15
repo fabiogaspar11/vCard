@@ -32,7 +32,7 @@
       <tbody>
         <tr v-for="category in categories" :key="category.id">
           <td>{{ category.id }}</td>
-          <td>{{ category.type }}</td>
+          <td>{{ category.type == 'C' ? "Credit": "Debit" }}</td>
           <td class="alnleft">{{ category.name }}</td>
           <td>
             <div class="container">
