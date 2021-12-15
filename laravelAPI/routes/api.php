@@ -156,6 +156,12 @@ Route::post('vcards/{vcard}/createNotificationCamp',[VcardController::class, 'cr
 
 Route::put('vcards/{vcard}/readNotification',[VcardController::class, 'readNotification']);
 
+Route::get('vcards/{vcard}/viewNotifications',[VcardController::class, 'viewNotifications']);
+
+Route::get('vcards/{vcard}/countNonviewNotifications',[VcardController::class, 'countNonviewNotifications']);
+
+
+
 
 
 

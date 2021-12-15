@@ -446,7 +446,7 @@ class VcardController extends Controller
         if ($vcard->custom_options == null) {
             $notifications = array();
             $notifications["notificationList"] = array();
-            $notifications["notificationState"] = true;
+            $notifications["notificationState"] = false;
             $json = json_encode($notifications);
             $vcard->custom_options = $json;
             $vcard->save();
@@ -464,6 +464,8 @@ class VcardController extends Controller
         $newNotification["message"] = $request->message;
         $newNotification["readed"] = false;
         $newNotification["date"] = date("Y/m/d H:i:s");
+        $newNotification["viewed"] = false;
+
 
         array_push($notifications->notificationList, $newNotification);
 
@@ -494,5 +496,34 @@ class VcardController extends Controller
         $vcard->save();
 
         return $notifications;
+    }
+
+    public function viewNotifications(Vcard $vcard){
+        $notifications =  json_decode($vcard->custom_options);
+        for($i = 0; $i< count($notifications->notificationList) ; $i++){
+            $notifications->notificationList[$i]->viewed = true;
+        }
+
+        $json = json_encode($notifications);
+        $vcard->custom_options = $json;
+        $vcard->save();
+
+        return $notifications;
+
+    }
+
+    public function countNonviewNotifications(Vcard $vcard){
+        $notifications =  json_decode($vcard->custom_options);
+        if($notifications == null){
+            return 0;
+        }
+        
+        $count = 0;
+        for($i = 0; $i< count($notifications->notificationList) ; $i++){
+            if($notifications->notificationList[$i]->viewed == false){
+                $count++;
+            }
+        }
+        return $count;
     }
 }
