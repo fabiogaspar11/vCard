@@ -5,49 +5,58 @@
 
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
       <br />
-      <div class="imgCenter color">
-        <img :src="photo" style="max-width: 50%; max-height: 270px" />
+      <div class="d-flex justify-content-center">
+        <img id="photoProfile" :src="photo">
       </div>
-      <div class="form-group">
+      <h5 id="title"> {{this.phoneNumber}}</h5>
+      <div class="form-group d-flex justify-content-center">
         <input
           type="file"
           v-on:change="onFileChange"
-          class="form-control"
+          class="form-control inputFile"
           name="imagem_url"
-          id="inputFoto"
-          style="height: auto"
         />
       </div>
 
       <div v-show="errors.photo_url != undefined" class="text-danger">
         {{ errors.photo_url }}
       </div>
+
       <br />
-      <div class="container color" v-if="this.vcard != null">
+      <div class="container details" v-if="this.vcard != null">
         <label for="name"><b>Name:</b></label>
-        <input
-          type="text"
-          class="form-control inputdetails"
-          placeholder="Name"
-          v-model="this.name"
-        />
+        <div class="container-fluid statistics">
+          <div class="row">
+            <div class="col-2 chartDesign">
+              <i class="bi bi-person-fill" style="font-size: 300%;"></i>
+            </div>
+             <div class="col-10 chartDesign">
+              <input type="text" class="form-control" placeholder="Name" v-model="this.name"/>
+            </div>
+          </div>
+        </div>
+        
         <div v-show="errors.name != undefined" class="text-danger">
           {{ errors.name }}
         </div>
         <br />
 
         <label for="email"><b>Email:</b></label>
-        <input
-          type="text"
-          class="form-control inputdetails"
-          placeholder="Email"
-          v-model="this.email"
-        />
+        <div class="container-fluid statistics">
+          <div class="row">
+            <div class="col-2 chartDesign">
+              <i class="bi bi-envelope-fill" style="font-size: 300%;"></i>
+            </div>
+             <div class="col-10 chartDesign">
+              <input type="text" class="form-control" placeholder="Email" v-model="this.email"/>
+            </div>
+          </div>
+        </div>
         <div v-show="errors.email != undefined" class="text-danger">
           {{ errors.email }}
         </div>
-
-        <button type="button" class="btn btn-primary" @click.prevent="save">
+        <br />
+        <button type="button" class="btn btn-secondary" style="width: 30%;" @click.prevent="save">
           Save
         </button>
         <div
@@ -176,57 +185,33 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-.center {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  width: 50%;
+
+#photoProfile{
+  width:  200px;
+  height: 200px;
+  background-size: cover;
+  border-radius: 20px;
+}
+  
+#title{
+  padding-top: 1%;
+  padding-bottom: 1%;
+  text-align: center;
+  color: #cccccc;
 }
 
-.right {
-  display: block;
-  margin-left: auto;
-  margin-right: 0;
-  width: 50%;
+.inputFile{
+  height: auto; 
+  width: 30%; 
+  border-radius: 5px;
 }
 
-.align {
-  display: flex;
-  justify-content: right;
+.details{
+  background-color: #e6e6e6;
+  text-align: center;
+  width: 70%;
+  border-radius: 10px;
+  box-shadow: 0 7px 2px -2px gray;
 }
 
-#userdetails {
-  background: #e6e6e6;
-}
-
-.profile {
-  border-radius: 30%;
-}
-
-.profileDiv {
-  padding-top: 3%;
-  padding-left: 3%;
-  margin-bottom: 5%;
-}
-
-.details {
-  margin-top: 1.5%;
-}
-
-.inputdetails {
-  height: 60%;
-}
-
-.saveDetails {
-  width: 20%;
-  height: 10%;
-  float: right;
-  margin-bottom: 3%;
-}
-
-.loading_vcard {
-  margin: 5% auto auto auto;
-  width: 10rem;
-  height: 10rem;
-}
 </style>

@@ -1,17 +1,18 @@
 <template>
   <Navbar></Navbar>
   <Sidebar></Sidebar>
-  <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-    <div class="row">
-      <div class="col-sm">
+  <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 ">
+    <div class="row" style="width: 90%; text-align:center">
+      <div style="padding-top: 2%;" class="col-sm">
         <h2>Categories</h2>
       </div>
       <div class="col-sm">
       </div>
-      <div class="col-sm">
+      <div style="padding-top: 2%;" class="col-sm">
         <button
           type="button"
-          class="btn btn-primary newCategorie"
+          class="btn btn-secondary"
+          style="width: 50%;"
           @click="$router.push({ name: 'categoriesCreate' })"
         >
           New Category
@@ -19,14 +20,7 @@
       </div>
     </div>
     <br />
-    <nav aria-label="Page navigation example">
-      <ul class="pagination">
-        <li class="page-item"><a class="page-link" href="#" @click.prevent="getPreviousPage()">Previous</a></li>
-        <li class="page-item"><a class="page-link" href="#">{{ this.pageActual }}</a></li>
-        <li class="page-item"><a class="page-link" href="#" @click.prevent="getNextPage()">Next</a></li>
-      </ul>
-    </nav>
-    <table class="table color">
+    <table class="table-spacing">
       <thead>
         <tr>
           <th>Id</th>
@@ -39,22 +33,21 @@
         <tr v-for="category in categories" :key="category.id">
           <td>{{ category.id }}</td>
           <td>{{ category.type }}</td>
-          <td>{{ category.name }}</td>
+          <td class="alnleft">{{ category.name }}</td>
           <td>
             <div class="container">
               <a
-                class="btn btn-danger m-1"
+                class="btn btn-danger" style="margin-right: 1%;"
                 role="button"
                 aria-pressed="true"
                 @click="deleteCategory(category.id)"
               >
                 <i
-                  class="bi bi-trash"
-                  style="color: white; margin-right: 25%"
+                  class="bi bi-trash buttonIcons"
                 ></i>
               </a>
               <a
-                class="btn btn-info m-1"
+                class="btn btn-info"
                 role="button"
                 aria-pressed="true"
                 @click="
@@ -69,8 +62,7 @@
                 "
               >
                 <i
-                  class="bi bi-pencil-square"
-                  style="color: white; margin-right: 25%"
+                  class="bi bi-pencil-square buttonIcons"
                 ></i>
               </a>
             </div>
@@ -78,6 +70,27 @@
         </tr>
       </tbody>
     </table>
+    <nav aria-label="Page navigation example">
+      <ul class="pagination d-flex justify-content-center">
+        <li class="page-item"><a class="page-link" style="color: black;" href="#" @click.prevent="getPreviousPage()">Previous</a></li>
+        <li class="page-item">
+          <a class="page-link" href="#"  v-bind:class="{'white': !clickedPage1, 'black': clickedPage1}" @click="clickedPage1 = true, clickedPage2 = false, clickedPage3 = false, getPage(this.pages)">
+            {{ this.pages }}
+          </a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="#" v-if="this.pages < this.lastPage" v-bind:class="{'white': !clickedPage2, 'black': clickedPage2}" @click="clickedPage2 = true, clickedPage1 = false, clickedPage3 = false, getPage(this.pages+1)">
+            {{ this.pages+1 }}
+          </a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="#" v-if="this.pages < this.lastPage" v-bind:class="{'white': !clickedPage3, 'black': clickedPage3}" @click="clickedPage3 = true, clickedPage1 = false, clickedPage2 = false, getPage(this.pages+2)">
+            {{ this.pages+2 }}
+          </a>
+        </li>
+        <li class="page-item"><a class="page-link" style="color: black;" href="#" @click.prevent="getNextPage()">Next</a></li>
+      </ul>
+    </nav>
   </main>
 </template>
 
@@ -96,6 +109,8 @@ export default {
       categories: null,
       phone_number: localStorage.getItem("username") || null,
       pageActual: 1,
+      clickedPage1: true,
+      pages: 1,
       lastPage: null,
     };
   },
@@ -111,17 +126,30 @@ export default {
         });
     },
     getPreviousPage(){
-      if (this.pageActual > 1){
-        this.pageActual--;
+      if (this.pageActual > 3){
+        this.pages -= 3;
+        this.pageActual = this.pages;
+        this.clickedPage1 = true
+        this.clickedPage2 = false
+        this.clickedPage3 = false
         this.getCategories()
       }
     },
     getNextPage(){
-      if (this.pageActual < this.lastPage){
-        this.pageActual++;
+      if (this.pageActual < this.lastPage && this.pages+3 <= this.lastPage){
+        this.pages += 3;
+        this.pageActual = this.pages;
+        this.clickedPage1 = true
+        this.clickedPage2 = false
+        this.clickedPage3 = false
         this.getCategories()
       }
- 
+      console.log(this.page)
+      console.log(this.pageActual)
+    },
+    getPage(selectedPage){     
+      this.pageActual = selectedPage
+      this.getCategories()
     },
     getCategories(){
       this.$axios
@@ -148,12 +176,38 @@ export default {
 </script>
 
 <style scoped>
-#page {
-  margin: 5% auto 5% auto;
+
+table td {
+  border: 10px solid white;
+  background-color: #e6e6e6;
+  border-right: 0;
+  border-left: 0;
 }
 
-.newCategorie {
-  width: 70%;
-  height: 100%;
+.table-spacing{
+  width:90%;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.buttonIcons{
+  color: white; 
+  margin-right: 25%;
+  font-size: 100%;
+}
+
+.alnleft { 
+  text-align: left;
+  padding-left: 13%;
+}
+
+.white {
+  background-color: white;
+  color: black;
+}
+.black {
+  background-color: #6c757d;
+  color: white;
 }
 </style>

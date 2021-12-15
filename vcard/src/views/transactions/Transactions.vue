@@ -33,7 +33,7 @@
         </div>
         <div class="d-flex justify-content-center align-items-center">
           <label class="m-1">Most Recent</label>
-          <input class="m-1" type="checkbox" v-model="mostRecent" />
+          <input class="m-1 checkAmount" type="checkbox" v-model="mostRecent" />
         </div>
         
         <div class="text-end m-1">
@@ -54,15 +54,30 @@
         {{ errors.filterOrderBy }}
       </div>
     </div>
+    <hr/>
     <nav aria-label="Page navigation example">
-      <ul class="pagination">
-        <li class="page-item"><a class="page-link" href="#" @click.prevent="getPreviousPage()">Previous</a></li>
-        <li class="page-item"><a class="page-link" href="#">{{ this.pageActual }}</a></li>
-        <li class="page-item"><a class="page-link" href="#" @click.prevent="getNextPage()">Next</a></li>
+      <ul class="pagination d-flex justify-content-center">
+        <li class="page-item"><a class="page-link" style="color: black;" href="#" @click.prevent="getPreviousPage()">Previous</a></li>
+        <li class="page-item">
+          <a class="page-link" href="#" v-bind:class="{'white': !clickedPage1, 'black': clickedPage1}" @click="clickedPage1 = true, clickedPage2 = false, clickedPage3 = false, getPage(this.pages)">
+            {{ this.pages }}
+          </a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="#" v-if="this.pages+1 <= this.lastPage" v-bind:class="{'white': !clickedPage2, 'black': clickedPage2}" @click="clickedPage2 = true, clickedPage1 = false, clickedPage3 = false, getPage(this.pages+1)">
+            {{ this.pages+1 }}
+          </a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="#" v-if="this.pages+2 <= this.lastPage" v-bind:class="{'white': !clickedPage3, 'black': clickedPage3}" @click="clickedPage3 = true, clickedPage1 = false, clickedPage2 = false, getPage(this.pages+2)">
+            {{ this.pages+2 }}
+          </a>
+        </li>
+        <li class="page-item"><a class="page-link" style="color: black;" href="#" @click.prevent="getNextPage()">Next</a></li>
       </ul>
     </nav>
 
-    <table class="table color">
+    <table class="table-spacing">
       <thead>
         <tr>
           <th>Date/Time</th>
@@ -134,6 +149,8 @@ export default {
       transactions: null,
       phoneNumber: localStorage.getItem("username"),
       pageActual: 1,
+      pages: 1,
+      clickedPage1: true,
       lastPage: null,
       typeFilter: null,
       amount: false,
@@ -145,11 +162,17 @@ export default {
   methods: {
     submitFilterOrderBy() {
       this.pageActual = 1;
+      this.pages = 1;
+      this.resetPagination()
       this.getTransactionsWithFilter();
     },
     getPreviousPage(){
-      if (this.pageActual > 1){
-        this.pageActual--;
+      if (this.pageActual > 3 ){
+         this.pages -= 3;
+        this.pageActual = this.pages;
+        this.clickedPage1 = true
+        this.clickedPage2 = false
+        this.clickedPage3 = false
         if (this.queryString != null){
           this.getTransactionsWithFilter()
         }
@@ -159,14 +182,25 @@ export default {
       }
     },
     getNextPage(){
-      if (this.pageActual < this.lastPage){
-        this.pageActual++;
-         if (this.queryString != null){
+      if (this.pageActual < this.lastPage && this.pages+3 <= this.lastPage){
+        this.pages += 3;
+        this.pageActual = this.pages;
+        this.resetPagination()
+        if (this.queryString != null){
           this.getTransactionsWithFilter()
         }
         else{
           this.getTransactions()
         }
+      }
+    },
+    getPage(selectedPage){     
+      this.pageActual = selectedPage
+      if (this.queryString != null){
+        this.getTransactionsWithFilter()
+      }
+      else{
+        this.getTransactions()
       }
     },
     getTransactions(){
@@ -230,6 +264,11 @@ export default {
       this.endDate = null
       this.amount = null
       this.mostRecent = null
+    },
+    resetPagination(){
+      this.clickedPage1 = true
+      this.clickedPage2 = false
+      this.clickedPage3 = false
     }
   },
   mounted() {
@@ -257,4 +296,35 @@ export default {
 </script>
 
 <style>
+table td {
+  border: 10px solid white;
+  background-color: #e6e6e6;
+  border-right: 0;
+  border-left: 0;
+}
+
+.table-spacing{
+  width:90%;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.alnleft { 
+  text-align: left;
+  padding-left: 13%;
+}
+
+.white {
+  background-color: white;
+  color: black;
+}
+.black {
+  background-color: #6c757d;
+  color: white;
+}
+
+.checkAmount{
+  width: 200%;
+}
 </style>
