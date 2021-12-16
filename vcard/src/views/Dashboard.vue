@@ -28,8 +28,8 @@
         </div>
       </div>
       <div id="page" class="row">
-        <div class="color">
-          <img class="center" src="../assets/img/logo.png" />
+        <div>
+          <img id="vcardImage" src="../assets/img/logo.png" />
           <h1 style="margin-bottom: 3%">{{ moneyUser }} €</h1>
           <div v-show="this.piggyBalance != null">
             <img class="piggy" src="../assets/img/piggyBank.png" />
@@ -159,8 +159,12 @@ export default {
   margin: 0 auto;
 }
 
+#vcardImage{
+  width: 40%;
+  height: auto;
+}
+
 #dashboard {
-  background: #e6e6e6;
   padding-top: 3%;
 }
 

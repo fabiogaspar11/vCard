@@ -81,7 +81,7 @@
       <thead>
         <tr>
           <th>Date/Time</th>
-          <th>Type</th>
+          <th>Type</th> 
           <th>Value</th>
           <th>Payment type</th>
           <th>Payment reference</th>
@@ -91,7 +91,7 @@
       <tbody>
         <tr v-for="transaction in transactions" :key="transaction.id">
           <td>{{ transaction.datetime }}</td>
-          <td>{{ transaction.type }}</td>
+          <td>{{ transaction.type == 'C' ? "Credit": "Debit" }}</td>
           <td>{{ transaction.value }}</td>
           <td>{{ transaction.payment_type }}</td>
           <td>{{ transaction.payment_reference }}</td>
