@@ -54,10 +54,12 @@ export default {
         this.$axios
         .post(`/administrators`, admin)
         .then(() => {
+          this.$toast.success("Administrator created with success");
           this.$router.push({name: "dashboardAdmin" });
         })
         .catch((error) => {
           this.errors = [];
+          this.$toast.error("Administrator could not be created");
           Object.entries(error.response.data.errors).forEach(([key, val]) => {
             this.errors[key] = val[0];
           });

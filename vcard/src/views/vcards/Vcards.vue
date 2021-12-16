@@ -139,7 +139,10 @@ export default {
             if(error.response.status == 404){
                 this.$toast.error("This vcard could not be found");
                 this.$router.push({name: "dashboardAdmin"});
-          }
+            }          
+            if(error.response.status == 422){
+               this.$toast.error("This vcard could not be deleted");
+            } 
          });
       },
       selectVcard(vcard) {
@@ -152,6 +155,10 @@ export default {
         }
         if(this.newDebitLimit==previousDebitLimit){
             this.$toast.error("New debit limit equal to the old debit limit - nothing to update");
+            return;
+        }
+        if(this.newDebitLimit <= 0){
+            this.$toast.error("New debit limit must be bigger than 0");
             return;
         }
         let vcardDebit={};
@@ -168,14 +175,17 @@ export default {
                   this.$toast.error("This vcard could not be found");
                   this.$router.push({name: "dashboardAdmin"});
             }
+             if(error.response.status == 422){
+               this.$toast.error("Could not update debit limit");
+            } 
          });
       },
       toggleStatusBlock(phone_number){
           this.$axios
          .get(`/vcards/${parseInt(phone_number)}/alterBlock`)
          .then(response =>{
-            this.vcards = response.data.data; 
-            this.$toast.info(`Vcard ${response.data.data.name} was ${response.data.data.blocked == 1 ? 'blocked': 'unblocked'}`);
+            let message = response.data.data.blocked == 1 ? 'blocked': 'unblocked';
+            this.$toast.info(`Vcard ${response.data.data.name} was ${message}`);
             this.$socket.emit('toggleVcardStatus', response.data.data.blocked == 1, phone_number);
             this.$router.push({name:'dashboardAdmin'})
          })
@@ -184,6 +194,7 @@ export default {
                   this.$toast.error("This vcard could not be found");
                   this.$router.push({name: "dashboardAdmin"});
             }
+            
          });
       },
     getPreviousPage(){
