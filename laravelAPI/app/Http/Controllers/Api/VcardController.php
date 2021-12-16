@@ -505,10 +505,10 @@ class VcardController extends Controller
         $vcard->custom_options = $json;
         $vcard->save();
 
-        return $notifications;
+        return 0;
     }
 
-    public function countNonviewNotifications(Vcard $vcard)
+    public function countNotifications(Vcard $vcard)
     {
         $notifications =  json_decode($vcard->custom_options);
         if ($notifications == null) {
