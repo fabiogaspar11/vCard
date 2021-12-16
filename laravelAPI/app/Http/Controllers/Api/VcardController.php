@@ -418,7 +418,7 @@ class VcardController extends Controller
         return $notifications->notificationState;
     }
 
-    
+
     public function notificationsState(Vcard $vcard)
     {
         if ($vcard->custom_options == null) {
@@ -429,6 +429,8 @@ class VcardController extends Controller
             $json = json_encode($notifications);
             $vcard->custom_options = $json;
             $vcard->save();
+
+            return true;
         }
 
         $notifications =  json_decode($vcard->custom_options);
