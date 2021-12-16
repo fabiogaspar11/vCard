@@ -80,6 +80,7 @@ data() {
         this.$axios
             .put(`/defaultCategories/${this.id}`, defaultCategory)
             .then(() => {
+            this.$toast.info(`Default category edited`);
             this.$router.push({name: "dashboardAdmin"});
         })
         .catch((error) => {
@@ -87,6 +88,7 @@ data() {
                 this.$toast.error("This default category was deleted");
                 this.$router.push({name: "dashboardAdmin"});
           }
+           this.$toast.errors(`Default category could not be edited`);
           this.errors = [];
           Object.entries(error.response.data.errors).forEach(([key, val]) => {
             this.errors[key] = val[0];
