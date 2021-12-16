@@ -158,7 +158,7 @@ Route::put('vcards/{vcard}/readNotification',[VcardController::class, 'readNotif
 
 Route::get('vcards/{vcard}/viewNotifications',[VcardController::class, 'viewNotifications']);
 
-Route::get('vcards/{vcard}/countNonviewNotifications',[VcardController::class, 'countNonviewNotifications']);
+Route::get('vcards/{vcard}/countNotifications',[VcardController::class, 'countNotifications']);
 
 
 
