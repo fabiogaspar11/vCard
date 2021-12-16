@@ -418,25 +418,19 @@ class VcardController extends Controller
         return $notifications->notificationState;
     }
 
-
-    public function createNotificationCamp(Vcard $vcard)
-    {
-        $notifications = array();
-        $notifications["notificationList"] = array();
-        $notifications["notificationState"] = true;
-
-        $json = json_encode($notifications);
-        $vcard->custom_options = $json;
-        $vcard->save();
-
-        return $notifications;
-    }
-
+    
     public function notificationsState(Vcard $vcard)
     {
         if ($vcard->custom_options == null) {
-            return false;
+            $notifications = array();
+            $notifications["notificationList"] = array();
+            $notifications["notificationState"] = true;
+
+            $json = json_encode($notifications);
+            $vcard->custom_options = $json;
+            $vcard->save();
         }
+
         $notifications =  json_decode($vcard->custom_options);
         return $notifications->notificationState;
     }
@@ -498,9 +492,10 @@ class VcardController extends Controller
         return $notifications;
     }
 
-    public function viewNotifications(Vcard $vcard){
+    public function viewNotifications(Vcard $vcard)
+    {
         $notifications =  json_decode($vcard->custom_options);
-        for($i = 0; $i< count($notifications->notificationList) ; $i++){
+        for ($i = 0; $i < count($notifications->notificationList); $i++) {
             $notifications->notificationList[$i]->viewed = true;
         }
 
@@ -509,18 +504,18 @@ class VcardController extends Controller
         $vcard->save();
 
         return $notifications;
-
     }
 
-    public function countNonviewNotifications(Vcard $vcard){
+    public function countNonviewNotifications(Vcard $vcard)
+    {
         $notifications =  json_decode($vcard->custom_options);
-        if($notifications == null){
+        if ($notifications == null) {
             return 0;
         }
-        
+
         $count = 0;
-        for($i = 0; $i< count($notifications->notificationList) ; $i++){
-            if($notifications->notificationList[$i]->viewed == false){
+        for ($i = 0; $i < count($notifications->notificationList); $i++) {
+            if ($notifications->notificationList[$i]->viewed == false) {
                 $count++;
             }
         }
