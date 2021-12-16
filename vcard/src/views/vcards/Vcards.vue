@@ -35,10 +35,10 @@
     </div>
     <h2>Vcards</h2>   
     <nav aria-label="Page navigation example">
-      <ul class="pagination">
-        <li class="page-item"><a class="page-link" href="#" @click.prevent="getPreviousPage()">Previous</a></li>
-        <li class="page-item"><a class="page-link" href="#">{{ this.pageActual }}</a></li>
-        <li class="page-item"><a class="page-link" href="#" @click.prevent="getNextPage()">Next</a></li>
+      <ul class="pagination d-flex justify-content-center">
+        <li class="page-item"><a class="page-link" style="color: black;" href="#" @click.prevent="getPreviousPage()">Previous</a></li>
+        <li class="page-item"><a class="page-link" style="color: black;" href="#">{{ this.pageActual }}</a></li>
+        <li class="page-item"><a class="page-link" style="color: black;" href="#" @click.prevent="getNextPage()">Next</a></li>
       </ul>
     </nav>
     <table class="table">
@@ -129,7 +129,10 @@ export default {
             this.$axios
             .get(`/vcards`)
             .then(response =>{
-            this.vcards = response.data.data;
+               if (this.vcards.length == 1){
+                 this.pageActual -= 1
+               }
+              this.vcards = response.data.data;
             })
          })
          .catch((error)=>{

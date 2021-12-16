@@ -8,9 +8,9 @@
       </div>
       <nav aria-label="Page navigation example" class="d-flex justify-content-center">
         <ul class="pagination">
-          <li class="page-item"><a class="page-link" href="#" @click.prevent="getPreviousPage()">Previous</a></li>
-          <li class="page-item"><a class="page-link" href="#">{{ this.pageActual }}</a></li>
-          <li class="page-item"><a class="page-link" href="#" @click.prevent="getNextPage()">Next</a></li>
+          <li class="page-item"><a class="page-link" style="color: black;" href="#" @click.prevent="getPreviousPage()">Previous</a></li>
+          <li class="page-item"><a class="page-link" style="color: black;" href="#">{{ this.pageActual }}</a></li>
+          <li class="page-item"><a class="page-link" style="color: black;" href="#" @click.prevent="getNextPage()">Next</a></li>
         </ul>
       </nav>
       <table class="table-spacing">
@@ -63,7 +63,10 @@ export default {
       this.$axios.delete(`defaultCategories/${id}`)
       .then(response =>{
         this.$toast.info(`Default Category ${response.data.data.name} removed`);
-        this.$router.push({name:'dashboardAdmin'})
+        if (this.defaultCategories.length == 1){
+          this.pageActual -= 1
+        }
+        this.getDefaultCategories()
       })
       .catch(() => {
         this.$toast.info(`Could not delete default category ${id}`);
@@ -111,4 +114,5 @@ table td {
   margin-left: auto;
   margin-right: auto;
 }
+
 </style>

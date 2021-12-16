@@ -65,7 +65,7 @@ data() {
         this.$axios
             .post(`/defaultCategories`, defaultCategory)
             .then(() => {
-            this.$router.push({name: "dashboardAdmin"});
+              this.$router.push({name: "defaultCategories"});
         })
         .catch((error) => {
           this.errors = [];

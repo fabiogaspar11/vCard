@@ -4,13 +4,13 @@
 
       <div class="container d-flex flex-row justify-content-between">
       <h2>Administrators</h2>
-      <router-link class="m-2 btn btn-primary" :to="{name:'administratorCreate'}">New Administrator</router-link>
+      <router-link class="m-2 btn btn-secondary" :to="{name:'administratorCreate'}">New Administrator</router-link>
       </div>
-      <nav aria-label="Page navigation example">
+      <nav aria-label="Page navigation example" class="d-flex justify-content-center">
         <ul class="pagination">
-          <li class="page-item"><a class="page-link" href="#" @click.prevent="getPreviousPage()">Previous</a></li>
-          <li class="page-item"><a class="page-link" href="#">{{ this.pageActual }}</a></li>
-          <li class="page-item"><a class="page-link" href="#" @click.prevent="getNextPage()">Next</a></li>
+          <li class="page-item"><a class="page-link" style="color: black;" href="#" @click.prevent="getPreviousPage()">Previous</a></li>
+          <li class="page-item"><a class="page-link" style="color: black;" href="#">{{ this.pageActual }}</a></li>
+          <li class="page-item"><a class="page-link" style="color: black;" href="#" @click.prevent="getNextPage()">Next</a></li>
         </ul>
       </nav>
       <table class="table">
@@ -62,8 +62,12 @@ export default {
         this.$socket.emit('userDeleted', username);   
           this.$axios
           .get(`/administrators`)
-          .then(response =>{
-          this.administrators = response.data.data; 
+          .then(() =>{
+            //this.administrators = response.data.data; 
+            if (this.administrators.length == 1){
+               this.pageActual -= 1
+            }
+            this.getAdministrators()
         });
       })
       .catch((error) => {

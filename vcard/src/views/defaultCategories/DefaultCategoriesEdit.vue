@@ -80,12 +80,12 @@ data() {
         this.$axios
             .put(`/defaultCategories/${this.id}`, defaultCategory)
             .then(() => {
-            this.$router.push({name: "dashboardAdmin"});
+            this.$router.push({name: "defaultCategories"});
         })
         .catch((error) => {
           if(error.response.status == 404){
                 this.$toast.error("This default category was deleted");
-                this.$router.push({name: "dashboardAdmin"});
+                this.$router.push({name: "defaultCategories"});
           }
           this.errors = [];
           Object.entries(error.response.data.errors).forEach(([key, val]) => {
