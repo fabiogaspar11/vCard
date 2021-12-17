@@ -127,8 +127,7 @@ export default {
       this.errors = [];
       this.$axios
         .post(`/vcards`, formData,this.config)
-        .then((response) => {
-          console.log(response);
+        .then(() => {
           this.$store
             .dispatch("authRequest", {
               username: this.phoneNumber,

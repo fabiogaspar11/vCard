@@ -251,7 +251,6 @@ export default {
         .then((response) => {
           this.transactions = response.data.data;
           this.lastPage = response.data.meta.last_page;
-          console.log(this.transactions);
         });
     },
     getTransactionsWithFilter() {
