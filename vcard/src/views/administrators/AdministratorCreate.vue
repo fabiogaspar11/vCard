@@ -18,7 +18,7 @@
         {{ errors.password }}
         </div>
         <button id="buttonSubmit" class="button" @click.prevent="createAdmin" >Create Administrator</button>
-        <button id="buttonCancel" class="button" @click="$router.push({ name: 'home' })" >Cancel</button>
+        <button id="buttonCancel" class="button" @click="$router.push({ name: 'administrators' })" >Cancel</button>
     </main>
 </template>
 

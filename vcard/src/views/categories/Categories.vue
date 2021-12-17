@@ -120,6 +120,14 @@ export default {
         .delete(`categories/${id}`)
         .then((response) => {
           this.$toast.info(`Category ${response.data.data.name} removed`);
+          if (this.categories.length == 1){
+            this.pageActual -= 1
+            this.pages -= 3
+            this.clickedPage1 = false
+            this.clickedPage2 = false
+            this.clickedPage3 = true
+          }
+          this.getCategories()
         })
         .catch(() => {
           this.$toast.info(`Could not delete category ${id}`);

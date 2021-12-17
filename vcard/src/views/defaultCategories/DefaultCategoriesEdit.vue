@@ -72,23 +72,23 @@ data() {
         }
         let defaultCategory = {};
         if(this.name != null){
-            defaultCategory.name = this.name;
+          defaultCategory.name = this.name;
         }
         if(this.type != null && this.type != this.previousType){
-            defaultCategory.type = this.type;
+          defaultCategory.type = this.type;
         }
         this.$axios
-            .put(`/defaultCategories/${this.id}`, defaultCategory)
-            .then(() => {
+          .put(`/defaultCategories/${this.id}`, defaultCategory)
+          .then(() => {         
             this.$toast.info(`Default category edited`);
-            this.$router.push({name: "dashboardAdmin"});
+            this.$router.push({name: "defaultCategories"});
         })
         .catch((error) => {
           if(error.response.status == 404){
-                this.$toast.error("This default category was deleted");
-                this.$router.push({name: "dashboardAdmin"});
+            this.$toast.error("This default category was deleted");
+            this.$router.push({name: "defaultCategories"});
           }
-           this.$toast.errors(`Default category could not be edited`);
+          this.$toast.errors(`Default category could not be edited`);
           this.errors = [];
           Object.entries(error.response.data.errors).forEach(([key, val]) => {
             this.errors[key] = val[0];
