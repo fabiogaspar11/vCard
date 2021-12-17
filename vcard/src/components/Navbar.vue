@@ -58,7 +58,7 @@
                 class="dropdown-menu dropdown-menu-dark dropdown-menu-end"
                 aria-labelledby="navbarDropdownMenuLink"
               >
-                <li>
+                <li v-if="userType == 'V'">
                   <router-link
                     class="dropdown-item"
                     :class="{ active: $route.name === 'deleteVcard' }"
@@ -68,9 +68,9 @@
                   </router-link>
                 </li>
                 <li>
-                  <hr class="dropdown-divider" />
+                  <hr v-if="userType == 'V'" class="dropdown-divider" />
                 </li>
-                 <li>
+                 <li v-if="userType == 'V'">
                   <router-link
                     class="dropdown-item"
                     :class="{ active: $route.name === 'deleteVcard' }"
@@ -80,9 +80,9 @@
                   </router-link>
                 </li>
                   <li>
-                  <hr class="dropdown-divider" />
+                  <hr v-if="userType == 'V'" class="dropdown-divider" />
                 </li>
-                <li>
+                <li v-if="userType == 'V'">
                      <router-link
                     class="dropdown-item"
                     :class="{ active: $route.name === 'deleteVcard' }"
@@ -92,7 +92,7 @@
                   </router-link>
                 </li>
                   <li>
-                  <hr class="dropdown-divider" />
+                  <hr v-if="userType == 'V'" class="dropdown-divider" />
                 </li>
                 <li>
                   <a class="dropdown-item" @click.prevent="logout"
@@ -115,6 +115,7 @@ export default {
   data() {
     return {
       username: null,
+      userType: null,
       password: "",
       photo:null
     };
@@ -143,6 +144,8 @@ export default {
   },
   created(){
     this.username =  this.$store.getters.username;
+    this.userType =  this.$store.getters.userType;
+    console.log(this.userType)
         this.$axios.get(`/vcards/storage/${this.username}`)
         .then((response)=>{
             if(response.data.length != 0){

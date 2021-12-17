@@ -72,7 +72,7 @@
     </table>
     <nav aria-label="Page navigation example">
       <ul class="pagination d-flex justify-content-center">
-        <li class="page-item"><a class="page-link" style="color: black;" href="#" @click.prevent="getPreviousPage()">Previous</a></li>
+        <li class="page-item"><a class="page-link" style="color: black;" href="#" @click.prevent="getPreviousPage()">Previous Pages</a></li>
         <li class="page-item">
           <a class="page-link" href="#"  v-bind:class="{'white': !clickedPage1, 'black': clickedPage1}" @click="clickedPage1 = true, clickedPage2 = false, clickedPage3 = false, getPage(this.pages)">
             {{ this.pages }}
@@ -88,7 +88,7 @@
             {{ this.pages+2 }}
           </a>
         </li>
-        <li class="page-item"><a class="page-link" style="color: black;" href="#" @click.prevent="getNextPage()">Next</a></li>
+        <li class="page-item"><a class="page-link" style="color: black;" href="#" @click.prevent="getNextPage()">Next Pages</a></li>
       </ul>
     </nav>
   </main>

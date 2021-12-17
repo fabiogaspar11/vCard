@@ -60,7 +60,7 @@
             style="color: black"
             href="#"
             @click.prevent="getPreviousPage()"
-            >Previous</a
+            >Previous Pages</a
           >
         </li>
         <li class="page-item">
@@ -116,7 +116,7 @@
             style="color: black"
             href="#"
             @click.prevent="getNextPage()"
-            >Next</a
+            >Next Pages</a
           >
         </li>
       </ul>

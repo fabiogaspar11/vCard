@@ -141,6 +141,7 @@ export default {
               localStorage.setItem("username", this.phoneNumber);
             })
             .then(() => {
+              this.$socket.emit('logged_in', this.phoneNumber)    
               this.$router.push({
                 name: "dashboard",
                 params: {
