@@ -3,30 +3,33 @@
     <Sidebar></Sidebar>
     <Navbar></Navbar>
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-
-    <div class="color m-2" >
-        <div class="container">
+    
+    <h1 id="title"> Change {{fieldUpdate}} </h1>
+    <div class="background">
+        <div class="container-fluid">
               <div class="row">
-                 <div class="col">
-                        <h5>Password</h5>
-                    </div>
-                    <div class="col">
-                        <input type="password" class="form-control" v-model="old_password" />
-                        <div v-show="errors.old_password != undefined" class="text-danger">{{errors.old_password}}</div>
-                    </div>
+                <div class="col-5">
+                  <h5 style="padding-top: 4%;">Password</h5>
+                </div>
+                <div class="col-7">
+                  <input type="password" class="form-control" v-model="old_password" />
+                  <div v-show="errors.old_password != undefined" class="text-danger">{{errors.old_password}}</div>
+                </div>
               </div>
               <div class="row">
-                <div class="col details">
-                    <h5>{{fieldUpdate}}</h5>
+                <div class="col-5">
+                    <h5 style="padding-top: 5%;">{{fieldUpdate}}</h5>
                 </div>
-                <div class="col">
+                <div class="col-7">
                     <input type="password" class="form-control" v-model="dynamicField"  />
                     <div v-show="errors.password != undefined" class="text-danger">{{errors.password}}</div>
                     <div v-show="errors.confirmation_code != undefined" class="text-danger">{{errors.confirmation_code}}</div>
                 </div>
               </div>
-              <div class="right">
-              <button type="button" class="btn btn-primary" @click.prevent="updateField">Save</button>
+              <div class="row d-flex justify-content-center">
+                <div class="saveChange ">
+                  <button type="button" class="btn btn-secondary" @click.prevent="updateField">Save</button>
+                </div>
               </div>
         </div>
       </div>
@@ -103,15 +106,28 @@ export default {
 </script>
 
 <style>
-.right {
-  display: block;
-  margin-left: auto;
-  margin-right: 0;
-  width: 50%;
+#title{
+  text-align: center;
+  padding-top: 3%;
+  padding-bottom: 3%;
 }
 .details {
   margin-top: 1.5%;
 }
 
+.background{
+  background-color: #e6e6e6;
+  width: 70%; 
+  text-align:center; 
+  margin: auto;
+  padding-top: 3%;
+  padding-bottom: 2%;
+  border-radius: 10px;
+}
+
+.saveChange{
+  width: 50%;
+  padding-top: 2%;
+}
 
 </style>

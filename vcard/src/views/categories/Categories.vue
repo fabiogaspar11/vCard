@@ -79,12 +79,12 @@
           </a>
         </li>
         <li class="page-item">
-          <a class="page-link" href="#" v-if="this.pages < this.lastPage" v-bind:class="{'white': !clickedPage2, 'black': clickedPage2}" @click="clickedPage2 = true, clickedPage1 = false, clickedPage3 = false, getPage(this.pages+1)">
+          <a class="page-link" href="#" v-if="this.pages+1 <= this.lastPage" v-bind:class="{'white': !clickedPage2, 'black': clickedPage2}" @click="clickedPage2 = true, clickedPage1 = false, clickedPage3 = false, getPage(this.pages+1)">
             {{ this.pages+1 }}
           </a>
         </li>
         <li class="page-item">
-          <a class="page-link" href="#" v-if="this.pages < this.lastPage" v-bind:class="{'white': !clickedPage3, 'black': clickedPage3}" @click="clickedPage3 = true, clickedPage1 = false, clickedPage2 = false, getPage(this.pages+2)">
+          <a class="page-link" href="#" v-if="this.pages+2 <= this.lastPage" v-bind:class="{'white': !clickedPage3, 'black': clickedPage3}" @click="clickedPage3 = true, clickedPage1 = false, clickedPage2 = false, getPage(this.pages+2)">
             {{ this.pages+2 }}
           </a>
         </li>
@@ -115,19 +115,25 @@ export default {
     };
   },
   methods: {
-    deleteCategory(id) {
-      this.$axios
+    async deleteCategory(id) {
+      await this.$axios
         .delete(`categories/${id}`)
         .then((response) => {
           this.$toast.info(`Category ${response.data.data.name} removed`);
           if (this.categories.length == 1){
             this.pageActual -= 1
-            this.pages -= 3
+            if (this.lastPage > 3){
+              this.pages -= 3
+            }
             this.clickedPage1 = false
             this.clickedPage2 = false
             this.clickedPage3 = true
+
+            if (this.lastPage-1 == 1) this.clickedPage1 = true
+            if (this.lastPage-1 == 2) this.clickedPage2 = true
           }
           this.getCategories()
+  
         })
         .catch(() => {
           this.$toast.info(`Could not delete category ${id}`);
