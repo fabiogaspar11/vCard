@@ -318,17 +318,9 @@ class VcardController extends Controller
         $currentBalance = $piggyBank->balance;
         $requestAmount = $request->amount;
 
+
         if (!isset($requestAmount)) {
             throw ValidationException::withMessages(['amount' => "Value is mandatory"]);
-        }
-
-        if (!str_contains($requestAmount, '.')) {
-            $requestAmount .= ".00";
-        } else {
-            $requestAmount = floor($request->amount * 100) / 100;
-            if (!str_contains($requestAmount, '.')) {
-                $requestAmount .= ".00";
-            }
         }
 
         if (!is_numeric($requestAmount)) {
@@ -338,6 +330,18 @@ class VcardController extends Controller
         if ($requestAmount <= 0) {
             throw ValidationException::withMessages(['amount' => "Value must be a positive number"]);
         }
+
+
+        if (!str_contains($requestAmount, '.')) {
+            $requestAmount .= ".00";
+        } else {
+            $requestAmount = floor($request->amount * 100) / 100;
+            if (!str_contains($requestAmount, '.')) {
+                $requestAmount .= ".00";
+            }
+
+        }
+
 
         $stringSplited = "";
         try {
@@ -358,15 +362,15 @@ class VcardController extends Controller
         }
 
         if ($request->type == 'C') {
-            $newBalance = $currentBalance + number_format($requestAmount, 2);
-            $vcard->balance -= number_format($requestAmount, 2);
+            $newBalance = $currentBalance + number_format($requestAmount, 2, '.', '');
+            $vcard->balance -= number_format($requestAmount, 2, '.', '');
         } else if ($request->type == 'D') {
-            $newBalance = $currentBalance - number_format($requestAmount, 2);
-            $vcard->balance += number_format($requestAmount, 2);
+            $newBalance = $currentBalance - number_format($requestAmount, 2, '.', '');
+            $vcard->balance += number_format($requestAmount, 2, '.', '');;
         }
 
         $newPiggyBank = array();
-        $newPiggyBank["balance"] = number_format($newBalance, 2);
+        $newPiggyBank["balance"] = number_format($newBalance, 2, '.', '');
 
         $json = json_encode($newPiggyBank);
         $vcard->custom_data = $json;

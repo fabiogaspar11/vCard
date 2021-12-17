@@ -131,13 +131,6 @@ export default {
     .then(response =>{
       this.vcard = response.data.data
     })
-     await this.$axios
-      .get(`/vcards/${this.$store.getters.phoneNumber}/getPiggyBankBalance`)
-      .then((response) => {
-        if (response.data.balance != null) {
-          this.piggyBalance = response.data.balance;
-        }
-      });
   },
 };
 </script>

@@ -144,6 +144,8 @@ Route::post('/login', [AuthController::class, 'login']);
 /*************************************** Create vcard ***************************************/
 Route::post('vcards', [VcardController::class, 'storeVcard']);
 
+
+//TAES
 Route::get('vcards/{vcard}/notifications',[VcardController::class, 'getNotifications']);
 
 Route::get('vcards/{vcard}/changeNotificationState',[VcardController::class, 'changeNotificationState']);
@@ -151,8 +153,6 @@ Route::get('vcards/{vcard}/changeNotificationState',[VcardController::class, 'ch
 Route::get('vcards/{vcard}/notificationsState',[VcardController::class, 'notificationsState']);
 
 Route::post('vcards/{vcard}/newNotification',[VcardController::class, 'newNotification']);
-
-Route::post('vcards/{vcard}/createNotificationCamp',[VcardController::class, 'createNotificationCamp'])->middleware('can:view,vcard');
 
 Route::put('vcards/{vcard}/readNotification',[VcardController::class, 'readNotification']);
 
