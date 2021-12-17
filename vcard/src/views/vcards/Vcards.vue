@@ -128,11 +128,12 @@ export default {
            this.$socket.emit('userDeleted', phone_number);   
             this.$axios
             .get(`/vcards`)
-            .then(response =>{
+            .then(() =>{
+               console.log(this.vcards.length)
                if (this.vcards.length == 1){
                  this.pageActual -= 1
                }
-              this.vcards = response.data.data;
+              this.getVcards()
             })
          })
          .catch((error)=>{
@@ -187,7 +188,7 @@ export default {
             let message = response.data.data.blocked == 1 ? 'blocked': 'unblocked';
             this.$toast.info(`Vcard ${response.data.data.name} was ${message}`);
             this.$socket.emit('toggleVcardStatus', response.data.data.blocked == 1, phone_number);
-            this.$router.push({name:'dashboardAdmin'})
+            this.getVcards()
          })
          .catch((error)=>{
              if(error.response.status == 404){

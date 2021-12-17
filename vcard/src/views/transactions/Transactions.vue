@@ -328,13 +328,16 @@ export default {
   },
   computed: {
     newTransacion() {
+      //this.getTransactions();
       return this.$store.getters.newTransacion;
     },
   },
   watch: {
     newTransacion: {
       handler() {
-        this.getTransactions();
+        if(this.$store.getters.newTransacion){
+          this.getTransactions();
+        }
       },
       deep: true,
     },

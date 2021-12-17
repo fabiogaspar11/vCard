@@ -15,7 +15,7 @@
           border-bottom
         "
       >
-        <h1 class="h2">Piggy Bank</h1>
+        <h1>Piggy Bank</h1>
         <div class="align">
           <div
             @click="closeSuccessMesage"
