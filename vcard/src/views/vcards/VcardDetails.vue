@@ -173,7 +173,7 @@ export default {
         this.name = this.name_old = this.vcard.name;
         this.email = this.email_old = this.vcard.email;
         this.photo_url = this.photo_url_old = this.vcard.photo_url;
-        (this.photo = "http://laravelapi.test/storage/fotos/" + this.photo_url),
+        (this.photo = this.$serverURL + "/storage/fotos/" + this.photo_url),
           (this.loaded = true);
       })
       .catch(() => {

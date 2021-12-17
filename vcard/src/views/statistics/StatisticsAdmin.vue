@@ -125,12 +125,10 @@ export default {
           else this.data.push([`${row.payment_type}`, parseInt(row.Value)])         
         })
         this.showData = this.data
-        console.log(this.showData)
       })      
     },
   },
   mounted() {   
-    console.log(this.administrator)
     this.$axios.get(`/statistics/transactionsType`)
     .then(response =>{
       this.transactions = response.data;
@@ -140,7 +138,6 @@ export default {
       })
 
       this.showData = this.data
-      console.log(this.showDataType)
     })
     this.$axios.get(`/statistics/categoriesType`)
     .then(response =>{
@@ -151,7 +148,6 @@ export default {
       })
 
       this.showDataCategory = this.dataCategory
-      console.log(this.showDataCategory)
     })
 
 

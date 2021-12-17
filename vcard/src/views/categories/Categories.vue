@@ -158,8 +158,7 @@ export default {
         this.clickedPage3 = false
         this.getCategories()
       }
-      console.log(this.page)
-      console.log(this.pageActual)
+
     },
     getPage(selectedPage){     
       this.pageActual = selectedPage

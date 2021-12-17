@@ -136,7 +136,6 @@ export default {
           else this.data.push([`${row.payment_type}`, parseInt(row.Value)])         
         })
         this.showData = this.data
-        console.log(this.showData)
       })      
     },
     changeCategoryChartType: function (rowCategory) {     
@@ -150,7 +149,6 @@ export default {
           else this.data.push([`${row.name}`, parseInt(row.Value)])         
         })
         this.showDataCategory = this.data
-        console.log(this.showDataCategory)
       })      
     },
   },
@@ -164,7 +162,6 @@ export default {
       })
 
       this.showData = this.data
-      console.log(this.showDataType)
     })
     this.$axios.get(`/statistics/categoriesType`)
     .then(response =>{
@@ -175,7 +172,6 @@ export default {
       })
 
       this.showDataCategory = this.dataCategory
-      console.log(this.showDataCategory)
     })
 
 
