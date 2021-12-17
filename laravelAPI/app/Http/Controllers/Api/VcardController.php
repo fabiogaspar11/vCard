@@ -148,9 +148,19 @@ class VcardController extends Controller
                 throw ValidationException::withMessages(['confirmation_code' => "PIN is not correct"]);
             }
         }
+
         if ($vcard->balance > 0) {
             throw ValidationException::withMessages(['balance' => "Vcard cannot be deleted - Balance is bigger than 0.00"]);
         }
+
+        $piggyBank = null;
+        if($vcard->custom_data != null)
+            $piggyBank = json_decode($vcard->custom_data);
+
+        if($piggyBank != null && $piggyBank->balance > 0){
+            throw ValidationException::withMessages(['balance' => "Vcard cannot be deleted - Piggy Bank Balance is bigger than 0.00"]);
+        }
+
         $transactions = $vcard->transactions;
         $numberTransactions = count($transactions);
         try {
