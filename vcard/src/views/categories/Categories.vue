@@ -168,7 +168,6 @@ export default {
         });
     }
   },
-  mounted() {},
   created() {
     this.$axios
       .get(`/vcards/${this.phone_number}`)

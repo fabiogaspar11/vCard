@@ -35,13 +35,10 @@
           <label class="m-1">Most Recent</label>
           <input class="m-1 checkAmount" type="checkbox" v-model="mostRecent" />
         </div>
-        
+
         <div class="text-end m-1">
           <a type="submit" class="btn btn-info" @click="submitFilterOrderBy">
-            <i
-              class="bi bi-search"
-              style="color: white; margin-right: 25%"
-            ></i>
+            <i class="bi bi-search" style="color: white; margin-right: 25%"></i>
           </a>
         </div>
         <div class="text-end m-1">
@@ -54,26 +51,74 @@
         {{ errors.filterOrderBy }}
       </div>
     </div>
-    <hr/>
+    <hr />
     <nav aria-label="Page navigation example">
       <ul class="pagination d-flex justify-content-center">
-        <li class="page-item"><a class="page-link" style="color: black;" href="#" @click.prevent="getPreviousPage()">Previous</a></li>
         <li class="page-item">
-          <a class="page-link" href="#" v-bind:class="{'white': !clickedPage1, 'black': clickedPage1}" @click="clickedPage1 = true, clickedPage2 = false, clickedPage3 = false, getPage(this.pages)">
+          <a
+            class="page-link"
+            style="color: black"
+            href="#"
+            @click.prevent="getPreviousPage()"
+            >Previous</a
+          >
+        </li>
+        <li class="page-item">
+          <a
+            class="page-link"
+            href="#"
+            v-bind:class="{ white: !clickedPage1, black: clickedPage1 }"
+            @click="
+              (clickedPage1 = true),
+                (clickedPage2 = false),
+                (clickedPage3 = false),
+                getPage(this.pages)
+            "
+          >
             {{ this.pages }}
           </a>
         </li>
         <li class="page-item">
-          <a class="page-link" href="#" v-if="this.pages+1 <= this.lastPage" v-bind:class="{'white': !clickedPage2, 'black': clickedPage2}" @click="clickedPage2 = true, clickedPage1 = false, clickedPage3 = false, getPage(this.pages+1)">
-            {{ this.pages+1 }}
+          <a
+            class="page-link"
+            href="#"
+            v-if="this.pages + 1 <= this.lastPage"
+            v-bind:class="{ white: !clickedPage2, black: clickedPage2 }"
+            @click="
+              (clickedPage2 = true),
+                (clickedPage1 = false),
+                (clickedPage3 = false),
+                getPage(this.pages + 1)
+            "
+          >
+            {{ this.pages + 1 }}
           </a>
         </li>
         <li class="page-item">
-          <a class="page-link" href="#" v-if="this.pages+2 <= this.lastPage" v-bind:class="{'white': !clickedPage3, 'black': clickedPage3}" @click="clickedPage3 = true, clickedPage1 = false, clickedPage2 = false, getPage(this.pages+2)">
-            {{ this.pages+2 }}
+          <a
+            class="page-link"
+            href="#"
+            v-if="this.pages + 2 <= this.lastPage"
+            v-bind:class="{ white: !clickedPage3, black: clickedPage3 }"
+            @click="
+              (clickedPage3 = true),
+                (clickedPage1 = false),
+                (clickedPage2 = false),
+                getPage(this.pages + 2)
+            "
+          >
+            {{ this.pages + 2 }}
           </a>
         </li>
-        <li class="page-item"><a class="page-link" style="color: black;" href="#" @click.prevent="getNextPage()">Next</a></li>
+        <li class="page-item">
+          <a
+            class="page-link"
+            style="color: black"
+            href="#"
+            @click.prevent="getNextPage()"
+            >Next</a
+          >
+        </li>
       </ul>
     </nav>
 
@@ -81,7 +126,7 @@
       <thead>
         <tr>
           <th>Date/Time</th>
-          <th>Type</th> 
+          <th>Type</th>
           <th>Value</th>
           <th>Payment type</th>
           <th>Payment reference</th>
@@ -91,7 +136,7 @@
       <tbody>
         <tr v-for="transaction in transactions" :key="transaction.id">
           <td>{{ transaction.datetime }}</td>
-          <td>{{ transaction.type == 'C' ? "Credit": "Debit" }}</td>
+          <td>{{ transaction.type == "C" ? "Credit" : "Debit" }}</td>
           <td>{{ transaction.value }}</td>
           <td>{{ transaction.payment_type }}</td>
           <td>{{ transaction.payment_reference }}</td>
@@ -163,56 +208,53 @@ export default {
     submitFilterOrderBy() {
       this.pageActual = 1;
       this.pages = 1;
-      this.resetPagination()
+      this.resetPagination();
       this.getTransactionsWithFilter();
     },
-    getPreviousPage(){
-      if (this.pageActual > 3 ){
-         this.pages -= 3;
+    getPreviousPage() {
+      if (this.pageActual > 3) {
+        this.pages -= 3;
         this.pageActual = this.pages;
-        this.clickedPage1 = true
-        this.clickedPage2 = false
-        this.clickedPage3 = false
-        if (this.queryString != null){
-          this.getTransactionsWithFilter()
-        }
-        else{
-          this.getTransactions()
+        this.clickedPage1 = true;
+        this.clickedPage2 = false;
+        this.clickedPage3 = false;
+        if (this.queryString != null) {
+          this.getTransactionsWithFilter();
+        } else {
+          this.getTransactions();
         }
       }
     },
-    getNextPage(){
-      if (this.pageActual < this.lastPage && this.pages+3 <= this.lastPage){
+    getNextPage() {
+      if (this.pageActual < this.lastPage && this.pages + 3 <= this.lastPage) {
         this.pages += 3;
         this.pageActual = this.pages;
-        this.resetPagination()
-        if (this.queryString != null){
-          this.getTransactionsWithFilter()
-        }
-        else{
-          this.getTransactions()
+        this.resetPagination();
+        if (this.queryString != null) {
+          this.getTransactionsWithFilter();
+        } else {
+          this.getTransactions();
         }
       }
     },
-    getPage(selectedPage){     
-      this.pageActual = selectedPage
-      if (this.queryString != null){
-        this.getTransactionsWithFilter()
-      }
-      else{
-        this.getTransactions()
+    getPage(selectedPage) {
+      this.pageActual = selectedPage;
+      if (this.queryString != null) {
+        this.getTransactionsWithFilter();
+      } else {
+        this.getTransactions();
       }
     },
-    getTransactions(){
+    getTransactions() {
       this.$axios
-      .get(`/vcards/${this.phoneNumber}/transactions?page=${this.pageActual}`)
-      .then((response) => {
-        this.transactions = response.data.data;
-        this.lastPage = response.data.meta.last_page;      
-        console.log(this.transactions)
-      });
+        .get(`/vcards/${this.phoneNumber}/transactions?page=${this.pageActual}`)
+        .then((response) => {
+          this.transactions = response.data.data;
+          this.lastPage = response.data.meta.last_page;
+          console.log(this.transactions);
+        });
     },
-    getTransactionsWithFilter(){
+    getTransactionsWithFilter() {
       this.errors = {};
       this.queryString = "?";
 
@@ -232,18 +274,29 @@ export default {
       if (this.mostRecent) {
         map.set("orderByMostRecent", this.mostRecent);
       }
-      
-      if (this.beginDate == null && this.endDate == null && this.typeFilter == null && !this.amount && !this.mostRecent){
+
+      if (
+        this.beginDate == null &&
+        this.endDate == null &&
+        this.typeFilter == null &&
+        !this.amount &&
+        !this.mostRecent
+      ) {
         return this.getTransactions();
       }
-      console.log(this.queryString)
+      console.log(this.queryString);
       map.forEach((value, key) => {
         this.queryString += key + "=" + value + "&";
       });
-      this.queryString = this.queryString.substring(0, this.queryString.length - 1);
+      this.queryString = this.queryString.substring(
+        0,
+        this.queryString.length - 1
+      );
 
       this.transactions = this.$axios
-        .get(`/vcards/${this.phoneNumber}/transactions${this.queryString}&page=${this.pageActual}`)
+        .get(
+          `/vcards/${this.phoneNumber}/transactions${this.queryString}&page=${this.pageActual}`
+        )
         .then((response) => {
           this.transactions = response.data.data;
           this.loaded = true;
@@ -258,21 +311,21 @@ export default {
           });
         });
     },
-    clearFilters(){
-      this.typeFilter = null
-      this.beginDate = null
-      this.endDate = null
-      this.amount = null
-      this.mostRecent = null
+    clearFilters() {
+      this.typeFilter = null;
+      this.beginDate = null;
+      this.endDate = null;
+      this.amount = null;
+      this.mostRecent = null;
     },
-    resetPagination(){
-      this.clickedPage1 = true
-      this.clickedPage2 = false
-      this.clickedPage3 = false
-    }
+    resetPagination() {
+      this.clickedPage1 = true;
+      this.clickedPage2 = false;
+      this.clickedPage3 = false;
+    },
   },
   mounted() {
-    this.getTransactions()
+    this.getTransactions();
   },
   computed: {
     newTransacion() {
@@ -280,17 +333,12 @@ export default {
     },
   },
   watch: {
-    newTransacion:{
+    newTransacion: {
       handler() {
-        if(this.$store.getters.newTransacion){
-          this.$axios.get(`/vcards/${this.phoneNumber}/transactions`)
-          .then(response =>{
-            this.vcard = response.data.data
-          });
-        }
+        this.getTransactions();
       },
-      deep:true
-    }
+      deep: true,
+    },
   },
 };
 </script>
@@ -303,14 +351,14 @@ table td {
   border-left: 0;
 }
 
-.table-spacing{
-  width:90%;
+.table-spacing {
+  width: 90%;
   text-align: center;
   margin-left: auto;
   margin-right: auto;
 }
 
-.alnleft { 
+.alnleft {
   text-align: left;
   padding-left: 13%;
 }
@@ -324,7 +372,7 @@ table td {
   color: white;
 }
 
-.checkAmount{
+.checkAmount {
   width: 200%;
 }
 </style>
