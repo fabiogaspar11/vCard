@@ -155,6 +155,7 @@ class TransactionController extends Controller
             $Endtransaction->fill($validated_data);
             //Vcards and Pair vcards
             $Endtransaction->vcard = $Begintransaction->pair_vcard;
+            $Endtransaction->payment_reference = $Begintransaction->vcard;
             $Endtransaction->pair_vcard = $Begintransaction->vcard;
             //type of transaction
             $Endtransaction->type = $Begintransaction->type == 'C' ? 'D' : 'C';
