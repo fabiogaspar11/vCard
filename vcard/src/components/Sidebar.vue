@@ -41,14 +41,40 @@
             Statistics
           </router-link>
         </li>
-
+        <li class="nav-item">
+          <a class="dropdown-item" @click.prevent="logout"
+            ><i class="bi bi-arrow-right"></i>Logout</a
+          >
+        </li>
       </ul>
     </div>
   </nav>
-</template >
+</template>
 
 <script>
-export default {};
+import axios from "axios";
+
+export default {
+  methods: {
+    logout() {
+      this.$store
+        .dispatch("authLogout")
+        .then(() => {
+          this.$socket.emit(
+            "logged_out",
+            this.username,
+            this.$store.getters.userType
+          );
+          this.$toast.success("User has logged out of the application.");
+          delete axios.defaults.headers.common.Authorization;
+          this.$router.push({ name: "home" });
+        })
+        .catch(() => {
+          delete axios.defaults.headers.common.Authorization;
+        });
+    },
+  },
+};
 </script>
 
 <style>
