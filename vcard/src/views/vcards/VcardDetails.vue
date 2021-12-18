@@ -105,6 +105,23 @@ export default {
     closeSuccessMesage: function () {
       this.showMessage = false;
     },
+    getDetails(){
+      this.$axios
+        .get(`/vcards/${this.$store.getters.username}`)
+        .then((response) => {
+          this.vcard = response.data.data;
+          this.name = this.name_old = this.vcard.name;
+          this.email = this.email_old = this.vcard.email;
+          this.photo_url = this.photo_url_old = this.vcard.photo_url;
+          (this.photo = this.$serverURL + "/storage/fotos/" + this.photo_url),
+            (this.loaded = true);
+        })
+        .catch(() => {
+          this.$router.push({
+            name: "dashboard",
+          });
+        });
+    },
     onFileChange(e) {
       var files = e.target.files;
       if (!files.length) {
@@ -166,21 +183,21 @@ export default {
     },
   },
   created() {
-    this.$axios
-      .get(`/vcards/${this.$store.getters.username}`)
-      .then((response) => {
-        this.vcard = response.data.data;
-        this.name = this.name_old = this.vcard.name;
-        this.email = this.email_old = this.vcard.email;
-        this.photo_url = this.photo_url_old = this.vcard.photo_url;
-        (this.photo = this.$serverURL + "/storage/fotos/" + this.photo_url),
-          (this.loaded = true);
-      })
-      .catch(() => {
-        this.$router.push({
-          name: "dashboard",
-        });
-      });
+    this.getDetails();
+  },
+  computed: {
+    changesListOfVcards() {
+      return this.$store.getters.changesListOfVcards;
+    },
+  },
+  watch: {
+    changesListOfVcards: {
+      handler() {
+        if (this.$store.getters.changesListOfVcards) 
+          this.getDetails()
+      },
+      deep: true,
+    },
   },
 };
 </script>

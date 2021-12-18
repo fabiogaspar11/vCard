@@ -81,6 +81,7 @@ data() {
           .put(`/defaultCategories/${this.id}`, defaultCategory)
           .then(() => {         
             this.$toast.info(`Default category edited`);
+            this.$socket.emit("changesAdminDefaultCategories");
             this.$router.push({name: "defaultCategories"});
         })
         .catch((error) => {

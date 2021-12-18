@@ -65,6 +65,7 @@ data() {
         this.$axios
             .post(`/defaultCategories`, defaultCategory)
             .then(() => {
+              this.$socket.emit("changesAdminDefaultCategories");
               this.$router.push({name: "defaultCategories"});
         })
         .catch((error) => {

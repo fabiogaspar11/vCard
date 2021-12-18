@@ -77,7 +77,7 @@ export default {
         })
         .then(() => {
         this.$toast.success('User has logged in on the application.');
-         this.$socket.emit('logged_in', this.username)        
+         this.$socket.emit('logged_in', this.username, this.$store.getters.userType)        
           this.$router.push({
             name: "dashboard",
           });

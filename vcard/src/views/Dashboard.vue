@@ -39,7 +39,6 @@
 
         <div class="container-fluid">
           <div class="row">
-
             <div class="col-lg-4 col-6">
               <div
                 class="small-box buttonSendReceive"
@@ -53,7 +52,12 @@
             <div class="col-lg-4 col-6">
               <div
                 class="small-box buttonTransactions"
-                @click="$router.push({ name: 'transactions' ,  params:{isAdmin:user_type=='A'}})"
+                @click="
+                  $router.push({
+                    name: 'transactions',
+                    params: { isAdmin: user_type == 'A' },
+                  })
+                "
               >
                 <i class="bi bi-list-columns icon" style="color: white"></i>
                 <h4><i class="iconTitle"> Transactions </i></h4>
@@ -61,14 +65,14 @@
               </div>
             </div>
             <div class="col-lg-4 col-6">
-            <div
-              class="small-box buttonPiggyBank"
-              @click="$router.push({ name: 'piggyBank' })"
-            >
-              <i class="bi bi-piggy-bank icon"> </i>
-              <h4><i class="iconTitle"> Piggy Bank </i></h4>
-              <br />
-            </div>
+              <div
+                class="small-box buttonPiggyBank"
+                @click="$router.push({ name: 'piggyBank' })"
+              >
+                <i class="bi bi-piggy-bank icon"> </i>
+                <h4><i class="iconTitle"> Piggy Bank </i></h4>
+                <br />
+              </div>
             </div>
           </div>
         </div>
@@ -95,42 +99,40 @@ export default {
     return {
       //money: 0,
       showMessage: this.successMessage != null ? true : false,
-      vcard: '',
+      vcard: "",
       phoneNumber: localStorage.getItem("username"),
-      piggyBalance: null
+      piggyBalance: null,
     };
-  },
-  computed: {
-    moneyUser: function () {
-      return this.vcard == null ? "0.00" : this.vcard.balance;
-    },
-    newTransacion(){
-      return this.$store.getters.newTransacion;
-    }
   },
   methods: {
     closeSuccessMesage: function () {
       this.showMessage = false;
     },
   },
-  watch: {
-  newTransacion:{
-    handler() {
-      if(this.$store.getters.newTransacion){
-        this.$axios.get(`/vcards/${this.phoneNumber}`)
-        .then(response =>{
-          this.vcard = response.data.data
-        });
-      }
+  computed: {
+    moneyUser: function () {
+      return this.vcard == null ? "0.00" : this.vcard.balance;
     },
-    deep:true
-  }
-},
- async created(){
-   await this.$axios.get(`/vcards/${this.phoneNumber}`)
-    .then(response =>{
-      this.vcard = response.data.data
-    })
+    newTransacion() {
+      return this.$store.getters.newTransacion;
+    },
+  },
+  watch: {
+    newTransacion: {
+      handler() {
+        if (this.$store.getters.newTransacion) {
+          this.$axios.get(`/vcards/${this.phoneNumber}`).then((response) => {
+            this.vcard = response.data.data;
+          });
+        }
+      },
+      deep: true,
+    },
+  },
+  async created() {
+    await this.$axios.get(`/vcards/${this.phoneNumber}`).then((response) => {
+      this.vcard = response.data.data;
+    });
   },
 };
 </script>
@@ -152,7 +154,7 @@ export default {
   margin: 0 auto;
 }
 
-#vcardImage{
+#vcardImage {
   width: 40%;
   height: auto;
 }

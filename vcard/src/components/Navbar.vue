@@ -161,7 +161,7 @@ export default {
       this.$store
         .dispatch("authLogout")
         .then(() => {
-          this.$socket.emit('logged_out', this.username);
+          this.$socket.emit('logged_out', this.username, this.$store.getters.userType);
           this.$toast.success('User has logged out of the application.');
           delete axios.defaults.headers.common.Authorization;
           this.$router.push({ name: "home" });

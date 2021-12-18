@@ -60,6 +60,7 @@ export default {
       .then(() =>{
         this.$toast.info(`Administrator ${id} removed`);
         this.$socket.emit('userDeleted', username);   
+        this.$socket.emit("changesListOfAdmins","delete",username);
           this.$axios
           .get(`/administrators`)
           .then(() =>{
@@ -101,6 +102,20 @@ export default {
   },
   mounted() {
     this.getAdministrators()
+  },
+  computed: {
+    changesListOfAdmins() {
+      return this.$store.getters.changesListOfAdmins;
+    },
+  },
+  watch: {
+    changesListOfAdmins: {
+      handler() {
+        if(this.$store.getters.changesListOfAdmins)
+          this.getAdministrators();
+      },
+      deep: true,
+    },
   },
 };
 </script>

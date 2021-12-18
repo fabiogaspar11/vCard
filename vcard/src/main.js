@@ -11,7 +11,7 @@ import Toaster from "@meforma/vue-toaster"
 import Chartkick from 'vue-chartkick'
 import Chart from 'chart.js'
 
-const apiDomain = process.env.VUE_APP_API_DOMAIN
+//const apiDomain = process.env.VUE_APP_API_DOMAIN
 const wsConnection = process.env.VUE_APP_WS_CONNECTION
 
 const socketIO = new VueSocketIO({
@@ -23,9 +23,9 @@ let toastOptions = {
     position: 'top',
     timeout: 3000,
 }    
-axios.defaults.baseURL = `${apiDomain}/api`
+//axios.defaults.baseURL = `${apiDomain}/api`
 
-//axios.defaults.baseURL = 'http://laravelapi.test/api'
+axios.defaults.baseURL = 'http://laravelapi.test/api'
 
 const app = createApp(App)
 app.config.globalProperties.$axios = axios

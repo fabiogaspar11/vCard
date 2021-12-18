@@ -8,14 +8,19 @@ export default createStore({
     newTransacion:null,
     vcardStatus:null,
     updatedPhoto:null,
-    userType:null
+    userType:null,
+    changesListOfVcards:null,
+    changesAdminDefaultCategories:null
   },
   getters: {
     username: state => state.username,
     newTransacion: state => state.newTransacion,
     vcardStatus: state => state.vcardStatus,
     updatedPhoto: state => state.updatedPhoto,
-    userType: state =>state.userType
+    userType: state =>state.userType,
+    changesListOfVcards: state => state.changesListOfVcards,
+    changesAdminDefaultCategories: state => state.changesAdminDefaultCategories,
+    changesListOfAdmins: state => state.changesListOfAdmins
   },
   mutations: {
     toggleUpdatedPhoto(state, value){
@@ -26,6 +31,15 @@ export default createStore({
     },
     toggleVcardStatus(state, value){
       state.vcardStatus = value
+    },
+    toggleChangesListOfVcards(state, value){
+      state.changesListOfVcards = value
+    },
+    toggleChangesAdminDefaultCategories(state, value){
+      state.changesAdminDefaultCategories = value
+    },
+    toggleChangesListOfAdmins(state, value){
+      state.changesListOfAdmins = value
     },
     mutationAuthOk(state) {
       state.status = true
