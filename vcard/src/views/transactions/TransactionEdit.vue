@@ -100,8 +100,8 @@ export default {
         });
     },
     },
-    created(){
-       this.$axios
+  async created(){
+      await this.$axios
       .get(`/transactions/${parseInt(this.transactionId)}`)
       .then(response =>{
       this.transaction = response.data.data; 

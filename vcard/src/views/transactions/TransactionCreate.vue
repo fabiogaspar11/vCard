@@ -85,7 +85,7 @@
             @updateDescription="updateDescription"
             @updateConfirmationCode="updateConfirmationCode"
             :errors="errors"
-            :type="'D'"
+            type="D"
             v-if="!this.isAdmin"
           ></TransactionCreateEdit>
            <div v-show="errors.default != null" class="text-danger">
