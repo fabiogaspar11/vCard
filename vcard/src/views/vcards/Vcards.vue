@@ -207,7 +207,6 @@ export default {
           this.$socket.emit("userDeleted", phone_number);
           this.$socket.emit("changesListOfVcards");
           this.$axios.get(`/vcards`).then(() => {
-            console.log(this.vcards.length);
             if (this.vcards.length == 1) {
               this.pageActual -= 1;
             }

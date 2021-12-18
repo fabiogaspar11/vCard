@@ -110,7 +110,6 @@ export default {
         .get(`/vcards/${this.$store.getters.username}`)
         .then((response) => {
           this.vcard = response.data.data;
-          console.log(this.vcard)
           this.name = this.name_old = this.vcard.name;
           this.email = this.email_old = this.vcard.email;
           this.photo_url = this.photo_url_old = this.vcard.photo_url;

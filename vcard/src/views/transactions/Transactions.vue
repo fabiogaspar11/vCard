@@ -283,7 +283,6 @@ export default {
       ) {
         return this.getTransactions();
       }
-      console.log(this.queryString);
       map.forEach((value, key) => {
         this.queryString += key + "=" + value + "&";
       });

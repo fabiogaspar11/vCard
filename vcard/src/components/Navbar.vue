@@ -145,7 +145,6 @@ export default {
   created(){
     this.username =  this.$store.getters.username;
     this.userType =  this.$store.getters.userType;
-    console.log(this.userType)
         this.$axios.get(`/vcards/storage/${this.username}`)
         .then((response)=>{
             if(response.data.length != 0){

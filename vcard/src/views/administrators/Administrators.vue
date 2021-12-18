@@ -59,7 +59,6 @@ export default {
       this.$axios.delete(`administrators/${id}`)
       .then(() =>{
         this.$toast.info(`Administrator ${id} removed`);
-        this.$socket.emit('userDeleted', username);   
         this.$socket.emit("changesListOfAdmins","delete",username);
           this.$axios
           .get(`/administrators`)
@@ -119,6 +118,5 @@ export default {
   },
 };
 </script>
-
 <style>
 </style>

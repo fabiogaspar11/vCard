@@ -78,9 +78,6 @@ export default {
         this.transaction = response.data.data;
         this.loaded = true;
       })
-      .catch((error) => {
-        console.log(error)
-      });
   },
 };
 </script>

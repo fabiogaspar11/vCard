@@ -70,7 +70,7 @@ methods: {
     if(this.type != null && this.type != this.previousType){
         category.type = this.type;
     }
-    category.vcard = this.vcard.phone_number
+    category.vcard = this.$store.getters.username
 
     this.errors = [];
     this.$axios.post(`/categories`, category)
