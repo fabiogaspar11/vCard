@@ -12,9 +12,11 @@ export default {
   mounted() {
     const token = localStorage.getItem("access_token");
     const username = localStorage.getItem("username");
+    const userType = localStorage.getItem("user_type");
+
     if (token) {
       axios.defaults.headers.common["Authorization"] = "Bearer " + token;
-      this.$socket.emit("logged_in", username, this.$store.getters.userType);
+      this.$socket.emit("logged_in", username, userType);
       this.$store.dispatch("fillStore").then(() => {
         this.$router.push({
           name: "dashboard",

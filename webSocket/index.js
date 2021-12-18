@@ -53,7 +53,6 @@ io.on('connection', function (socket) {
     })
 
     socket.on('changesListOfVcards', function () {
-        console.log("OLA")
         io.to("administrators").emit('changesListOfVcards')
     })
 
