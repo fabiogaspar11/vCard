@@ -12,6 +12,9 @@
         <div v-show="errors.type != undefined" class="text-danger">
           {{ errors.type }}
         </div>
+        <div v-show="errors.default != undefined" class="text-danger">
+          {{ errors.default }}
+        </div>
 </template>
 
 <script>
@@ -66,9 +69,6 @@ export default {
     .then(response =>{
       this.vcard = response.data.data
       this.getVcard()
-    })
-    .catch(error => {
-      console.log(error)
     })
   },
 }

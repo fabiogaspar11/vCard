@@ -1,4 +1,5 @@
 <template>
+  <Navbar></Navbar>
   <Sidebar></Sidebar>
   <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
     <div class="text-center mt-5">
@@ -11,7 +12,7 @@
             id="buttonRegister"
             class="btn btn-success"
             type="submit"
-            @click.prevent="createDefaultCategory"
+            @click.prevent="createcategory"
           >
             Confirm
           </button>
@@ -29,11 +30,13 @@
 
 <script>
 import Sidebar from "../../components/Sidebar.vue";
+import Navbar from "../../components/Navbar.vue";
 import CategoriesCreateEdit from "../categories/CategoriesCreateEdit.vue"
 export default {
-  name: "DefaultCategoriesCreate",
+  name: "CategoriesCreate",
   components: {
     Sidebar,
+    Navbar,
     CategoriesCreateEdit
   },
 data() {
@@ -54,23 +57,23 @@ methods: {
   getVcard(vcard){
     this.vcard = vcard;
   },
-  createDefaultCategory() {
+  createcategory() {
     //if it doesn't click then nothing is emitted
     if(this.type == null){
       this.type = 'D';
     }
 
-    let defaultCategory = {};
+    let category = {};
     if(this.name != null){
-        defaultCategory.name = this.name;
+        category.name = this.name;
     }
     if(this.type != null && this.type != this.previousType){
-        defaultCategory.type = this.type;
+        category.type = this.type;
     }
-    defaultCategory.vcard = this.vcard.phone_number
+    category.vcard = this.vcard.phone_number
 
     this.errors = [];
-    this.$axios.post(`/categories`, defaultCategory)
+    this.$axios.post(`/categories`, category)
       .then(() => {
         this.$router.push({name: "categories"});
       })

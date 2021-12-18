@@ -1,5 +1,6 @@
 <template>
-   <SideBardAdmin></SideBardAdmin>
+  <Navbar></Navbar>
+  <Sidebar></Sidebar>
   <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
     <div class="text-center mt-5">
       <h2>Edit category Nº {{id}}</h2>
@@ -12,7 +13,7 @@
             id="buttonRegister"
             class="btn btn-success"
             type="submit"
-            @click.prevent="editDefaultCategory"
+            @click.prevent="editCategory"
           >
             Confirm
           </button>
@@ -29,12 +30,14 @@
 </template>
 
 <script>
-import SideBardAdmin from "../../components/SideBarAdmin.vue";
+import Sidebar from "../../components/Sidebar.vue";
+import Navbar from "../../components/Navbar.vue";
 import CategoriesCreateEdit from "./CategoriesCreateEdit.vue"
 export default {
   name: "DefaultCategoriesCreate",
   components: {
-    SideBardAdmin,
+    Sidebar,
+    Navbar, 
     CategoriesCreateEdit
   },
     props:{
@@ -56,29 +59,30 @@ methods: {
   updateName(name) {
     this.name = name;
   },
-  editDefaultCategory() {
+  editCategory() {
     this.errors = [];
-    if(this.name == this.previousName){
+    if(this.name == this.previousName && this.type == this.previousType){
       this.errors.name = "Name is equal";
       this.name = null
       return;
     }
     if(this.name == null && this.type == null){
       this.errors.type = "Nothing to update";
+      return
     }
     if(this.type == null){
       this.type = this.previousType;
     }
     
 
-    let defaultCategory = {};
+    let category = {};
     if(this.name != null){
-        defaultCategory.name = this.name;
+        category.name = this.name;
     }
     if(this.type != null && this.type != this.previousType){
-        defaultCategory.type = this.type;
+        category.type = this.type;
     }
-    this.$axios.put(`/categories/${this.id}`, defaultCategory)
+    this.$axios.put(`/categories/${this.id}`, category)
     .then(() => {
       this.$router.push({name: "categories"});
     })

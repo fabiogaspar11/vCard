@@ -6,11 +6,14 @@ use App\Http\Requests\CategoryPost;
 use App\Http\Requests\CategoryPut;
 use App\Http\Resources\CategoryResource;
 use App\Models\Category;
+use Exception;
+use Illuminate\Validation\ValidationException;
+
 
 class CategoryController extends Controller
 {
     public function getCategories(){
-        
+
         return  CategoryResource::Collection(Category::all());
     }
 
@@ -23,7 +26,12 @@ class CategoryController extends Controller
         $validated_data = $request->validated();
         $category = new Category();
         $category->fill($validated_data);
-        $category->save();
+        try{
+            $category->save();
+        }
+        catch(Exception $e){
+            throw ValidationException::withMessages(['default' => 'Error creating category']);
+        }
         return new CategoryResource($category);
     }
 
@@ -31,7 +39,12 @@ class CategoryController extends Controller
     {
         $validated_data = $request->validated();
         $category->fill($validated_data);
-        $category->save();
+        try{
+            $category->save();
+        }
+        catch(Exception $e){
+            throw ValidationException::withMessages(['default' => 'Error updating category']);
+        }
         return new CategoryResource($category);
     }
 

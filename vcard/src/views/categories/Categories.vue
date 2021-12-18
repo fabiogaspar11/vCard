@@ -180,9 +180,6 @@ export default {
         this.vcard = response.data.data;
         this.getCategories()
       })
-      .catch((error) => {
-        console.log(error);
-      });
   },
 };
 </script>
