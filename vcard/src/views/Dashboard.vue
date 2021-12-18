@@ -30,7 +30,7 @@
       <div id="page" class="row">
         <div>
           <img id="vcardImage" src="../assets/img/logo.png" />
-          <h1 style="margin-bottom: 3%">{{ moneyUser }} €</h1>
+          <h1 style="margin-bottom: 3%">{{ this.vcard.balance }} €</h1>
           <div v-show="this.piggyBalance != null">
             <img class="piggy" src="../assets/img/piggyBank.png" />
             <h3 class="vcard">{{ this.piggyBalance }} €</h3>
@@ -97,7 +97,6 @@ export default {
 
   data() {
     return {
-      //money: 0,
       showMessage: this.successMessage != null ? true : false,
       vcard: "",
       phoneNumber: localStorage.getItem("username"),
@@ -110,9 +109,6 @@ export default {
     },
   },
   computed: {
-    moneyUser: function () {
-      return this.vcard == null ? "0.00" : this.vcard.balance;
-    },
     newTransacion() {
       return this.$store.getters.newTransacion;
     },

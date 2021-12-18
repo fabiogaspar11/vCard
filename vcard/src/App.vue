@@ -28,23 +28,31 @@ export default {
     changesListOfAdmins(params) {
       this.$store.commit("toggleChangesListOfAdmins", false);
       this.$store.commit("toggleChangesListOfAdmins", true);
-     
-      if(params[0] == "delete"){
-        this.$toast.show(`This user ${params[1]} was deleted by an administrator`, {
-        type: "info",
-        timeout: 3000,
-      });
-      this.$store.dispatch("logOutDeleteUser").then(() => {
-        localStorage.removeItem("access_token");
-        localStorage.removeItem("username");
-        localStorage.removeItem("user_type");
-        this.$socket.emit("logged_out", params[1], this.$store.getters.userType);
-        this.$toast.success("User has logged out of the application.");
-        delete axios.defaults.headers.common.Authorization;
-        this.$router.push({ name: "home" });
-      });}
 
-   
+      if (params[0] == "delete") {
+        this.$toast.show(
+          `This user ${params[1]} was deleted by an administrator`,
+          {
+            type: "info",
+            timeout: 3000,
+          }
+        );
+        if (params[1] == this.$store.getters.username) {
+          this.$store.dispatch("logOutDeleteUser").then(() => {
+            localStorage.removeItem("access_token");
+            localStorage.removeItem("username");
+            localStorage.removeItem("user_type");
+            this.$socket.emit(
+              "logged_out",
+              params[1],
+              this.$store.getters.userType
+            );
+            this.$toast.success("User has logged out of the application.");
+            delete axios.defaults.headers.common.Authorization;
+            this.$router.push({ name: "home" });
+          });
+        }
+      }
     },
     changesListOfVcards() {
       this.$store.commit("toggleChangesListOfVcards", false);
@@ -107,7 +115,6 @@ export default {
         this.$router.push({ name: "home" });
       });
     },
-    updateUsers() {},
   },
 };
 </script>

@@ -7,7 +7,7 @@
     <div id="page">
       <div id="deletevcard" class="color" v-if="this.loaded">
         <img class="center" src="../../assets/img/logo.png" />
-        <h1 class="vcard">{{ this.balanceMinusPiggy }} €</h1>
+        <h1 class="vcard">{{ this.balance }} €</h1>
         <div v-show="this.piggyBalance != null">
           <img class="piggy" src="../../assets/img/piggyBank.png" />
           <h3 class="vcard">{{ this.piggyBalance }} €</h3>
@@ -118,8 +118,21 @@ export default {
     };
   },
   computed: {
-    moneyUser: function () {
-      return this.money + "€";
+    newTransacion() {
+      return this.$store.getters.newTransacion;
+    },
+  },
+  watch: {
+    newTransacion: {
+      handler() {
+        if (this.$store.getters.newTransacion) {
+          this.$axios.get(`/vcards/${this.$store.getters.username}`).then((response) => {
+            this.vcard = response.data.data;
+            this.balance = this.vcard.balance;
+          });
+        }
+      },
+      deep: true,
     },
   },
   async created() {
@@ -128,7 +141,6 @@ export default {
       .then((response) => {
         this.vcard = response.data.data;
         this.balance = this.vcard.balance;
-        this.balanceMinusPiggy = this.vcard.balance;
         this.loaded = true;
       });
     await this.$axios
@@ -136,7 +148,6 @@ export default {
       .then((response) => {
         if (response.data.balance != null) {
           this.piggyBalance = response.data.balance;
-          this.balanceMinusPiggy = this.vcard.balance - this.piggyBalance;
         }
       });
   },
@@ -175,7 +186,6 @@ export default {
 </script>
 
 <style scoped lang="css">
-
 .piggy {
   width: 50px;
 }
@@ -192,7 +202,6 @@ export default {
   margin-right: auto;
   width: 30%;
 }
-
 
 #page {
   text-align: center;
@@ -213,5 +222,4 @@ export default {
   background: #333333;
   transition-duration: 0.5s;
 }
-
 </style>

@@ -87,6 +87,9 @@
             :errors="errors"
             v-if="!this.isAdmin"
           ></TransactionCreateEdit>
+           <div v-show="errors.default != null" class="text-danger">
+              {{ errors.default }}
+            </div>
           <div class="container">
             <br />
             <button
