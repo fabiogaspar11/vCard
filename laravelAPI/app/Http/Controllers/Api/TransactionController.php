@@ -54,7 +54,9 @@ class TransactionController extends Controller
         if(isset($request->category_id)){
             $category = null;
             $category = Category::find($request->category_id);
-
+            if($category == null){
+                throw ValidationException::withMessages(['category' => "This category doesn't exists"]);
+            }
             $vcard = Vcard::find($transaction->vcard);
             if($category->vcard != $vcard->phone_number){
                 return 0;

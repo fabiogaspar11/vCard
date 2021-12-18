@@ -164,7 +164,7 @@
               @click="
                 $router.push({
                   name: 'transactionEdit',
-                  params: { transactionId: transaction.id },
+                  params: { transactionId: transaction.id, type: transaction.type },
                 })
               "
             >

@@ -50,7 +50,7 @@ export default {
       categories: null,
       loadedCategories:false,
       errorCategories:null,
-      phoneNumber : localStorage.getItem('username'),
+      phoneNumber : this.$store.getters.username,
       confirmationCode:null
     };
   },
@@ -71,8 +71,8 @@ export default {
     },
 
   },
-  created(){
-    this.$axios
+  async created(){
+    await this.$axios
       .get(`/vcards/${this.phoneNumber}/categories?type=${this.type}`)
       .then(response =>{
       this.categories = response.data.data; 

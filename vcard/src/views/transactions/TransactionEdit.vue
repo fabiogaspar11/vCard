@@ -1,14 +1,33 @@
 <template>
-    <Sidebar></Sidebar>
-    <Navbar></Navbar>
-    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+  <Sidebar></Sidebar>
+  <Navbar></Navbar>
+  <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
     <div class="text-center mt-5">
-      <h2>Edit Transaction Nº {{transactionId}}</h2>
-      <p>Current Description: {{this.transaction.description != null ? this.transaction.description : '---'}} | Category: {{this.transaction.category_id != null ? this.transaction.category_id.name : '---'}}</p>
+      <h2>Edit Transaction Nº {{ transactionId }}</h2>
+      <p>
+        Current Description:
+        {{
+          this.transaction.description != null
+            ? this.transaction.description
+            : "---"
+        }}
+        | Category:
+        {{
+          this.transaction.category_id != null
+            ? this.transaction.category_id.name
+            : "---"
+        }}
+      </p>
       <div class="container">
-       <TransactionCreateEdit @updateCategory="updateCategory" @updateDescription="updateDescription" :errors="errors"  :type="transaction.type"></TransactionCreateEdit>
+        <TransactionCreateEdit
+          @updateCategory="updateCategory"
+          @updateDescription="updateDescription"
+          :errors="errors"
+          @updateConfirmationCode="updateConfirmationCode"
+          :type="this.type"
+        ></TransactionCreateEdit>
         <div class="container">
-          <br>
+          <br />
           <button
             id="buttonRegister"
             class="btn btn-success"
@@ -27,69 +46,75 @@
         </div>
       </div>
     </div>
-    </main>
+  </main>
 </template>
 
 <script>
 import Navbar from "../../components/Navbar.vue";
 import Sidebar from "../../components/Sidebar.vue";
-import TransactionCreateEdit from "../transactions/TransactionCreateEdit.vue"
+import TransactionCreateEdit from "../transactions/TransactionCreateEdit.vue";
 export default {
   name: "TransactionCreate",
   components: {
     Sidebar,
     Navbar,
-    TransactionCreateEdit
+    TransactionCreateEdit,
   },
-  props:{
-    transactionId: String
+  props: {
+    transactionId: String,
+    type: String,
   },
   data() {
     return {
       errors: [],
       category: null,
       description: null,
-      transaction:[]
+      transaction: [],
     };
   },
   methods: {
-    updateCategory(category){
+    updateCategory(category) {
       this.errors = [];
-       if(this.transaction.category_id !=null && this.transaction.category_id.id == category){
+      if (
+        this.transaction.category_id != null &&
+        this.transaction.category_id.id == category
+      ) {
         this.errors.category_id = "Category is equal";
         return;
       }
-        this.category = category;
+      this.category = category;
     },
-    updateDescription(description){
-       this.errors = [];
-      if(this.transaction.description != null && this.transaction.description == description){
+    updateDescription(description) {
+      this.errors = [];
+      if (
+        this.transaction.description != null &&
+        this.transaction.description == description
+      ) {
         this.errors.description = "Description is equal";
         return;
       }
-        this.description = description;
+      this.description = description;
     },
-    fillTransaction(){
+    fillTransaction() {
       let transaction = {};
-      
+
       if (this.category != null) {
         transaction.category_id = this.category;
       }
       if (this.description != null) {
         transaction.description = this.description;
       }
-
       return transaction;
     },
     transactionEdit() {
-     let transaction = this.fillTransaction();
+      let transaction = this.fillTransaction();
 
       this.$axios
         .put(`transactions/${this.transactionId}`, transaction)
         .then(() => {
           transaction = null;
           this.$router.push({
-            name: "transactions"
+            name: "transactions",
           });
         })
         .catch((error) => {
@@ -99,13 +124,13 @@ export default {
           });
         });
     },
-    },
-  async created(){
-      await this.$axios
+  },
+  async created() {
+    await this.$axios
       .get(`/transactions/${parseInt(this.transactionId)}`)
-      .then(response =>{
-      this.transaction = response.data.data; 
-    });
+      .then((response) => {
+        this.transaction = response.data.data;
+      });
   },
 };
 </script>

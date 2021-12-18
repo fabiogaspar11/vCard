@@ -247,7 +247,6 @@ export default {
       this.data.splice(0);
       this.showData = null;
       this.$axios.get(`/statistics/${rowTransaction}`).then((response) => {
-        console.log(response);
         if (response.data.length != 0) {
           this.transactions = response.data;
           this.transactions.filter((row) => {
