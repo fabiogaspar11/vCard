@@ -6,7 +6,7 @@
       <h2>Edit Transaction Nº {{transactionId}}</h2>
       <p>Current Description: {{this.transaction.description != null ? this.transaction.description : '---'}} | Category: {{this.transaction.category_id != null ? this.transaction.category_id.name : '---'}}</p>
       <div class="container">
-       <TransactionCreateEdit @updateCategory="updateCategory" @updateDescription="updateDescription" :errors="errors"></TransactionCreateEdit>
+       <TransactionCreateEdit @updateCategory="updateCategory" @updateDescription="updateDescription" :errors="errors"  :type="transaction.type"></TransactionCreateEdit>
         <div class="container">
           <br>
           <button

@@ -40,7 +40,8 @@
 export default {
   name: "TransactionCreateEdit",
     props:{
-    errors:Array
+    errors:Array,
+    type:String
   },
   data() {
     return {
@@ -72,7 +73,7 @@ export default {
   },
   created(){
     this.$axios
-      .get(`/vcards/${this.phoneNumber}/categories?type=D`)
+      .get(`/vcards/${this.phoneNumber}/categories?type=${this.type}`)
       .then(response =>{
       this.categories = response.data.data; 
       this.loadedCategories = true;
